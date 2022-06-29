@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "191157745947",
+    "project_id": "erte-30198",
+    "storage_bucket": "erte-30198.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191157745947:android:d77bf4d36344f3819c7bbe",
+        "android_client_info": {
+          "package_name": "com.erte.erte"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191157745947-vkgdhd5j1eiqlahopdj9qhfrv6ev6pou.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPk2_PcRvxgRqpzzSRjCzkGYNp1PNbeAw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191157745947-vkgdhd5j1eiqlahopdj9qhfrv6ev6pou.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
