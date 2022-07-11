@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:erte/app/const/color.dart';
 import 'package:erte/app/data/models/informasi.dart';
-import 'package:erte/app/modules/admin/views/admin_view.dart';
 import 'package:erte/app/modules/auth/controllers/auth_controller.dart';
 import 'package:erte/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';

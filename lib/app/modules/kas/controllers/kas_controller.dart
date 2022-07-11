@@ -58,7 +58,7 @@ class KasController extends GetxController {
         titleStyle: TextStyle(color: primary),
         middleTextStyle: TextStyle(color: primary),
       );
-    } on Exception catch (e) {
+    } on Exception {
       Get.defaultDialog(
         title: "Error",
         middleText: "Gagal Menghapus",
@@ -113,7 +113,6 @@ class KasController extends GetxController {
       isSaving = false;
     }
   }
-
 
   @override
   void onInit() {

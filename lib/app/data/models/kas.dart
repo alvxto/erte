@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erte/app/const/color.dart';
 import 'package:erte/app/data/database.dart';
@@ -33,16 +32,11 @@ class Kas {
 
   Kas.fromJson(DocumentSnapshot doc) {
     Map<String, dynamic>? json = doc.data() as Map<String, dynamic>?;
-    id =
-    doc.id;
-    kategori =
-    json?[lkategori];
-    deskripsi =
-    json?[ldeskripsi];
-    uang =
-    json?[luang];
-    waktu =
-    (json?[lwaktu] as Timestamp?)?.toDate();
+    id = doc.id;
+    kategori = json?[lkategori];
+    deskripsi = json?[ldeskripsi];
+    uang = json?[luang];
+    waktu = (json?[lwaktu] as Timestamp?)?.toDate();
   }
 
   Map<String, dynamic> get toJson => {

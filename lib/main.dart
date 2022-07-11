@@ -1,5 +1,4 @@
 import 'package:erte/app/const/color.dart';
-import 'package:erte/app/const/widget.dart';
 import 'package:erte/app/modules/auth/controllers/auth_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';

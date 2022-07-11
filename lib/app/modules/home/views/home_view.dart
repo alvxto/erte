@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:erte/app/const/color.dart';
 import 'package:erte/app/const/image.dart';
-import 'package:erte/app/data/models/informasi.dart';
 import 'package:erte/app/modules/auth/controllers/auth_controller.dart';
 import 'package:erte/app/modules/info_lengkap/views/info_lengkap_view.dart';
 import 'package:erte/app/routes/app_pages.dart';

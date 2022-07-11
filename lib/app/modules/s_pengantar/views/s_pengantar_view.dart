@@ -3,7 +3,6 @@ import 'package:erte/app/const/color.dart';
 import 'package:erte/app/data/models/absen.dart';
 import 'package:erte/app/data/models/s_pengantar.dart';
 import 'package:erte/app/modules/auth/controllers/auth_controller.dart';
-import 'package:erte/app/modules/profil/controllers/profil_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

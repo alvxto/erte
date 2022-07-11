@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 // intro
 const String img_intro1 = "images/Intro1.json";
 const String img_intro2 = "images/Intro2.json";

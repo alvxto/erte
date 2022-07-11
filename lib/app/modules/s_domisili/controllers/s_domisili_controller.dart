@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:erte/app/const/color.dart';
 import 'package:erte/app/data/models/absen.dart';
 import 'package:erte/app/data/models/s_domisili.dart';
-import 'package:erte/app/data/models/s_pengantar.dart';
 import 'package:erte/app/data/models/user.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;

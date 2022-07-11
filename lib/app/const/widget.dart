@@ -1,8 +1,4 @@
-import 'package:erte/app/const/color.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-
-import '../routes/app_pages.dart';
 
 class AppbarColor extends StatelessWidget {
   AppbarColor({required this.title});

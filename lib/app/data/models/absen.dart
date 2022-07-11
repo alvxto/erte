@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erte/app/data/database.dart';
 
@@ -33,14 +32,10 @@ class Absen {
     print("doc data = ${doc.data()}");
     Map<String, dynamic>? json = doc.data() as Map<String, dynamic>?;
     id = doc.id;
-    nama =
-    json?[unama];
-    email =
-    json?[uemail];
-    alamat =
-    json?[ualamat];
-    waktu =
-    (json?[uwaktu] as Timestamp?)?.toDate();
+    nama = json?[unama];
+    email = json?[uemail];
+    alamat = json?[ualamat];
+    waktu = (json?[uwaktu] as Timestamp?)?.toDate();
   }
 
   Map<String, dynamic> get toJson => {

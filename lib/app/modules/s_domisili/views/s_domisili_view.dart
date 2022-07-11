@@ -1,16 +1,12 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:erte/app/const/color.dart';
 import 'package:erte/app/data/models/absen.dart';
 import 'package:erte/app/data/models/s_domisili.dart';
 import 'package:erte/app/data/models/s_pengantar.dart';
 import 'package:erte/app/modules/auth/controllers/auth_controller.dart';
-import 'package:erte/app/modules/profil/controllers/profil_controller.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../controllers/s_domisili_controller.dart';
 
 class SDomisiliView extends GetView<SDomisiliController> {

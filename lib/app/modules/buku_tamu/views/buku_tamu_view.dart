@@ -3,7 +3,6 @@ import 'package:erte/app/data/models/absen.dart';
 import 'package:erte/app/modules/auth/controllers/auth_controller.dart';
 import 'package:erte/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -14,10 +13,10 @@ class BukuTamuView extends GetView<BukuTamuController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Buku Tamu'),
-        // centerTitle: true,
-        leading: InkWell(
+        appBar: AppBar(
+          title: Text('Buku Tamu'),
+          // centerTitle: true,
+          leading: InkWell(
               onTap: () => authC.user.role == "Admin"
                   ? Get.offAndToNamed(Routes.ADMIN)
                   : Get.offAndToNamed(Routes.HOME),
@@ -25,36 +24,34 @@ class BukuTamuView extends GetView<BukuTamuController> {
                 Icons.arrow_back,
                 color: white,
               )),
-      ),
-      body: Obx(() => controller.absens.length < 1
-                ? Center(
-                    child: Text(
-                      "Kosong",
-                      style: TextStyle(
-                          color: primary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30),
-                    ),
-                  )
-                : Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    height: Get.height,
-                    width: Get.width,
-                    child: SingleChildScrollView(
+        ),
+        body: Obx(() => controller.absens.length < 1
+            ? Center(
+                child: Text(
+                  "Kosong",
+                  style: TextStyle(
+                      color: primary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30),
+                ),
+              )
+            : Container(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                height: Get.height,
+                width: Get.width,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: ListView.builder(
+                      shrinkWrap: true,
                       scrollDirection: Axis.vertical,
-                      child: ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: ScrollPhysics(),
-                          itemCount: controller.absens.length,
-                          itemBuilder: (context, index) =>
-                              AbsenCard(absen: controller.absens[index])),
-                    ),
-                  ))
-    );
+                      physics: ScrollPhysics(),
+                      itemCount: controller.absens.length,
+                      itemBuilder: (context, index) =>
+                          AbsenCard(absen: controller.absens[index])),
+                ),
+              )));
   }
 }
-
 
 class AbsenCard extends GetView<BukuTamuController> {
   AbsenCard({required this.absen});
@@ -216,4 +213,3 @@ class AbsenCard extends GetView<BukuTamuController> {
     );
   }
 }
-

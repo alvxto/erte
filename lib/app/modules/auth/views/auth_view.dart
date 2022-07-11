@@ -14,7 +14,6 @@ class AuthView extends GetView<AuthController> {
   GlobalKey<FormState> form = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       // appBar: AppBar(
       //   title: Text('Login & Register'),
