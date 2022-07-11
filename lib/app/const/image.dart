@@ -16,7 +16,7 @@ const String img_logoputih = "images/Logo RTQ Putih.png";
 
 //dashboard
 const String img_home = "images/home.png";
-
+const String hello_dsb = "images/hello_dsb.png";
 const String img_suratpeng = "images/pernyataan.png";
 const String img_domisili = "images/domisili.png";
 const String img_kk = "images/kk.png";

@@ -5,6 +5,7 @@ import 'package:erte/app/const/color.dart';
 import 'package:erte/app/const/image.dart';
 import 'package:erte/app/data/models/informasi.dart';
 import 'package:erte/app/modules/auth/controllers/auth_controller.dart';
+import 'package:erte/app/modules/info_lengkap/views/info_lengkap_view.dart';
 import 'package:erte/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +16,7 @@ import '../controllers/home_controller.dart';
 class HomeView extends GetView<HomeController> {
   final authC = Get.find<AuthController>();
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,14 +32,14 @@ class HomeView extends GetView<HomeController> {
               height: 230,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  bottomRight: radiusCircular(10),
+                  bottomRight: radiusCircular(15),
                 ),
                 gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                   colors: <Color>[
                     Color(0xFF696EFF),
-                    Color(0xFF0208B0),
+                    Color(0xFF000DFF),
                   ],
                 ),
               ),
@@ -141,11 +143,11 @@ class HomeView extends GetView<HomeController> {
                                     onTap: () => Get.toNamed(Routes.ADMIN),
                                     leading: Icon(
                                       Icons.person_outline_outlined,
-                                      color: primary,
+                                      color: black,
                                     ),
                                     title: Text(
                                       "Halaman Admin",
-                                      style: TextStyle(color: primary),
+                                      style: TextStyle(color: black),
                                     ),
                                   )
                                 : Container(),
@@ -154,11 +156,11 @@ class HomeView extends GetView<HomeController> {
                             onTap: () => Get.toNamed(Routes.PROFIL),
                             leading: Icon(
                               Icons.person,
-                              color: primary,
+                              color: black,
                             ),
                             title: Text(
                               "Profil",
-                              style: TextStyle(color: primary),
+                              style: TextStyle(color: black),
                             ),
                           ),
                           Obx(() => authC.user.id != null
@@ -166,11 +168,11 @@ class HomeView extends GetView<HomeController> {
                                   onTap: () => Get.toNamed(Routes.RIWAYAT),
                                   leading: Icon(
                                     Icons.history,
-                                    color: primary,
+                                    color: black,
                                   ),
                                   title: Text(
                                     "Riwayat",
-                                    style: TextStyle(color: primary),
+                                    style: TextStyle(color: black),
                                   ),
                                 )
                               : Container()),
@@ -178,22 +180,11 @@ class HomeView extends GetView<HomeController> {
                             onTap: () => Get.toNamed(Routes.LAPOR),
                             leading: Icon(
                               Icons.notifications,
-                              color: primary,
+                              color: black,
                             ),
                             title: Text(
                               "Lapor RT",
-                              style: TextStyle(color: primary),
-                            ),
-                          ),
-                          ListTile(
-                            onTap: () => Get.toNamed(Routes.KAS),
-                            leading: Icon(
-                              Icons.money,
-                              color: primary,
-                            ),
-                            title: Text(
-                              "Kas RT",
-                              style: TextStyle(color: primary),
+                              style: TextStyle(color: black),
                             ),
                           ),
                           Obx(
@@ -202,22 +193,22 @@ class HomeView extends GetView<HomeController> {
                                     onTap: () => Get.toNamed(Routes.AUTH),
                                     leading: Icon(
                                       Icons.login,
-                                      color: primary,
+                                      color: black,
                                     ),
                                     title: Text(
                                       "Login",
-                                      style: TextStyle(color: primary),
+                                      style: TextStyle(color: black),
                                     ),
                                   )
                                 : ListTile(
                                     onTap: () => authC.logout(),
                                     leading: Icon(
                                       Icons.logout,
-                                      color: primary,
+                                      color: Colors.red,
                                     ),
                                     title: Text(
                                       "Logout",
-                                      style: TextStyle(color: primary),
+                                      style: TextStyle(color: Colors.red),
                                     ),
                                   ),
                           ),
@@ -236,31 +227,16 @@ class HomeView extends GetView<HomeController> {
           children: [
             Container(
               width: double.infinity,
-              height: 300,
+              height: Get.height,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
+                  begin: Alignment.topLeft,
+                  end: Alignment.centerRight,
                   colors: <Color>[
                     Color(0xFF696EFF),
-                    Color(0xFF0208B0),
+                    Color(0xFF000DFF),
                   ],
                 ),
-              ),
-              child: Stack(
-                children: <Widget>[
-                  Opacity(
-                    opacity: 0.5,
-                    child: Container(
-                      child: Image.asset(
-                        img_perum,
-                        fit: BoxFit.cover,
-                      ),
-                      width: double.infinity,
-                      height: 300,
-                    ),
-                  ),
-                ],
               ),
             ),
             Column(
@@ -272,7 +248,7 @@ class HomeView extends GetView<HomeController> {
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: InkWell(
                               child: Icon(
                                 Icons.menu,
@@ -283,7 +259,7 @@ class HomeView extends GetView<HomeController> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20.0),
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: Container(
                               height: 31,
                               width: 50,
@@ -296,339 +272,467 @@ class HomeView extends GetView<HomeController> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          "${DateFormat.yMMMEd().format(DateTime.now())}",
+                          "${DateFormat.yMMMMEEEEd('id').format(
+                            DateTime.now(),
+                          )}",
                           style: TextStyle(
                             color: white,
                             fontSize: 16,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 100,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 40, left: 40),
-                  child: Container(
-                    height: 90,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      image: DecorationImage(
-                        alignment: Alignment.centerLeft,
-                        image: AssetImage(img_perum),
-                        fit: BoxFit.fitHeight,
-                      ),
-                      color: white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: dark,
-                          spreadRadius: 0,
-                          blurRadius: 4,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                      // borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 125,
-                        top: 20,
-                      ),
-                      child: Text(
-                        " Green Living Residence\n RT 02 RW 09",
-                        style: TextStyle(
-                          color: black,
-                          fontFamily: "RobotoSlab",
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 50),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 30,
+                    ),
+                    Container(
+                      height: 120,
+                      width: 160,
+                      child: Image.asset(
+                        hello_dsb,
+                      ),
+                    ),
+                    Obx(
+                      () => Expanded(
+                        child: Text(
+                          "Hai ! ${authC.user.nama ?? ""}\nSelamat Datang",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: white,
+                            fontSize: 20,
+                            fontFamily: "RobotoSlab",
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 30,
+                    ),
+                  ],
+                ),
+                Stack(
                   children: [
                     Column(
                       children: [
+                        50.height,
                         Container(
-                          height: 90,
-                          width: 90,
                           decoration: BoxDecoration(
                             color: white,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: dark,
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                offset: Offset(0, 4),
-                              )
-                            ],
+                            borderRadius: BorderRadius.only(
+                              topLeft: radiusCircular(50),
+                              topRight: radiusCircular(50),
+                            ),
                           ),
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 height: 50,
-                                width: 50,
-                                child: InkWell(
-                                  onTap: () => Get.toNamed(Routes.S_PENGANTAR),
-                                  child: Image.asset(
-                                    img_suratpeng,
-                                    fit: BoxFit.cover,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 65,
+                                        width: 65,
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: dark,
+                                              spreadRadius: 0,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 4),
+                                            )
+                                          ],
+                                        ),
+                                        child: Container(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                height: 35,
+                                                width: 37.06,
+                                                child: InkWell(
+                                                  onTap: () => Get.toNamed(
+                                                      Routes.S_PENGANTAR),
+                                                  child: Image.asset(
+                                                    img_suratpeng,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      InkWell(
+                                        onTap: () =>
+                                            Get.toNamed(Routes.S_PENGANTAR),
+                                        child: Text(
+                                          "Surat\nPengantar",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: "Nunito",
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 65,
+                                        width: 65,
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: dark,
+                                              spreadRadius: 0,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 4),
+                                            )
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 36,
+                                              width: 36,
+                                              child: InkWell(
+                                                onTap: () => Get.toNamed(
+                                                    Routes.S_DOMISILI),
+                                                child: Image.asset(
+                                                  img_domisili,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      InkWell(
+                                        onTap: () =>
+                                            Get.toNamed(Routes.S_DOMISILI),
+                                        child: Text(
+                                          "Surat\nDomisili",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: "Nunito",
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 65,
+                                        width: 65,
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: dark,
+                                              spreadRadius: 0,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 4),
+                                            )
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 36,
+                                              width: 36,
+                                              child: InkWell(
+                                                onTap: () =>
+                                                    Get.toNamed(Routes.FORM_KK),
+                                                child: Image.asset(
+                                                  img_kk,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      InkWell(
+                                        onTap: () =>
+                                            Get.toNamed(Routes.FORM_KK),
+                                        child: Text(
+                                          "Form\nKK",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: "Nunito",
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 65,
+                                        width: 65,
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: dark,
+                                              spreadRadius: 0,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 4),
+                                            )
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 40,
+                                              width: 40,
+                                              child: InkWell(
+                                                onTap: () => Get.toNamed(
+                                                    Routes.FORM_KTP),
+                                                child: Image.asset(
+                                                  img_ktp,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      InkWell(
+                                        onTap: () =>
+                                            Get.toNamed(Routes.FORM_KTP),
+                                        child: Text(
+                                          "Form\nKTP",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: "Nunito",
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 28.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Kegiatan RT",
+                                      style: TextStyle(
+                                          color: black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Get.toNamed(Routes.INFO_LENGKAP);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Lihat Semua",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.normal,
+                                                color: primary),
+                                          ),
+                                          Icon(
+                                            Icons.keyboard_arrow_right,
+                                            color: secondary,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        InkWell(
-                          onTap: () => Get.toNamed(Routes.S_PENGANTAR),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Surat Pengantar",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Nunito",
-                                ),
+                              SizedBox(
+                                height: 10,
                               ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 40),
-                        Container(
-                          height: 90,
-                          width: 90,
-                          decoration: BoxDecoration(
-                            color: white,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: dark,
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                offset: Offset(0, 4),
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
                               Container(
-                                height: 50,
-                                width: 50,
-                                child: InkWell(
-                                  onTap: () => Get.toNamed(Routes.FORM_KK),
-                                  child: Image.asset(
-                                    img_kk,
-                                    fit: BoxFit.cover,
-                                  ),
+                                // padding: EdgeInsets.symmetric(horizontal: 15),
+                                height: 200,
+                                child: Obx(
+                                  () => controller.infos.length < 1
+                                      ? Center(
+                                          child: Text(
+                                            "Kosong",
+                                            style: TextStyle(color: primary),
+                                          ),
+                                        )
+                                      : SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: controller.infos.length,
+                                            physics: ScrollPhysics(),
+                                            itemBuilder: (context, index) =>
+                                                InfoCard(
+                                              info: controller.infos[index],
+                                            ),
+                                          ),
+                                        ),
+                                ),
+                              ),
+                              SizedBox(height: 20),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 28.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Informasi RT",
+                                      style: TextStyle(
+                                          color: black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Get.toNamed(Routes.INFO_LENGKAP);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "Lihat Semua",
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.normal,
+                                                color: primary),
+                                          ),
+                                          Icon(
+                                            Icons.keyboard_arrow_right,
+                                            color: secondary,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                // padding: EdgeInsets.symmetric(horizontal: 15),
+                                height: 200,
+                                child: Obx(
+                                  () => controller.infos.length < 1
+                                      ? Center(
+                                          child: Text(
+                                            "Kosong",
+                                            style: TextStyle(color: primary),
+                                          ),
+                                        )
+                                      : SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: controller.infos.length,
+                                            physics: ScrollPhysics(),
+                                            itemBuilder: (context, index) =>
+                                                InfoCard(
+                                              info: controller.infos[index],
+                                            ),
+                                          ),
+                                        ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        InkWell(
-                          onTap: () => Get.toNamed(Routes.FORM_KK),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Form KK",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Nunito",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
                         ),
                       ],
                     ),
-                    Column(
-                      children: [
-                        Container(
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 40, left: 40),
+                        child: Container(
                           height: 90,
-                          width: 90,
+                          width: double.infinity,
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: DecorationImage(
+                              alignment: Alignment.centerLeft,
+                              image: AssetImage(img_perum),
+                              fit: BoxFit.fitHeight,
+                            ),
                             color: white,
-                            borderRadius: BorderRadius.circular(50),
                             boxShadow: [
                               BoxShadow(
                                 color: dark,
                                 spreadRadius: 0,
                                 blurRadius: 4,
                                 offset: Offset(0, 4),
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 50,
-                                child: InkWell(
-                                  onTap: () => Get.toNamed(Routes.S_DOMISILI),
-                                  child: Image.asset(
-                                    img_domisili,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
                               ),
                             ],
+                            // borderRadius: BorderRadius.circular(15),
                           ),
-                        ),
-                        SizedBox(height: 10),
-                        InkWell(
-                          onTap: () => Get.toNamed(Routes.S_DOMISILI),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Surat Domisili",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Nunito",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Container(
-                          height: 90,
-                          width: 90,
-                          decoration: BoxDecoration(
-                            color: white,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: dark,
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                offset: Offset(0, 4),
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 50,
-                                child: InkWell(
-                                  onTap: () => Get.toNamed(Routes.FORM_KTP),
-                                  child: Image.asset(
-                                    img_ktp,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        InkWell(
-                          onTap: () => Get.toNamed(Routes.FORM_KTP),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Form KTP",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Nunito",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Informasi RT",
-                        style: TextStyle(
-                            color: black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Get.toNamed(Routes.INFO_LENGKAP);
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              "Lihat Semua",
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.normal,
-                                  color: primary),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 125,
+                              top: 20,
                             ),
-                            Icon(
-                              Icons.keyboard_arrow_right,
-                              color: secondary,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  // padding: EdgeInsets.symmetric(horizontal: 15),
-                  height: 200,
-                  child: Obx(
-                    () => controller.infos.length < 1
-                        ? Center(
                             child: Text(
-                              "Kosong",
-                              style: TextStyle(color: primary),
-                            ),
-                          )
-                        : SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller.infos.length,
-                              physics: ScrollPhysics(),
-                              itemBuilder: (context, index) => InfoCard(
-                                info: controller.infos[index],
+                              " Green Living Residence\n RT 02 RW 09",
+                              style: TextStyle(
+                                color: black,
+                                fontFamily: "RobotoSlab",
+                                fontSize: 14,
                               ),
                             ),
                           ),
-                  ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 10),
               ],
@@ -640,200 +744,201 @@ class HomeView extends GetView<HomeController> {
   }
 }
 
-class InfoCard extends GetView<HomeController> {
-  InfoCard({required this.info});
-  Informasi info;
-  @override
-  Widget build(BuildContext context) {
-    controller.modelToController(info);
-    return InkWell(
-      onTap: () async {
-        await showDialog(
-            context: context,
-            builder: (context) {
-              return SimpleDialog(
-                backgroundColor: white,
-                children: [
-                  Container(
-                    height: 480,
-                    width: 100,
-                    decoration: BoxDecoration(color: white),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        children: [
-                          Center(
-                            child: Text(
-                              "Informasi RT",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Form(
-                            child: SingleChildScrollView(
-                              child: Column(children: [
-                                Text("Judul"),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                AppTextField(
-                                  controller: controller.judulC,
-                                  enabled: false,
-                                  textFieldType: TextFieldType.NAME,
-                                  textInputAction: TextInputAction.next,
-                                  decoration: InputDecoration(
-                                      border: OutlineInputBorder()),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Text("Deskripsi"),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                AppTextField(
-                                  controller: controller.deskripsiC,
-                                  enabled: false,
-                                  textFieldType: TextFieldType.NAME,
-                                  textInputAction: TextInputAction.done,
-                                  decoration: InputDecoration(
-                                      border: OutlineInputBorder()),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Obx(() => controller.imagePath.value != ''
-                                    ? Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Container(
-                                          height: 200,
-                                          width: 400,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              image: DecorationImage(
-                                                  image: FileImage(File(
-                                                      controller
-                                                          .imagePath.value)),
-                                                  fit: BoxFit.cover)),
-                                        ))
-                                    : info.image != null
-                                        ? Padding(
-                                            padding: const EdgeInsets.all(10),
-                                            child: Container(
-                                              height: 200,
-                                              width: 400,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          info.image!),
-                                                      fit: BoxFit.cover)),
-                                            ))
-                                        : Padding(
-                                            padding: const EdgeInsets.all(10),
-                                            child: Container(
-                                              width: 400,
-                                              height: 200,
-                                              child: Center(
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      10.0),
-                                                  child: Image(
-                                                      image: AssetImage(
-                                                          "images/home.png")),
-                                                ),
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: white,
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                            ),
-                                          )),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ]),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              );
-            });
-      },
-      child: Container(
-        // padding: EdgeInsets.all(10),
-        width: 250,
-        height: 200,
-        margin: EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              info.image != null
-                  ? Container(
-                      height: 110,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                        image: DecorationImage(
-                            image: NetworkImage(info.image!),
-                            fit: BoxFit.cover),
-                      ),
-                    )
-                  : Container(
-                      height: 90,
-                      width: 240,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                            image: AssetImage("assets/home.png"),
-                            fit: BoxFit.fitHeight),
-                      ),
-                    ),
-              SizedBox(
-                height: 15,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 15),
-                child: Text(
-                  info.judul!,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-            ],
-          ),
-        ),
-        decoration: BoxDecoration(
-          color: white,
-          boxShadow: [
-            BoxShadow(
-              color: dark,
-              spreadRadius: 0,
-              blurRadius: 4,
-              offset: Offset(0, 4),
-            )
-          ],
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-  }
-}
+// ignore: must_be_immutable
+// class InfoCard extends GetView<HomeController> {
+//   InfoCard({required this.info});
+//   Informasi info;
+//   @override
+//   Widget build(BuildContext context) {
+//     controller.modelToController(info);
+//     return InkWell(
+//       onTap: () async {
+//         await showDialog(
+//             context: context,
+//             builder: (context) {
+//               return SimpleDialog(
+//                 backgroundColor: white,
+//                 children: [
+//                   Container(
+//                     height: 480,
+//                     width: 100,
+//                     decoration: BoxDecoration(color: white),
+//                     child: Padding(
+//                       padding: const EdgeInsets.symmetric(horizontal: 10),
+//                       child: Column(
+//                         children: [
+//                           Center(
+//                             child: Text(
+//                               "Informasi RT",
+//                               style: TextStyle(fontSize: 20),
+//                             ),
+//                           ),
+//                           SizedBox(
+//                             height: 15,
+//                           ),
+//                           Form(
+//                             child: SingleChildScrollView(
+//                               child: Column(children: [
+//                                 Text("Judul"),
+//                                 SizedBox(
+//                                   height: 10,
+//                                 ),
+//                                 AppTextField(
+//                                   controller: controller.judulC,
+//                                   enabled: false,
+//                                   textFieldType: TextFieldType.NAME,
+//                                   textInputAction: TextInputAction.next,
+//                                   decoration: InputDecoration(
+//                                       border: OutlineInputBorder()),
+//                                 ),
+//                                 SizedBox(
+//                                   height: 20,
+//                                 ),
+//                                 Text("Deskripsi"),
+//                                 SizedBox(
+//                                   height: 10,
+//                                 ),
+//                                 AppTextField(
+//                                   controller: controller.deskripsiC,
+//                                   enabled: false,
+//                                   textFieldType: TextFieldType.NAME,
+//                                   textInputAction: TextInputAction.done,
+//                                   decoration: InputDecoration(
+//                                       border: OutlineInputBorder()),
+//                                 ),
+//                                 SizedBox(
+//                                   height: 20,
+//                                 ),
+//                                 Obx(() => controller.imagePath.value != ''
+//                                     ? Padding(
+//                                         padding: const EdgeInsets.all(10),
+//                                         child: Container(
+//                                           height: 200,
+//                                           width: 400,
+//                                           decoration: BoxDecoration(
+//                                               borderRadius:
+//                                                   BorderRadius.circular(10),
+//                                               image: DecorationImage(
+//                                                   image: FileImage(File(
+//                                                       controller
+//                                                           .imagePath.value)),
+//                                                   fit: BoxFit.cover)),
+//                                         ))
+//                                     : info.image != null
+//                                         ? Padding(
+//                                             padding: const EdgeInsets.all(10),
+//                                             child: Container(
+//                                               height: 200,
+//                                               width: 400,
+//                                               decoration: BoxDecoration(
+//                                                   borderRadius:
+//                                                       BorderRadius.circular(10),
+//                                                   image: DecorationImage(
+//                                                       image: NetworkImage(
+//                                                           info.image!),
+//                                                       fit: BoxFit.cover)),
+//                                             ))
+//                                         : Padding(
+//                                             padding: const EdgeInsets.all(10),
+//                                             child: Container(
+//                                               width: 400,
+//                                               height: 200,
+//                                               child: Center(
+//                                                 child: Padding(
+//                                                   padding: const EdgeInsets.all(
+//                                                       10.0),
+//                                                   child: Image(
+//                                                       image: AssetImage(
+//                                                           "images/home.png")),
+//                                                 ),
+//                                               ),
+//                                               decoration: BoxDecoration(
+//                                                 color: white,
+//                                                 borderRadius:
+//                                                     BorderRadius.circular(20),
+//                                               ),
+//                                             ),
+//                                           )),
+//                                 SizedBox(
+//                                   height: 10,
+//                                 ),
+//                               ]),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   )
+//                 ],
+//               );
+//             });
+//       },
+//       child: Container(
+//         // padding: EdgeInsets.all(10),
+//         width: 250,
+//         height: 200,
+//         margin: EdgeInsets.all(10),
+//         child: SingleChildScrollView(
+//           child: Column(
+//             mainAxisSize: MainAxisSize.max,
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               info.image != null
+//                   ? Container(
+//                       height: 110,
+//                       decoration: BoxDecoration(
+//                         borderRadius: BorderRadius.only(
+//                           topLeft: Radius.circular(10),
+//                           topRight: Radius.circular(10),
+//                         ),
+//                         image: DecorationImage(
+//                             image: NetworkImage(info.image!),
+//                             fit: BoxFit.cover),
+//                       ),
+//                     )
+//                   : Container(
+//                       height: 90,
+//                       width: 240,
+//                       decoration: BoxDecoration(
+//                         borderRadius: BorderRadius.circular(10),
+//                         image: DecorationImage(
+//                             image: AssetImage("assets/home.png"),
+//                             fit: BoxFit.fitHeight),
+//                       ),
+//                     ),
+//               SizedBox(
+//                 height: 15,
+//               ),
+//               SingleChildScrollView(
+//                 scrollDirection: Axis.horizontal,
+//                 padding: EdgeInsets.only(left: 15),
+//                 child: Text(
+//                   info.judul!,
+//                   style: TextStyle(fontSize: 18),
+//                 ),
+//               ),
+//               SizedBox(
+//                 height: 5,
+//               ),
+//             ],
+//           ),
+//         ),
+//         decoration: BoxDecoration(
+//           color: white,
+//           boxShadow: [
+//             BoxShadow(
+//               color: dark,
+//               spreadRadius: 0,
+//               blurRadius: 4,
+//               offset: Offset(0, 4),
+//             )
+//           ],
+//           borderRadius: BorderRadius.circular(10),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 // appBar: AppBar(
 //   title: Text('Home'),
