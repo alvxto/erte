@@ -24,9 +24,10 @@ import '../modules/kas/bindings/kas_binding.dart';
 import '../modules/kas/views/kas_view.dart';
 import '../modules/lapor/bindings/lapor_binding.dart';
 import '../modules/lapor/views/lapor_view.dart';
+import '../modules/pengaturan/bindings/pengaturan_binding.dart';
+import '../modules/pengaturan/views/pengaturan_view.dart';
 import '../modules/profil/bindings/profil_binding.dart';
 import '../modules/profil/views/profil_view.dart';
-
 import '../modules/reset/bindings/reset_binding.dart';
 import '../modules/reset/views/reset_view.dart';
 import '../modules/riwayat/bindings/riwayat_binding.dart';
@@ -178,6 +179,11 @@ class AppPages {
       name: _Paths.TES_PDF,
       page: () => TesPdfView(),
       binding: TesPdfBinding(),
+    ),
+    GetPage(
+      name: _Paths.PENGATURAN,
+      page: () => PengaturanView(),
+      binding: PengaturanBinding(),
     ),
   ];
 }

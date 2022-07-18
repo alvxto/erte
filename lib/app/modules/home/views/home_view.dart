@@ -207,6 +207,17 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                 )
                               : Container()),
+                          ListTile(
+                            onTap: () => Get.toNamed(Routes.PENGATURAN),
+                            leading: Icon(
+                              Icons.settings,
+                              color: black,
+                            ),
+                            title: Text(
+                              "Pengaturan",
+                              style: TextStyle(color: black),
+                            ),
+                          ),
                           Obx(
                             () => authC.user.id == null
                                 ? ListTile(
@@ -224,11 +235,11 @@ class HomeView extends GetView<HomeController> {
                                     onTap: () => authC.logout(),
                                     leading: Icon(
                                       Icons.logout,
-                                      color: black,
+                                      color: Colors.red,
                                     ),
                                     title: Text(
-                                      "Logout",
-                                      style: TextStyle(color: black),
+                                      "Keluar",
+                                      style: TextStyle(color: Colors.red),
                                     ),
                                   ),
                           ),

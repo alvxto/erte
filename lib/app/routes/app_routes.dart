@@ -28,6 +28,7 @@ abstract class Routes {
   static const INFO_LENGKAP = _Paths.INFO_LENGKAP;
   static const TES_PDF = _Paths.TES_PDF;
   static const REGISTRASI = _Paths.REGISTRASI;
+  static const PENGATURAN = _Paths.PENGATURAN;
 }
 
 abstract class _Paths {
@@ -57,4 +58,5 @@ abstract class _Paths {
   static const INFO_LENGKAP = '/info-lengkap';
   static const TES_PDF = '/tes-pdf';
   static const REGISTRASI = '/registrasi';
+  static const PENGATURAN = '/pengaturan';
 }
