@@ -37,11 +37,12 @@ class AuthController extends GetxController {
           email: emailC.text, password: passwordC.text);
       // .then((value) => Get.toNamed(Routes.HOME));
       if (myuser.user!.emailVerified) {
-        if (user.role == "Admin") {
-          Get.offAndToNamed(Routes.ADMIN);
-        } else {
-          Get.offAndToNamed(Routes.HOME);
-        }
+        Get.offAndToNamed(Routes.HOME);
+        // if (user.role == "Admin") {
+        //   Get.offAndToNamed(Routes.ADMIN);
+        // } else {
+        //   Get.offAndToNamed(Routes.HOME);
+        // }
       } else {
         Get.defaultDialog(
             title: "Gagal Login",
@@ -62,6 +63,7 @@ class AuthController extends GetxController {
     } on FirebaseAuthException catch (e) {
       Get.defaultDialog(
           title: "Error",
+          middleText: e.toString(),
           textConfirm: "Oke",
           onConfirm: () => Get.back(),
           buttonColor: primary,
@@ -72,6 +74,7 @@ class AuthController extends GetxController {
     } catch (e) {
       Get.defaultDialog(
           title: "Error",
+          middleText: e.toString(),
           textConfirm: "Oke",
           onConfirm: () => Get.back(),
           buttonColor: primary,
@@ -108,7 +111,8 @@ class AuthController extends GetxController {
               .set(user.toJson)
               .then((value) {
             Get.defaultDialog(
-                title: "Berhasil",
+                title: "Verifikasi Email",
+                middleText: "Kami telah mengirimkan verifikasi ke Email anda",
                 textConfirm: "Oke",
                 onConfirm: () {
                   // Get.toNamed(Routes.HOME);

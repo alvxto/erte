@@ -6,7 +6,7 @@ class BukuTamuController extends GetxController {
   late TextEditingController namaC;
   late TextEditingController emailC;
   late TextEditingController alamatC;
-  
+
   RxList<Absen> rxAbsens = RxList<Absen>();
   List<Absen> get absens => rxAbsens.value;
   set absens(List<Absen> value) => rxAbsens.value = value;

@@ -10,19 +10,21 @@ const String stempatlahir = "tempatlahir";
 const String stanggallahir = "tanggallahir";
 const String snktp = "nktp";
 const String salamat = "alamat";
-const String skeperluan1 = "keperluan1";
+const String skeperluan = "keperluan";
 const String swaktu = "waktu";
 const String semail = "email";
+const String snomer = "nomer";
 
 class Domisili {
   String? id;
   String? nama;
+  int? nomer;
   String? kelamin;
   String? tempatlahir;
   DateTime? tanggallahir;
   int? nktp;
   String? alamat;
-  String? keperluan1;
+  String? keperluan;
   DateTime? waktu;
   String? email;
 
@@ -34,9 +36,10 @@ class Domisili {
       this.tanggallahir,
       this.nktp,
       this.alamat,
-      this.keperluan1,
+      this.keperluan,
       this.waktu,
-      this.email,});
+      this.email,
+      this.nomer});
 
   Domisili fromJson(DocumentSnapshot doc) {
     Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
@@ -48,9 +51,10 @@ class Domisili {
       tanggallahir: (json[stanggallahir] as Timestamp?)?.toDate(),
       nktp: json[snktp],
       alamat: json[salamat],
-      keperluan1: json[skeperluan1],
+      keperluan: json[skeperluan],
       waktu: (json[swaktu] as Timestamp?)?.toDate(),
       email: json[semail],
+      nomer: json[snomer],
     );
   }
 
@@ -60,11 +64,12 @@ class Domisili {
         skelamin: kelamin,
         stempatlahir: tempatlahir,
         stanggallahir: tanggallahir,
-        snktp : nktp,
+        snktp: nktp,
         salamat: alamat,
-        skeperluan1: keperluan1,
+        skeperluan: keperluan,
         swaktu: waktu,
         semail: email,
+        snomer: nomer,
       };
 
   Database db = Database(
@@ -79,5 +84,15 @@ class Domisili {
       db.edit(toJson);
     }
     return this;
+  }
+
+  Future<Domisili> streamList() async {
+    print("getStream");
+    return await db.collectionReference
+        .orderBy("waktu", descending: true)
+        .get()
+        .then((event) {
+      return fromJson(event.docs.first);
+    });
   }
 }

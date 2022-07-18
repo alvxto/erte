@@ -33,14 +33,10 @@ class Absen {
     print("doc data = ${doc.data()}");
     Map<String, dynamic>? json = doc.data() as Map<String, dynamic>?;
     id = doc.id;
-    nama =
-    json?[unama];
-    email =
-    json?[uemail];
-    alamat =
-    json?[ualamat];
-    waktu =
-    (json?[uwaktu] as Timestamp?)?.toDate();
+    nama = json?[unama];
+    email = json?[uemail];
+    alamat = json?[ualamat];
+    waktu = (json?[uwaktu] as Timestamp?)?.toDate();
   }
 
   Map<String, dynamic> get toJson => {

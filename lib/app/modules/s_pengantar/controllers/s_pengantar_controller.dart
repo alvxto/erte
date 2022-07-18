@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:erte/app/const/color.dart';
@@ -24,9 +25,8 @@ class SPengantarController extends GetxController {
   late TextEditingController keperluanC;
   UserModel? selectedUser;
   late TextEditingController emailC;
-   
-  FirebaseStorage storage = FirebaseStorage.instance;
 
+  FirebaseStorage storage = FirebaseStorage.instance;
 
   RxList<UserModel> rxUser = RxList<UserModel>();
   List<UserModel> get users => rxUser.value;
@@ -38,6 +38,7 @@ class SPengantarController extends GetxController {
 
   tanggalLahir(dynamic context) async {
     selectedTanggal = await showDatePicker(
+            locale: Locale('id', 'ID'),
             context: context,
             initialDate: selectedTanggal ?? DateTime.now(),
             // initialDatePickerMode: DatePickerMode.year,
@@ -156,8 +157,6 @@ class SPengantarController extends GetxController {
   // }
 
   controllertomodel(Pengantar pengantar) async {
-    Pengantar nomerC = await Pengantar().streamList();
-    if (pengantar.nomer == null) pengantar.nomer = nomerC.nomer ?? 0 + 1;
     pengantar.nama = namaC.text;
     pengantar.pekerjaan = pekerjaanC.text;
     pengantar.agama = selectedAgama;
@@ -181,35 +180,63 @@ class SPengantarController extends GetxController {
 
   Future store(Pengantar pengantar) async {
     isSaving = true;
-    pengantar = controllertomodel(pengantar);
+
+    pengantar.nama = namaC.text;
+    pengantar.pekerjaan = pekerjaanC.text;
+    pengantar.agama = selectedAgama;
+    pengantar.pendidikan = selectedPendidikan;
+    pengantar.status = selectedStatus;
+    pengantar.alamat = alamatC.text;
+    pengantar.keperluan1 = selectedKeperluan1;
+    pengantar.keperluan2 = selectedKeperluan2;
+    pengantar.wni = selectedWNI;
+    pengantar.kelamin = selectedKelamin;
+    pengantar.nik = int.tryParse(nikC.text);
+    pengantar.kk = int.tryParse(kkC.text);
+    pengantar.tanggallahir = selectedTanggal;
+    pengantar.tempatlahir = tempatC.text;
+    pengantar.email = emailC.text;
+    if (pengantar.id == null) {
+      pengantar.waktu = DateTime.now();
+    }
     try {
       await pengantar.save();
       Get.defaultDialog(
-          title: "Berhasil",
-          textConfirm: "Oke",
-          onConfirm: () {
-            namaC.clear();
-            pekerjaanC.clear();
-            tempatC.clear();
-            nikC.clear();
-            kkC.clear();
-            alamatC.clear();
-            keperluanC.clear();
-            selectedAgama = '';
-            selectedKelamin = '';
-            selectedPendidikan = '';
-            selectedStatus = '';
-            selectedWNI = '';
-            selectedTanggal = DateTime.now();
-            Get.back();
-            Get.back();
-            emailC.clear();
-          },
-          buttonColor: primary,
-          cancelTextColor: primary,
-          confirmTextColor: white,
-          titleStyle: TextStyle(color: primary),
-          middleTextStyle: TextStyle(color: primary));
+        title: "Berhasil",
+        middleText:
+            "Surat Pengajuan Anda Berhasil dan Tunggu Persetujuan Ketua RT",
+        textConfirm: "Oke",
+        onConfirm: () {
+          namaC.clear();
+          pekerjaanC.clear();
+          tempatC.clear();
+          nikC.clear();
+          kkC.clear();
+          alamatC.clear();
+          keperluanC.clear();
+          selectedAgama = '';
+          selectedKelamin = '';
+          selectedPendidikan = '';
+          selectedStatus = '';
+          selectedWNI = '';
+          selectedTanggal = DateTime.now();
+          Get.back();
+          Get.back();
+          emailC.clear();
+        },
+        buttonColor: primary,
+        cancelTextColor: primary,
+        confirmTextColor: white,
+        titleStyle: TextStyle(
+          color: primary,
+          fontWeight: FontWeight.bold,
+        ),
+        middleTextStyle: TextStyle(
+          color: Color(0XFF757575),
+          fontSize: 13,
+          fontWeight: FontWeight.bold,
+        ),
+      );
     } catch (e) {
       print(e);
     } finally {
@@ -238,95 +265,148 @@ class SPengantarController extends GetxController {
     //dokumen
     final pdf = pw.Document();
 
-    pengantar = await controllertomodel(pengantar);
+    Pengantar nomerC = await Pengantar().streamList();
+    if (pengantar.nomer == null) {
+      (pengantar.nomer = nomerC.nomer ?? 0) + 1;
+    }
+    pengantar.nama = namaC.text;
+    pengantar.pekerjaan = pekerjaanC.text;
+    pengantar.agama = selectedAgama;
+    pengantar.pendidikan = selectedPendidikan;
+    pengantar.status = selectedStatus;
+    pengantar.alamat = alamatC.text;
+    pengantar.keperluan1 = selectedKeperluan1;
+    pengantar.keperluan2 = selectedKeperluan2;
+    pengantar.wni = selectedWNI;
+    pengantar.kelamin = selectedKelamin;
+    pengantar.nik = int.tryParse(nikC.text);
+    pengantar.kk = int.tryParse(kkC.text);
+    pengantar.tanggallahir = selectedTanggal;
+    pengantar.tempatlahir = tempatC.text;
+    pengantar.email = emailC.text;
+    if (pengantar.id == null) {
+      pengantar.waktu = DateTime.now();
+    }
 
     //page
     pdf.addPage(
       pw.Page(
-          pageFormat: PdfPageFormat.a4,
-          build: (pw.Context context) {
-            return pw.Column(children: [
+        pageFormat: PdfPageFormat.a4,
+        build: (pw.Context context) {
+          return pw.Column(
+            children: [
               pw.Align(
                 alignment: pw.Alignment.center,
                 child: pw.Text(
-                  "Rukun Tetangga (RT) II Rukun Warga (RW) IX",
+                  "RUKUN TETANGGA ( RT ) II RUKUN WARGA ( RW ) IX",
                   style: pw.TextStyle(
-                    fontSize: 20,
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 12,
                   ),
                 ),
               ),
+              pw.SizedBox(height: 8),
               pw.Align(
                 alignment: pw.Alignment.center,
-                child: pw.Text("Kelurahan Gadang Kecamatan Sukun",
-                    style: pw.TextStyle(fontSize: 20)),
+                child: pw.Text(
+                  "KELURAHAN GADANG KECAMATAN SUKUN",
+                  style: pw.TextStyle(
+                    fontSize: 12,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
               ),
+              pw.SizedBox(height: 8),
               pw.Align(
                 alignment: pw.Alignment.center,
-                child:
-                    pw.Text("Kota Malang", style: pw.TextStyle(fontSize: 20)),
+                child: pw.Text(
+                  "KOTA MALANG",
+                  style: pw.TextStyle(
+                    fontSize: 12,
+                    fontWeight: pw.FontWeight.bold,
+                  ),
+                ),
               ),
-              pw.SizedBox(height: 5),
+              pw.SizedBox(height: 8),
               pw.Row(
                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: [
+                    pw.SizedBox(width: 40),
                     pw.Text(
-                      "Sekretariat : Jl. Satsui Tubun - (Perum Green Living Residence)",
-                      style: pw.TextStyle(fontSize: 15),
+                      "Sekretariat : Jl. Satsui Tubun - ( Perum Green Living Residence )",
+                      style: pw.TextStyle(
+                        fontSize: 10,
+                        fontWeight: pw.FontWeight.bold,
+                      ),
                     ),
+                    pw.SizedBox(height: 8),
                     pw.Text(
                       "Kode Pos : 65149",
-                      style: pw.TextStyle(fontSize: 15),
+                      style: pw.TextStyle(
+                        fontSize: 10,
+                        fontWeight: pw.FontWeight.bold,
+                      ),
                     ),
                   ]),
+              pw.SizedBox(height: 6),
               pw.Divider(
                 color: PdfColor.fromInt(0xFF000000),
                 height: 1,
                 thickness: 2,
               ),
-              pw.SizedBox(height: 5),
-              pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
-                pw.Column(
+              pw.SizedBox(height: 8),
+              pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.end,
+                children: [
+                  pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
                       pw.Align(
-                          alignment: pw.Alignment.centerLeft,
-                          child: pw.Text(
-                            "Malang, ${DateFormat("dd MMMM y").format(DateTime.now())}",
-                            style: pw.TextStyle(fontSize: 15),
-                          )),
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Malang, ${DateFormat("dd MMMM y", 'id').format(DateTime.now())}",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
                       pw.Align(
                           alignment: pw.Alignment.centerLeft,
                           child: pw.Text(
-                            "Kepada",
-                            style: pw.TextStyle(fontSize: 15),
+                            "Kepada :",
+                            style: pw.TextStyle(fontSize: 10),
                           )),
                       pw.Align(
                           alignment: pw.Alignment.centerLeft,
                           child: pw.Text(
                             "Yth. Sdr. Lurah Gadang",
-                            style: pw.TextStyle(fontSize: 15),
+                            style: pw.TextStyle(fontSize: 10),
                           )),
                       pw.Align(
                           alignment: pw.Alignment.centerLeft,
                           child: pw.Text(
                             "Kecamatan Sukun Kota Malang",
-                            style: pw.TextStyle(fontSize: 15),
+                            style: pw.TextStyle(fontSize: 10),
                           )),
                       pw.Align(
-                          alignment: pw.Alignment.centerLeft,
-                          child: pw.Text(
-                            "di Malang",
-                            style: pw.TextStyle(fontSize: 15),
-                          )),
-                    ]),
-              ]),
-
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "di MALANG",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               pw.SizedBox(
-                height: 5,
+                height: 8,
               ),
               pw.Text(
-                "Surat Pengantar",
-                style: pw.TextStyle(fontSize: 20),
+                "SURAT PENGANTAR",
+                style: pw.TextStyle(
+                  fontSize: 12,
+                  fontWeight: pw.FontWeight.bold,
+                ),
               ),
               // pw.Divider(
               //     color: PdfColor.fromInt(0xFF000000),
@@ -334,1373 +414,1300 @@ class SPengantarController extends GetxController {
               //     thickness: 2,
               //   ),
               pw.SizedBox(
-                height: 5,
+                height: 2,
               ),
               pw.Text(
-                "Nomor : ${pengantar.nomer}/II-IX/${DateFormat("dd-M-y").format(DateTime.now())}",
-                style: pw.TextStyle(fontSize: 15),
+                "Nomor : ${pengantar.nomer} / II-IX / ${DateFormat("dd-M-y").format(DateTime.now())}",
+                style: pw.TextStyle(fontSize: 10),
               ),
               pw.SizedBox(
-                height: 5,
+                height: 8,
               ),
               pw.Text(
                 "Yang bertanda tangan dibawah ini Ketua RT. II RW. IX Kelurahan Gadang Kecamatan",
-                style: pw.TextStyle(fontSize: 15),
+                style: pw.TextStyle(fontSize: 10),
               ),
               pw.Align(
                   alignment: pw.Alignment.centerLeft,
                   child: pw.Text(
                     "Sukun Kota Malang dengan ini menerangkan bahwa :",
-                    style: pw.TextStyle(fontSize: 15),
+                    style: pw.TextStyle(fontSize: 10),
                   )),
-              pw.SizedBox(height: 30),
+              pw.SizedBox(height: 8),
               pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.start,
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Nama",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Jenis Kelamin",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Tempat / Tgl Lahir",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Agama",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Status",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Kewarganegaraan",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Pendidikan",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Pekerjaan",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "NIK",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Nomor Kartu Keluarga",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Alamat",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Keperluan",
-                              style: pw.TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ]),
-                    pw.SizedBox(width: 20),
-                    pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          pengantar.nama != null
+                mainAxisAlignment: pw.MainAxisAlignment.start,
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Nama",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Jenis Kelamin",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Tempat / Tgl Lahir",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Agama",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Status",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Kewarganegaraan",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Pendidikan",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Pekerjaan",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "NIK",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Nomor Kartu Keluarga",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 8),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Alamat",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 15),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "Keperluan",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                    ],
+                  ),
+                  pw.SizedBox(width: 20),
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pengantar.nama != null
                           ? pw.Text(
-                            " : ${pengantar.nama}",
-                            style: pw.TextStyle(fontSize: 15),
-                          )
-                          : pw.Text(" : ........................................",
-                            style: pw.TextStyle(fontSize: 15),),
-                          pw.SizedBox(height: 10),
-                          pengantar.kelamin == "Laki-Laki"
+                              " : ${pengantar.nama}",
+                              style: pw.TextStyle(fontSize: 10),
+                            )
+                          : pw.Text(
+                              " : ........................................",
+                              style: pw.TextStyle(fontSize: 10),
+                            ),
+                      pw.SizedBox(height: 8),
+                      pengantar.kelamin == "Laki-Laki"
+                          ? pw.Row(children: [
+                              pw.Text(
+                                " : Laki-Laki / ",
+                                style: pw.TextStyle(fontSize: 10),
+                              ),
+                              pw.Text(
+                                "Perempuan",
+                                style: pw.TextStyle(
+                                    fontSize: 10,
+                                    decoration: pw.TextDecoration.lineThrough),
+                              )
+                            ])
+                          : pengantar.kelamin == "Perempuan"
                               ? pw.Row(children: [
                                   pw.Text(
-                                    " : Laki-Laki / ",
-                                    style: pw.TextStyle(fontSize: 15),
+                                    " : ",
+                                    style: pw.TextStyle(fontSize: 10),
                                   ),
                                   pw.Text(
-                                    "Perempuan",
+                                    "Laki-Laki",
                                     style: pw.TextStyle(
-                                        fontSize: 15,
+                                        fontSize: 10,
                                         decoration:
                                             pw.TextDecoration.lineThrough),
+                                  ),
+                                  pw.Text(
+                                    " / Perempuan",
+                                    style: pw.TextStyle(fontSize: 10),
                                   )
                                 ])
-                              : pengantar.kelamin == "Perempuan"
-                                  ? pw.Row(children: [
-                                      pw.Text(
-                                        " : ",
-                                        style: pw.TextStyle(fontSize: 15),
-                                      ),
-                                      pw.Text(
-                                        "Laki-Laki",
-                                        style: pw.TextStyle(
-                                            fontSize: 15,
-                                            decoration:
-                                                pw.TextDecoration.lineThrough),
-                                      ),
-                                      pw.Text(
-                                        " / Perempuan",
-                                        style: pw.TextStyle(fontSize: 15),
-                                      )
-                                    ])
-                                  : pw.Row(children: [
-                                      pw.Text(
-                                        " : ",
-                                        style: pw.TextStyle(fontSize: 15),
-                                      ),
-                                      pw.Text(
-                                        "Laki-Laki",
-                                        style: pw.TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      pw.Text(
-                                        " / Perempuan",
-                                        style: pw.TextStyle(fontSize: 15),
-                                      )
-                                    ]),
-                          pw.SizedBox(height: 10),
-                          pengantar.tempatlahir != null && pengantar.tanggallahir != null
+                              : pw.Row(children: [
+                                  pw.Text(
+                                    " : ",
+                                    style: pw.TextStyle(fontSize: 10),
+                                  ),
+                                  pw.Text(
+                                    "Laki-Laki",
+                                    style: pw.TextStyle(
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                  pw.Text(
+                                    " / Perempuan",
+                                    style: pw.TextStyle(fontSize: 10),
+                                  )
+                                ]),
+                      pw.SizedBox(height: 8),
+                      pengantar.tempatlahir != null &&
+                              pengantar.tanggallahir != null
                           ? pw.Text(
-                            " : ${pengantar.tempatlahir} / ${DateFormat("dd MMMM y").format(pengantar.tanggallahir!)}",
-                            style: pw.TextStyle(fontSize: 15),
-                          )
-                          : pw.Text(":........................................",
-                            style: pw.TextStyle(fontSize: 15),),
-                          
-                          pw.SizedBox(height: 10),
-                          pengantar.agama == "Islam"
+                              " : ${pengantar.tempatlahir} / ${DateFormat("dd MMMM y", 'id').format(pengantar.tanggallahir!)}",
+                              style: pw.TextStyle(fontSize: 10),
+                            )
+                          : pw.Text(
+                              ":........................................",
+                              style: pw.TextStyle(fontSize: 10),
+                            ),
+                      pw.SizedBox(height: 8),
+                      pengantar.agama == "Islam"
+                          ? pw.Row(children: [
+                              pw.Text(" : ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Islam",
+                                  style: pw.TextStyle(fontSize: 10)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Katholik",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Kristen",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Hindu",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Budha",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Khonghucu",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                            ])
+                          : pengantar.agama == "Katholik"
                               ? pw.Row(children: [
                                   pw.Text(" : ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("Islam",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("Katholik",
                                       style: pw.TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                  pw.Text("Islam",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
                                           decoration:
                                               pw.TextDecoration.lineThrough)),
                                   pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("Katholik",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
                                   pw.Text("Kristen",
                                       style: pw.TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 10,
                                           decoration:
                                               pw.TextDecoration.lineThrough)),
                                   pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
+                                      style: pw.TextStyle(fontSize: 10)),
                                   pw.Text("Hindu",
                                       style: pw.TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 10,
                                           decoration:
                                               pw.TextDecoration.lineThrough)),
                                   pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
+                                      style: pw.TextStyle(fontSize: 10)),
                                   pw.Text("Budha",
                                       style: pw.TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 10,
                                           decoration:
                                               pw.TextDecoration.lineThrough)),
                                   pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
+                                      style: pw.TextStyle(fontSize: 10)),
                                   pw.Text("Khonghucu",
                                       style: pw.TextStyle(
-                                          fontSize: 15,
+                                          fontSize: 10,
                                           decoration:
                                               pw.TextDecoration.lineThrough)),
                                 ])
-                              : pengantar.agama == "Katholik"
+                              : pengantar.agama == "Kristen"
                                   ? pw.Row(children: [
                                       pw.Text(" : ",
                                           style: pw.TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 10,
                                               decoration: pw
                                                   .TextDecoration.lineThrough)),
                                       pw.Text("Islam",
                                           style: pw.TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 10,
                                               decoration: pw
                                                   .TextDecoration.lineThrough)),
                                       pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
+                                          style: pw.TextStyle(fontSize: 10)),
                                       pw.Text("Katholik",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("Kristen",
                                           style: pw.TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 10,
                                               decoration: pw
                                                   .TextDecoration.lineThrough)),
                                       pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("Kristen",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text(" / ",
+                                          style: pw.TextStyle(fontSize: 10)),
                                       pw.Text("Hindu",
                                           style: pw.TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 10,
                                               decoration: pw
                                                   .TextDecoration.lineThrough)),
                                       pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
+                                          style: pw.TextStyle(fontSize: 10)),
                                       pw.Text("Budha",
                                           style: pw.TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 10,
                                               decoration: pw
                                                   .TextDecoration.lineThrough)),
                                       pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
+                                          style: pw.TextStyle(fontSize: 10)),
                                       pw.Text("Khonghucu",
                                           style: pw.TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 10,
                                               decoration: pw
                                                   .TextDecoration.lineThrough)),
                                     ])
-                                  : pengantar.agama == "Kristen"
+                                  : pengantar.agama == "Hindu"
                                       ? pw.Row(children: [
                                           pw.Text(" : ",
                                               style: pw.TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 10,
                                                   decoration: pw.TextDecoration
                                                       .lineThrough)),
                                           pw.Text("Islam",
                                               style: pw.TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 10,
                                                   decoration: pw.TextDecoration
                                                       .lineThrough)),
                                           pw.Text(" / ",
                                               style:
-                                                  pw.TextStyle(fontSize: 15)),
+                                                  pw.TextStyle(fontSize: 10)),
                                           pw.Text("Katholik",
                                               style: pw.TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 10,
                                                   decoration: pw.TextDecoration
                                                       .lineThrough)),
                                           pw.Text(" / ",
                                               style:
-                                                  pw.TextStyle(fontSize: 15)),
+                                                  pw.TextStyle(fontSize: 10)),
                                           pw.Text("Kristen",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text(" / ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("Hindu",
                                               style: pw.TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 10,
                                                   decoration: pw.TextDecoration
                                                       .lineThrough)),
                                           pw.Text(" / ",
                                               style:
-                                                  pw.TextStyle(fontSize: 15)),
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("Hindu",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
                                           pw.Text("Budha",
                                               style: pw.TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 10,
                                                   decoration: pw.TextDecoration
                                                       .lineThrough)),
                                           pw.Text(" / ",
                                               style:
-                                                  pw.TextStyle(fontSize: 15)),
+                                                  pw.TextStyle(fontSize: 10)),
                                           pw.Text("Khonghucu",
                                               style: pw.TextStyle(
-                                                  fontSize: 15,
+                                                  fontSize: 10,
                                                   decoration: pw.TextDecoration
                                                       .lineThrough)),
                                         ])
-                                      : pengantar.agama == "Hindu"
+                                      : pengantar.agama == "Budha"
                                           ? pw.Row(children: [
                                               pw.Text(" : ",
                                                   style: pw.TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize: 10,
                                                       decoration: pw
                                                           .TextDecoration
                                                           .lineThrough)),
                                               pw.Text("Islam",
                                                   style: pw.TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize: 10,
                                                       decoration: pw
                                                           .TextDecoration
                                                           .lineThrough)),
                                               pw.Text(" / ",
                                                   style: pw.TextStyle(
-                                                      fontSize: 15)),
+                                                      fontSize: 10)),
                                               pw.Text("Katholik",
                                                   style: pw.TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize: 10,
                                                       decoration: pw
                                                           .TextDecoration
                                                           .lineThrough)),
                                               pw.Text(" / ",
                                                   style: pw.TextStyle(
-                                                      fontSize: 15)),
+                                                      fontSize: 10)),
                                               pw.Text("Kristen",
                                                   style: pw.TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize: 10,
                                                       decoration: pw
                                                           .TextDecoration
                                                           .lineThrough)),
                                               pw.Text(" / ",
                                                   style: pw.TextStyle(
-                                                      fontSize: 15)),
+                                                      fontSize: 10)),
                                               pw.Text("Hindu",
                                                   style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("Budha",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize: 10,
                                                       decoration: pw
                                                           .TextDecoration
                                                           .lineThrough)),
                                               pw.Text(" / ",
                                                   style: pw.TextStyle(
-                                                      fontSize: 15)),
+                                                      fontSize: 10)),
+                                              pw.Text("Budha",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10)),
+                                              pw.Text(" / ",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10)),
                                               pw.Text("Khonghucu",
                                                   style: pw.TextStyle(
-                                                      fontSize: 15,
+                                                      fontSize: 10,
                                                       decoration: pw
                                                           .TextDecoration
                                                           .lineThrough)),
                                             ])
-                                          : pengantar.agama == "Budha"
+                                          : pengantar.agama == "Khonghucu"
                                               ? pw.Row(children: [
                                                   pw.Text(" : ",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15,
+                                                          fontSize: 10,
                                                           decoration: pw
                                                               .TextDecoration
                                                               .lineThrough)),
                                                   pw.Text("Islam",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15,
+                                                          fontSize: 10,
                                                           decoration: pw
                                                               .TextDecoration
                                                               .lineThrough)),
                                                   pw.Text(" / ",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15)),
+                                                          fontSize: 10)),
                                                   pw.Text("Katholik",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15,
+                                                          fontSize: 10,
                                                           decoration: pw
                                                               .TextDecoration
                                                               .lineThrough)),
                                                   pw.Text(" / ",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15)),
+                                                          fontSize: 10)),
                                                   pw.Text("Kristen",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15,
+                                                          fontSize: 10,
                                                           decoration: pw
                                                               .TextDecoration
                                                               .lineThrough)),
                                                   pw.Text(" / ",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15)),
+                                                          fontSize: 10)),
                                                   pw.Text("Hindu",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15,
+                                                          fontSize: 10,
                                                           decoration: pw
                                                               .TextDecoration
                                                               .lineThrough)),
                                                   pw.Text(" / ",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15)),
+                                                          fontSize: 10)),
                                                   pw.Text("Budha",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15)),
+                                                          fontSize: 10,
+                                                          decoration: pw
+                                                              .TextDecoration
+                                                              .lineThrough)),
                                                   pw.Text(" / ",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15)),
+                                                          fontSize: 10)),
                                                   pw.Text("Khonghucu",
                                                       style: pw.TextStyle(
-                                                          fontSize: 15,
+                                                          fontSize: 10)),
+                                                ])
+                                              : pw.Row(children: [
+                                                  pw.Text(" : ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("Islam",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("Katholik",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("Kristen",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("Hindu",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("Budha",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text(
+                                                    "Khonghucu",
+                                                    style: pw.TextStyle(
+                                                        fontSize: 10),
+                                                  ),
+                                                ]),
+                      pw.SizedBox(height: 8),
+                      pengantar.status == "Belum Kawin"
+                          ? pw.Row(children: [
+                              pw.Text(" : ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Belum Kawin",
+                                  style: pw.TextStyle(fontSize: 10)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Kawin",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Cerai Hidup",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Cerai Mati",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                            ])
+                          : pengantar.status == "Kawin"
+                              ? pw.Row(children: [
+                                  pw.Text(" : ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("Belum Kawin",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("Kawin",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("Cerai Hidup",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("Cerai Mati",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                ])
+                              : pengantar.status == "Cerai Hidup"
+                                  ? pw.Row(children: [
+                                      pw.Text(" : ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("Belum Kawin",
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              decoration: pw
+                                                  .TextDecoration.lineThrough)),
+                                      pw.Text(" / ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("Kawin",
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              decoration: pw
+                                                  .TextDecoration.lineThrough)),
+                                      pw.Text(" / ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("Cerai Hidup",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text(" / ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("Cerai Mati",
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              decoration: pw
+                                                  .TextDecoration.lineThrough)),
+                                    ])
+                                  : pengantar.status == "Cerai Mati"
+                                      ? pw.Row(children: [
+                                          pw.Text(" : ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("Belum Kawin",
+                                              style: pw.TextStyle(
+                                                  fontSize: 10,
+                                                  decoration: pw.TextDecoration
+                                                      .lineThrough)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("Kawin",
+                                              style: pw.TextStyle(
+                                                  fontSize: 10,
+                                                  decoration: pw.TextDecoration
+                                                      .lineThrough)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("Cerai Hidup",
+                                              style: pw.TextStyle(
+                                                  fontSize: 10,
+                                                  decoration: pw.TextDecoration
+                                                      .lineThrough)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("Cerai Mati",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                        ])
+                                      : pw.Row(children: [
+                                          pw.Text(" : ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("Belum Kawin",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("Kawin",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("Cerai Hidup",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("Cerai Mati",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                        ]),
+                      pw.SizedBox(height: 8),
+                      pengantar.wni == "WNI"
+                          ? pw.Row(children: [
+                              pw.Text(" : ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("WNI", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("WNA",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                            ])
+                          : pengantar.wni == "WNA"
+                              ? pw.Row(children: [
+                                  pw.Text(" : ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("WNI",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("WNA",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                ])
+                              : pw.Row(children: [
+                                  pw.Text(" : ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("WNI",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("WNA",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                ]),
+                      pw.SizedBox(height: 8),
+                      pengantar.pendidikan == "SD"
+                          ? pw.Row(children: [
+                              pw.Text(" : ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("SD", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("SLTP",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("SLTA",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("SMK",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("SI",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("SII",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                              pw.Text(" / ", style: pw.TextStyle(fontSize: 10)),
+                              pw.Text("Sederajat",
+                                  style: pw.TextStyle(
+                                      fontSize: 10,
+                                      decoration:
+                                          pw.TextDecoration.lineThrough)),
+                            ])
+                          : pengantar.pendidikan == "SLTP"
+                              ? pw.Row(children: [
+                                  pw.Text(" : ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("SD",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("SLTP",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("SLTA",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("SMK",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("SI",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("SII",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                  pw.Text(" / ",
+                                      style: pw.TextStyle(fontSize: 10)),
+                                  pw.Text("Sederajat",
+                                      style: pw.TextStyle(
+                                          fontSize: 10,
+                                          decoration:
+                                              pw.TextDecoration.lineThrough)),
+                                ])
+                              : pengantar.pendidikan == "SLTA"
+                                  ? pw.Row(children: [
+                                      pw.Text(" : ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("SD",
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              decoration: pw
+                                                  .TextDecoration.lineThrough)),
+                                      pw.Text(" / ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("SLTP",
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              decoration: pw
+                                                  .TextDecoration.lineThrough)),
+                                      pw.Text(" / ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("SLTA",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text(" / ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("SMK",
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              decoration: pw
+                                                  .TextDecoration.lineThrough)),
+                                      pw.Text(" / ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("SI",
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              decoration: pw
+                                                  .TextDecoration.lineThrough)),
+                                      pw.Text(" / ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("SII",
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              decoration: pw
+                                                  .TextDecoration.lineThrough)),
+                                      pw.Text(" / ",
+                                          style: pw.TextStyle(fontSize: 10)),
+                                      pw.Text("Sederajat",
+                                          style: pw.TextStyle(
+                                              fontSize: 10,
+                                              decoration: pw
+                                                  .TextDecoration.lineThrough)),
+                                    ])
+                                  : pengantar.pendidikan == "SMK"
+                                      ? pw.Row(children: [
+                                          pw.Text(" : ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("SD",
+                                              style: pw.TextStyle(
+                                                  fontSize: 10,
+                                                  decoration: pw.TextDecoration
+                                                      .lineThrough)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("SLTP",
+                                              style: pw.TextStyle(
+                                                  fontSize: 10,
+                                                  decoration: pw.TextDecoration
+                                                      .lineThrough)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("SLTA",
+                                              style: pw.TextStyle(
+                                                  fontSize: 10,
+                                                  decoration: pw.TextDecoration
+                                                      .lineThrough)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("SMK",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("SI",
+                                              style: pw.TextStyle(
+                                                  fontSize: 10,
+                                                  decoration: pw.TextDecoration
+                                                      .lineThrough)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("SII",
+                                              style: pw.TextStyle(
+                                                  fontSize: 10,
+                                                  decoration: pw.TextDecoration
+                                                      .lineThrough)),
+                                          pw.Text(" / ",
+                                              style:
+                                                  pw.TextStyle(fontSize: 10)),
+                                          pw.Text("Sederajat",
+                                              style: pw.TextStyle(
+                                                  fontSize: 10,
+                                                  decoration: pw.TextDecoration
+                                                      .lineThrough)),
+                                        ])
+                                      : pengantar.pendidikan == "SI"
+                                          ? pw.Row(children: [
+                                              pw.Text(" : ",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10)),
+                                              pw.Text("SD",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10,
+                                                      decoration: pw
+                                                          .TextDecoration
+                                                          .lineThrough)),
+                                              pw.Text(" / ",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10)),
+                                              pw.Text("SLTP",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10,
+                                                      decoration: pw
+                                                          .TextDecoration
+                                                          .lineThrough)),
+                                              pw.Text(" / ",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10)),
+                                              pw.Text("SLTA",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10,
+                                                      decoration: pw
+                                                          .TextDecoration
+                                                          .lineThrough)),
+                                              pw.Text(" / ",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10)),
+                                              pw.Text("SMK",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10,
+                                                      decoration: pw
+                                                          .TextDecoration
+                                                          .lineThrough)),
+                                              pw.Text(" / ",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10)),
+                                              pw.Text("SI",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10)),
+                                              pw.Text(" / ",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10)),
+                                              pw.Text("SII",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10,
+                                                      decoration: pw
+                                                          .TextDecoration
+                                                          .lineThrough)),
+                                              pw.Text(" / ",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10)),
+                                              pw.Text("Sederajat",
+                                                  style: pw.TextStyle(
+                                                      fontSize: 10,
+                                                      decoration: pw
+                                                          .TextDecoration
+                                                          .lineThrough)),
+                                            ])
+                                          : pengantar.pendidikan == "SII"
+                                              ? pw.Row(children: [
+                                                  pw.Text(" : ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("SD",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10,
+                                                          decoration: pw
+                                                              .TextDecoration
+                                                              .lineThrough)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("SLTP",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10,
+                                                          decoration: pw
+                                                              .TextDecoration
+                                                              .lineThrough)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("SLTA",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10,
+                                                          decoration: pw
+                                                              .TextDecoration
+                                                              .lineThrough)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("SMK",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10,
+                                                          decoration: pw
+                                                              .TextDecoration
+                                                              .lineThrough)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("SI",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10,
+                                                          decoration: pw
+                                                              .TextDecoration
+                                                              .lineThrough)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("SII",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text(" / ",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10)),
+                                                  pw.Text("Sederajat",
+                                                      style: pw.TextStyle(
+                                                          fontSize: 10,
                                                           decoration: pw
                                                               .TextDecoration
                                                               .lineThrough)),
                                                 ])
-                                              : pengantar.agama == "Khonghucu"
+                                              : pengantar.pendidikan ==
+                                                      "Sederajat"
                                                   ? pw.Row(children: [
                                                       pw.Text(" : ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
-                                                              decoration: pw
-                                                                  .TextDecoration
-                                                                  .lineThrough)),
-                                                      pw.Text("Islam",
+                                                              fontSize: 10)),
+                                                      pw.Text("SD",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
-                                                              decoration: pw
-                                                                  .TextDecoration
-                                                                  .lineThrough)),
-                                                      pw.Text(" / ",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text("Katholik",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15,
+                                                              fontSize: 10,
                                                               decoration: pw
                                                                   .TextDecoration
                                                                   .lineThrough)),
                                                       pw.Text(" / ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text("Kristen",
+                                                              fontSize: 10)),
+                                                      pw.Text("SLTP",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
+                                                              fontSize: 10,
                                                               decoration: pw
                                                                   .TextDecoration
                                                                   .lineThrough)),
                                                       pw.Text(" / ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text("Hindu",
+                                                              fontSize: 10)),
+                                                      pw.Text("SLTA",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
+                                                              fontSize: 10,
                                                               decoration: pw
                                                                   .TextDecoration
                                                                   .lineThrough)),
                                                       pw.Text(" / ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text("Budha",
+                                                              fontSize: 10)),
+                                                      pw.Text("SMK",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
+                                                              fontSize: 10,
                                                               decoration: pw
                                                                   .TextDecoration
                                                                   .lineThrough)),
                                                       pw.Text(" / ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text("Khonghucu",
+                                                              fontSize: 10)),
+                                                      pw.Text("SI",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
+                                                              fontSize: 10,
+                                                              decoration: pw
+                                                                  .TextDecoration
+                                                                  .lineThrough)),
+                                                      pw.Text(" / ",
+                                                          style: pw.TextStyle(
+                                                              fontSize: 10)),
+                                                      pw.Text("SII",
+                                                          style: pw.TextStyle(
+                                                              fontSize: 10,
+                                                              decoration: pw
+                                                                  .TextDecoration
+                                                                  .lineThrough)),
+                                                      pw.Text(" / ",
+                                                          style: pw.TextStyle(
+                                                              fontSize: 10)),
+                                                      pw.Text("Sederajat",
+                                                          style: pw.TextStyle(
+                                                              fontSize: 10)),
                                                     ])
                                                   : pw.Row(children: [
                                                       pw.Text(" : ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text("Islam",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text(" / ",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text("Katholik",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text(" / ",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text("Kristen",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text(" / ",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text("Hindu",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text(" / ",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text("Budha",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text(" / ",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
-                                                      pw.Text(
-                                                        "Khonghucu",
-                                                        style: pw.TextStyle(
-                                                            fontSize: 15),
-                                                      ),
-                                                    ]),
-                          pw.SizedBox(height: 10),
-                          pengantar.status == "Belum Kawin"
-                              ? pw.Row(children: [
-                                  pw.Text(" : ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("Belum Kawin",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("Kawin",
-                                      style: pw.TextStyle(
-                                          fontSize: 15,
-                                          decoration:
-                                              pw.TextDecoration.lineThrough)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("Cerai Hidup",
-                                      style: pw.TextStyle(
-                                          fontSize: 15,
-                                          decoration:
-                                              pw.TextDecoration.lineThrough)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("Cerai Mati",
-                                      style: pw.TextStyle(
-                                          fontSize: 15,
-                                          decoration:
-                                              pw.TextDecoration.lineThrough)),
-                                ])
-                              : pengantar.status == "Kawin"
-                                  ? pw.Row(children: [
-                                      pw.Text(" : ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("Belum Kawin",
-                                          style: pw.TextStyle(
-                                              fontSize: 15,
-                                              decoration: pw
-                                                  .TextDecoration.lineThrough)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("Kawin",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("Cerai Hidup",
-                                          style: pw.TextStyle(
-                                              fontSize: 15,
-                                              decoration: pw
-                                                  .TextDecoration.lineThrough)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("Cerai Mati",
-                                          style: pw.TextStyle(
-                                              fontSize: 15,
-                                              decoration: pw
-                                                  .TextDecoration.lineThrough)),
-                                    ])
-                                  : pengantar.status == "Cerai Hidup"
-                                      ? pw.Row(children: [
-                                          pw.Text(" : ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("Belum Kawin",
-                                              style: pw.TextStyle(
-                                                  fontSize: 15,
-                                                  decoration: pw.TextDecoration
-                                                      .lineThrough)),
-                                          pw.Text(" / ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("Kawin",
-                                              style: pw.TextStyle(
-                                                  fontSize: 15,
-                                                  decoration: pw.TextDecoration
-                                                      .lineThrough)),
-                                          pw.Text(" / ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("Cerai Hidup",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text(" / ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("Cerai Mati",
-                                              style: pw.TextStyle(
-                                                  fontSize: 15,
-                                                  decoration: pw.TextDecoration
-                                                      .lineThrough)),
-                                        ])
-                                      : pengantar.status == "Cerai Mati"
-                                          ? pw.Row(children: [
-                                              pw.Text(" : ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("Belum Kawin",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15,
-                                                      decoration: pw
-                                                          .TextDecoration
-                                                          .lineThrough)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("Kawin",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15,
-                                                      decoration: pw
-                                                          .TextDecoration
-                                                          .lineThrough)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("Cerai Hidup",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15,
-                                                      decoration: pw
-                                                          .TextDecoration
-                                                          .lineThrough)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("Cerai Mati",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                            ])
-                                          : pw.Row(children: [
-                                              pw.Text(" : ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("Belum Kawin",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("Kawin",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("Cerai Hidup",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("Cerai Mati",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                            ]),
-                          pw.SizedBox(height: 10),
-                          pengantar.wni == "WNI"
-                              ? pw.Row(children: [
-                                  pw.Text(" : ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("WNI",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("WNA",
-                                      style: pw.TextStyle(
-                                          fontSize: 15,
-                                          decoration:
-                                              pw.TextDecoration.lineThrough)),
-                                ])
-                              : pengantar.wni == "WNA"
-                                  ? pw.Row(children: [
-                                      pw.Text(" : ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("WNI",
-                                          style: pw.TextStyle(
-                                              fontSize: 15,
-                                              decoration: pw
-                                                  .TextDecoration.lineThrough)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("WNA",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                    ])
-                                  : pw.Row(children: [
-                                      pw.Text(" : ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("WNI",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("WNA",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                    ]),
-                          pw.SizedBox(height: 10),
-                          pengantar.pendidikan == "SD"
-                              ? pw.Row(children: [
-                                  pw.Text(" : ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("SD",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("SLTP",
-                                      style: pw.TextStyle(
-                                          fontSize: 15,
-                                          decoration:
-                                              pw.TextDecoration.lineThrough)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("SLTA",
-                                      style: pw.TextStyle(
-                                          fontSize: 15,
-                                          decoration:
-                                              pw.TextDecoration.lineThrough)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("SMK",
-                                      style: pw.TextStyle(
-                                          fontSize: 15,
-                                          decoration:
-                                              pw.TextDecoration.lineThrough)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("SI",
-                                      style: pw.TextStyle(
-                                          fontSize: 15,
-                                          decoration:
-                                              pw.TextDecoration.lineThrough)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("SII",
-                                      style: pw.TextStyle(
-                                          fontSize: 15,
-                                          decoration:
-                                              pw.TextDecoration.lineThrough)),
-                                  pw.Text(" / ",
-                                      style: pw.TextStyle(fontSize: 15)),
-                                  pw.Text("Sederajat",
-                                      style: pw.TextStyle(
-                                          fontSize: 15,
-                                          decoration:
-                                              pw.TextDecoration.lineThrough)),
-                                ])
-                              : pengantar.pendidikan == "SLTP"
-                                  ? pw.Row(children: [
-                                      pw.Text(" : ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("SD",
-                                          style: pw.TextStyle(
-                                              fontSize: 15,
-                                              decoration: pw
-                                                  .TextDecoration.lineThrough)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("SLTP",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("SLTA",
-                                          style: pw.TextStyle(
-                                              fontSize: 15,
-                                              decoration: pw
-                                                  .TextDecoration.lineThrough)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("SMK",
-                                          style: pw.TextStyle(
-                                              fontSize: 15,
-                                              decoration: pw
-                                                  .TextDecoration.lineThrough)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("SI",
-                                          style: pw.TextStyle(
-                                              fontSize: 15,
-                                              decoration: pw
-                                                  .TextDecoration.lineThrough)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("SII",
-                                          style: pw.TextStyle(
-                                              fontSize: 15,
-                                              decoration: pw
-                                                  .TextDecoration.lineThrough)),
-                                      pw.Text(" / ",
-                                          style: pw.TextStyle(fontSize: 15)),
-                                      pw.Text("Sederajat",
-                                          style: pw.TextStyle(
-                                              fontSize: 15,
-                                              decoration: pw
-                                                  .TextDecoration.lineThrough)),
-                                    ])
-                                  : pengantar.pendidikan == "SLTA"
-                                      ? pw.Row(children: [
-                                          pw.Text(" : ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("SD",
-                                              style: pw.TextStyle(
-                                                  fontSize: 15,
-                                                  decoration: pw.TextDecoration
-                                                      .lineThrough)),
-                                          pw.Text(" / ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("SLTP",
-                                              style: pw.TextStyle(
-                                                  fontSize: 15,
-                                                  decoration: pw.TextDecoration
-                                                      .lineThrough)),
-                                          pw.Text(" / ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("SLTA",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text(" / ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("SMK",
-                                              style: pw.TextStyle(
-                                                  fontSize: 15,
-                                                  decoration: pw.TextDecoration
-                                                      .lineThrough)),
-                                          pw.Text(" / ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("SI",
-                                              style: pw.TextStyle(
-                                                  fontSize: 15,
-                                                  decoration: pw.TextDecoration
-                                                      .lineThrough)),
-                                          pw.Text(" / ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("SII",
-                                              style: pw.TextStyle(
-                                                  fontSize: 15,
-                                                  decoration: pw.TextDecoration
-                                                      .lineThrough)),
-                                          pw.Text(" / ",
-                                              style:
-                                                  pw.TextStyle(fontSize: 15)),
-                                          pw.Text("Sederajat",
-                                              style: pw.TextStyle(
-                                                  fontSize: 15,
-                                                  decoration: pw.TextDecoration
-                                                      .lineThrough)),
-                                        ])
-                                      : pengantar.pendidikan == "SMK"
-                                          ? pw.Row(children: [
-                                              pw.Text(" : ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("SD",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15,
-                                                      decoration: pw
-                                                          .TextDecoration
-                                                          .lineThrough)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("SLTP",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15,
-                                                      decoration: pw
-                                                          .TextDecoration
-                                                          .lineThrough)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("SLTA",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15,
-                                                      decoration: pw
-                                                          .TextDecoration
-                                                          .lineThrough)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("SMK",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("SI",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15,
-                                                      decoration: pw
-                                                          .TextDecoration
-                                                          .lineThrough)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("SII",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15,
-                                                      decoration: pw
-                                                          .TextDecoration
-                                                          .lineThrough)),
-                                              pw.Text(" / ",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15)),
-                                              pw.Text("Sederajat",
-                                                  style: pw.TextStyle(
-                                                      fontSize: 15,
-                                                      decoration: pw
-                                                          .TextDecoration
-                                                          .lineThrough)),
-                                            ])
-                                          : pengantar.pendidikan == "SI"
-                                              ? pw.Row(children: [
-                                                  pw.Text(" : ",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15)),
-                                                  pw.Text("SD",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15,
-                                                          decoration: pw
-                                                              .TextDecoration
-                                                              .lineThrough)),
-                                                  pw.Text(" / ",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15)),
-                                                  pw.Text("SLTP",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15,
-                                                          decoration: pw
-                                                              .TextDecoration
-                                                              .lineThrough)),
-                                                  pw.Text(" / ",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15)),
-                                                  pw.Text("SLTA",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15,
-                                                          decoration: pw
-                                                              .TextDecoration
-                                                              .lineThrough)),
-                                                  pw.Text(" / ",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15)),
-                                                  pw.Text("SMK",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15,
-                                                          decoration: pw
-                                                              .TextDecoration
-                                                              .lineThrough)),
-                                                  pw.Text(" / ",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15)),
-                                                  pw.Text("SI",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15)),
-                                                  pw.Text(" / ",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15)),
-                                                  pw.Text("SII",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15,
-                                                          decoration: pw
-                                                              .TextDecoration
-                                                              .lineThrough)),
-                                                  pw.Text(" / ",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15)),
-                                                  pw.Text("Sederajat",
-                                                      style: pw.TextStyle(
-                                                          fontSize: 15,
-                                                          decoration: pw
-                                                              .TextDecoration
-                                                              .lineThrough)),
-                                                ])
-                                              : pengantar.pendidikan == "SII"
-                                                  ? pw.Row(children: [
-                                                      pw.Text(" : ",
-                                                          style: pw.TextStyle(
-                                                              fontSize: 15)),
+                                                              fontSize: 10)),
                                                       pw.Text("SD",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
-                                                              decoration: pw
-                                                                  .TextDecoration
-                                                                  .lineThrough)),
+                                                              fontSize: 10)),
                                                       pw.Text(" / ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
+                                                              fontSize: 10)),
                                                       pw.Text("SLTP",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
-                                                              decoration: pw
-                                                                  .TextDecoration
-                                                                  .lineThrough)),
+                                                              fontSize: 10)),
                                                       pw.Text(" / ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
+                                                              fontSize: 10)),
                                                       pw.Text("SLTA",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
-                                                              decoration: pw
-                                                                  .TextDecoration
-                                                                  .lineThrough)),
+                                                              fontSize: 10)),
                                                       pw.Text(" / ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
+                                                              fontSize: 10)),
                                                       pw.Text("SMK",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
-                                                              decoration: pw
-                                                                  .TextDecoration
-                                                                  .lineThrough)),
+                                                              fontSize: 10)),
                                                       pw.Text(" / ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
+                                                              fontSize: 10)),
                                                       pw.Text("SI",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
-                                                              decoration: pw
-                                                                  .TextDecoration
-                                                                  .lineThrough)),
+                                                              fontSize: 10)),
                                                       pw.Text(" / ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
+                                                              fontSize: 10)),
                                                       pw.Text("SII",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
+                                                              fontSize: 10)),
                                                       pw.Text(" / ",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15)),
+                                                              fontSize: 10)),
                                                       pw.Text("Sederajat",
                                                           style: pw.TextStyle(
-                                                              fontSize: 15,
-                                                              decoration: pw
-                                                                  .TextDecoration
-                                                                  .lineThrough)),
-                                                    ])
-                                                  : pengantar.pendidikan ==
-                                                          "Sederajat"
-                                                      ? pw.Row(children: [
-                                                          pw.Text(" : ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SD",
-                                                              style: pw.TextStyle(
-                                                                  fontSize: 15,
-                                                                  decoration: pw
-                                                                      .TextDecoration
-                                                                      .lineThrough)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SLTP",
-                                                              style: pw.TextStyle(
-                                                                  fontSize: 15,
-                                                                  decoration: pw
-                                                                      .TextDecoration
-                                                                      .lineThrough)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SLTA",
-                                                              style: pw.TextStyle(
-                                                                  fontSize: 15,
-                                                                  decoration: pw
-                                                                      .TextDecoration
-                                                                      .lineThrough)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SMK",
-                                                              style: pw.TextStyle(
-                                                                  fontSize: 15,
-                                                                  decoration: pw
-                                                                      .TextDecoration
-                                                                      .lineThrough)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SI",
-                                                              style: pw.TextStyle(
-                                                                  fontSize: 15,
-                                                                  decoration: pw
-                                                                      .TextDecoration
-                                                                      .lineThrough)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SII",
-                                                              style: pw.TextStyle(
-                                                                  fontSize: 15,
-                                                                  decoration: pw
-                                                                      .TextDecoration
-                                                                      .lineThrough)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("Sederajat",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                        ])
-                                                      : pw.Row(children: [
-                                                          pw.Text(" : ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SD",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SLTP",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SLTA",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SMK",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SI",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("SII",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text(" / ",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                          pw.Text("Sederajat",
-                                                              style:
-                                                                  pw.TextStyle(
-                                                                      fontSize:
-                                                                          15)),
-                                                        ]),
-                          pw.SizedBox(height: 10),
-                          pengantar.pekerjaan!= null
+                                                              fontSize: 10)),
+                                                    ]),
+                      pw.SizedBox(height: 8),
+                      pengantar.pekerjaan != null
                           ? pw.Text(
-                            " : ${pengantar.pekerjaan}",
-                            style: pw.TextStyle(fontSize: 15),
-                          )
-                          : pw.Text(" : ........................................",
-                            style: pw.TextStyle(fontSize: 15),),
-                          pw.SizedBox(height: 10),
-                          pengantar.nik != null
-                          ? pw.Text(
-                            " : ${pengantar.nik}",
-                            style: pw.TextStyle(fontSize: 15),
-                          )
-                          : pw.Text(" : ........................................",
-                            style: pw.TextStyle(fontSize: 15),),
-                          pw.SizedBox(height: 10),
-                          pengantar.kk != null
-                          ? pw.Text(
-                            " : ${pengantar.kk}",
-                            style: pw.TextStyle(fontSize: 15),
-                          )
-                          : pw.Text(" : ........................................",
-                            style: pw.TextStyle(fontSize: 15),),
-                          pw.SizedBox(height: 10),
-                          pengantar.alamat != null
-                          ? pw.Text(
-                            " : ${pengantar.alamat}",
-                            style: pw.TextStyle(fontSize: 15),
-                          )
-                          : pw.Text(" : ........................................",
-                            style: pw.TextStyle(fontSize: 15),),
-                          pw.SizedBox(height: 10),
-                          pengantar.keperluan1 == null
-                          ? pw.Text(
-                            " : 1........................................",
-                            style: pw.TextStyle(fontSize: 15),
-                          )
+                              " : ${pengantar.pekerjaan}",
+                              style: pw.TextStyle(fontSize: 10),
+                            )
                           : pw.Text(
-                            "   2.${pengantar.keperluan1}",
-                            style: pw.TextStyle(fontSize: 15),
-                          ),
-                          pw.SizedBox(height: 10),
-                          pengantar.keperluan2 == null
+                              " : ........................................",
+                              style: pw.TextStyle(fontSize: 10),
+                            ),
+                      pw.SizedBox(height: 8),
+                      pengantar.nik != null
                           ? pw.Text(
-                            "   2........................................",
-                            style: pw.TextStyle(fontSize: 15),
-                          )
+                              " : ${pengantar.nik}",
+                              style: pw.TextStyle(fontSize: 10),
+                            )
                           : pw.Text(
-                            "   2.${pengantar.keperluan2}",
-                            style: pw.TextStyle(fontSize: 15),
-                          ),
-                          pw.SizedBox(height: 10),
-                        ]),
-                  ]),
-
-              pw.SizedBox(height: 10),
+                              " : ........................................",
+                              style: pw.TextStyle(fontSize: 10),
+                            ),
+                      pw.SizedBox(height: 8),
+                      pengantar.kk != null
+                          ? pw.Text(
+                              " : ${pengantar.kk}",
+                              style: pw.TextStyle(fontSize: 10),
+                            )
+                          : pw.Text(
+                              " : ........................................",
+                              style: pw.TextStyle(fontSize: 10),
+                            ),
+                      pw.SizedBox(height: 8),
+                      pengantar.alamat != null
+                          ? pw.Text(
+                              " : ${pengantar.alamat}",
+                              style: pw.TextStyle(fontSize: 10),
+                            )
+                          : pw.Text(
+                              " : ........................................",
+                              style: pw.TextStyle(fontSize: 10),
+                            ),
+                      pw.SizedBox(height: 15),
+                      pengantar.keperluan1 == null
+                          ? pw.Text(
+                              " : 1........................................",
+                              style: pw.TextStyle(fontSize: 10),
+                            )
+                          : pw.Text(
+                              " : 1. ${pengantar.keperluan1}",
+                              style: pw.TextStyle(fontSize: 10),
+                            ),
+                      pw.SizedBox(height: 8),
+                      pengantar.keperluan2 == null
+                          ? pw.Text(
+                              "   2. .......................................",
+                              style: pw.TextStyle(fontSize: 10),
+                            )
+                          : pw.Text(
+                              "   2. ${pengantar.keperluan2}",
+                              style: pw.TextStyle(fontSize: 10),
+                            ),
+                    ],
+                  ),
+                ],
+              ),
+              pw.SizedBox(height: 8),
               pw.Align(
                 alignment: pw.Alignment.center,
                 child: pw.Text(
                   "Demikian untuk menjadikan periksa dan dipergunakan sebagai mestinya",
-                  style: pw.TextStyle(fontSize: 15),
+                  style: pw.TextStyle(fontSize: 10),
                 ),
               ),
-              pw.SizedBox(height: 10),
+              pw.SizedBox(height: 8),
               pw.Align(
                 alignment: pw.Alignment.centerLeft,
                 child: pw.Text(
-                  "Nomor : ${pengantar.nomer}/II-IX/${DateFormat("dd-M-y").format(DateTime.now())}",
-                  style: pw.TextStyle(fontSize: 15),
+                  "Nomor      : ${pengantar.nomer} / II-IX / ${DateFormat("dd-M-y").format(DateTime.now())}",
+                  style: pw.TextStyle(fontSize: 10),
                 ),
               ),
               pw.Align(
-                  alignment: pw.Alignment.centerLeft,
-                  child: pw.Text(
-                    "Tanggal : ${DateFormat("dd MMMM y").format(DateTime.now())}",
-                    style: pw.TextStyle(fontSize: 15),
-                  )),
-              pw.Align(
-                  alignment: pw.Alignment.centerLeft,
-                  child: pw.Text(
-                    "Mengetahui,",
-                    style: pw.TextStyle(fontSize: 18),
-                  )),
-              pw.SizedBox(height: 20),
+                alignment: pw.Alignment.centerLeft,
+                child: pw.Text(
+                  "Tanggal    : ${DateFormat("dd MMMM y", 'id').format(DateTime.now())}",
+                  style: pw.TextStyle(fontSize: 10),
+                ),
+              ),
+              pw.SizedBox(height: 8),
+              pw.Row(children: [
+                pw.SizedBox(width: 36),
+                pw.Text(
+                  "Mengetahui,",
+                  style: pw.TextStyle(
+                    fontSize: 10,
+                  ),
+                ),
+              ]),
               pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
-                  children: [
-                    pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Ketua RW. IX",
-                              style: pw.TextStyle(fontSize: 20),
+                mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+                children: [
+                  pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.SizedBox(height: 8),
+                        pw.Align(
+                          alignment: pw.Alignment.centerLeft,
+                          child: pw.Text(
+                            "KETUA RW. IX",
+                            style: pw.TextStyle(
+                              fontSize: 10,
                             ),
                           ),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Kelurahan Gadang",
-                              style: pw.TextStyle(fontSize: 20),
+                        ),
+                        pw.Align(
+                          alignment: pw.Alignment.centerLeft,
+                          child: pw.Text(
+                            "KELURAHAN GADANG",
+                            style: pw.TextStyle(
+                              fontSize: 10,
                             ),
                           ),
-                          pw.SizedBox(height: 80),
-                          pw.Text(
-                            "(.......................)",
-                            style: pw.TextStyle(fontSize: 20),
-                          ),
-                        ]),
-                    pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
-                        children: [
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Ketua RT. II / RW. IX",
-                              style: pw.TextStyle(fontSize: 20),
-                            ),
-                          ),
-                          pw.Align(
-                            alignment: pw.Alignment.centerLeft,
-                            child: pw.Text(
-                              "Kelurahan Gadang",
-                              style: pw.TextStyle(fontSize: 20),
-                            ),
-                          ),
-                          pw.SizedBox(height: 80),
-                          pw.Text(
-                            "(.......................)",
-                            style: pw.TextStyle(fontSize: 20),
-                          ),
-                        ]),
-                  ])
-            ]); // Center
-          }),
+                        ),
+                        pw.SizedBox(height: 80),
+                        pw.Text(
+                          "(.......................)",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ]),
+                  pw.SizedBox(width: 120),
+                  pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "KETUA RT. II / RW. IX",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.Align(
+                        alignment: pw.Alignment.centerLeft,
+                        child: pw.Text(
+                          "KELURAHAN GADANG",
+                          style: pw.TextStyle(fontSize: 10),
+                        ),
+                      ),
+                      pw.SizedBox(height: 80),
+                      pw.Text(
+                        "(.......................)",
+                        style: pw.TextStyle(fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ); // Center
+        },
+      ),
     );
 
     //save
@@ -1753,4 +1760,13 @@ class SPengantarController extends GetxController {
     emailC.clear();
     selectedTanggal = DateTime.now();
   }
+
+  // RxInt currentStep = 0.obs;
+  // void nextStep() {
+  //   currentStep++;
+  // }
+
+  // void backStep() {
+  //   currentStep = currentStep - 1;
+  // }
 }

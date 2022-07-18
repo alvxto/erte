@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 const String lid = "id";
+const String lnama = "nama";
 const String lkategori = "kategori";
 const String ldeskripsi = "deskripsi";
 const String luang = "uang";
@@ -13,12 +14,19 @@ const String lwaktu = "waktu";
 
 class Kas {
   String? id;
+  String? nama;
   String? kategori;
   String? deskripsi;
   String? uang;
   DateTime? waktu;
 
-  Kas({this.id, this.kategori, this.deskripsi, this.uang, this.waktu});
+  Kas(
+      {this.id,
+      this.nama,
+      this.kategori,
+      this.deskripsi,
+      this.uang,
+      this.waktu});
 
   Kas fromJson(DocumentSnapshot doc) {
     Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
@@ -33,20 +41,17 @@ class Kas {
 
   Kas.fromJson(DocumentSnapshot doc) {
     Map<String, dynamic>? json = doc.data() as Map<String, dynamic>?;
-    id =
-    doc.id;
-    kategori =
-    json?[lkategori];
-    deskripsi =
-    json?[ldeskripsi];
-    uang =
-    json?[luang];
-    waktu =
-    (json?[lwaktu] as Timestamp?)?.toDate();
+    id = doc.id;
+    nama = json?[lnama];
+    kategori = json?[lkategori];
+    deskripsi = json?[ldeskripsi];
+    uang = json?[luang];
+    waktu = (json?[lwaktu] as Timestamp?)?.toDate();
   }
 
   Map<String, dynamic> get toJson => {
         lid: id,
+        lnama: nama,
         ldeskripsi: deskripsi,
         lkategori: kategori,
         luang: uang,
