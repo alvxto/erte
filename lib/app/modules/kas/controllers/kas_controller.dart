@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class KasController extends GetxController {
+  late TextEditingController namaC;
   late TextEditingController deskripsiC;
   late TextEditingController uangC;
 
@@ -13,6 +14,7 @@ class KasController extends GetxController {
   set kass(List<Kas> value) => rxKas.value = value;
 
   modelToController(Kas kas) {
+    namaC.text = kas.nama ?? '';
     uangC.text = kas.uang ?? '';
     deskripsiC.text = kas.deskripsi ?? '';
     selectedKategori = kas.kategori;
@@ -58,7 +60,7 @@ class KasController extends GetxController {
         titleStyle: TextStyle(color: primary),
         middleTextStyle: TextStyle(color: primary),
       );
-    } on Exception {
+    } on Exception catch (e) {
       Get.defaultDialog(
         title: "Error",
         middleText: "Gagal Menghapus",
@@ -85,6 +87,7 @@ class KasController extends GetxController {
 
   Future store(Kas kas) async {
     isSaving = true;
+    kas.nama = namaC.text;
     kas.kategori = selectedKategori;
     kas.uang = uangC.text;
     kas.deskripsi = deskripsiC.text;
@@ -97,6 +100,7 @@ class KasController extends GetxController {
           title: "Berhasil",
           textConfirm: "Oke",
           onConfirm: () {
+            namaC.clear();
             deskripsiC.clear();
             uangC.clear();
             Get.back();
@@ -116,6 +120,7 @@ class KasController extends GetxController {
 
   @override
   void onInit() {
+    namaC = TextEditingController();
     rxKas.bindStream(Kas().streamList());
     deskripsiC = TextEditingController();
     uangC = TextEditingController();
@@ -124,6 +129,7 @@ class KasController extends GetxController {
 
   @override
   void onClose() {
+    namaC.clear();
     deskripsiC.clear();
     selectedKategori = '';
     uangC.clear();

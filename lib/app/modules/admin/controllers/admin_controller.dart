@@ -10,6 +10,7 @@ class AdminController extends GetxController {
   List<Informasi> get infos => rxInfos.value;
   set infos(List<Informasi> value) => rxInfos.value = value;
 
+
   Future delete(Informasi info) async {
     if (info.id == null) {
       Get.defaultDialog(
@@ -50,7 +51,7 @@ class AdminController extends GetxController {
         titleStyle: TextStyle(color: primary),
         middleTextStyle: TextStyle(color: primary),
       );
-    } on Exception {
+    } on Exception catch (e) {
       Get.defaultDialog(
         title: "Error",
         middleText: "Gagal Menghapus",
@@ -64,6 +65,7 @@ class AdminController extends GetxController {
       );
     }
   }
+
 
   late TextEditingController deskripsiC;
   late TextEditingController uangC;
@@ -118,7 +120,7 @@ class AdminController extends GetxController {
         titleStyle: TextStyle(color: primary),
         middleTextStyle: TextStyle(color: primary),
       );
-    } on Exception {
+    } on Exception catch (e) {
       Get.defaultDialog(
         title: "Error",
         middleText: "Gagal Menghapus",

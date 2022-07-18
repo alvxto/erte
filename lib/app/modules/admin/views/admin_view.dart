@@ -7,6 +7,7 @@ import 'package:erte/app/modules/auth/controllers/auth_controller.dart';
 import 'package:erte/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:intl/intl.dart';
 import '../controllers/admin_controller.dart';
@@ -20,7 +21,7 @@ class AdminView extends GetView<AdminController> {
       key: _globalKey,
       backgroundColor: background,
       drawer: Drawer(
-        backgroundColor: white,
+        backgroundColor: background,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
             width: double.infinity,
@@ -30,11 +31,11 @@ class AdminView extends GetView<AdminController> {
                 bottomRight: radiusCircular(10),
               ),
               gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
                 colors: <Color>[
-                  Color(0xFF030BFF),
                   Color(0xFF282A61),
+                  Color(0xFF030BFF),
                 ],
               ),
             ),
@@ -98,7 +99,10 @@ class AdminView extends GetView<AdminController> {
                         scrollDirection: Axis.horizontal,
                         child: Text(
                           authC.user.nama ?? "Guest",
-                          style: TextStyle(color: white, fontSize: 20),
+                          style: TextStyle(
+                            color: white,
+                            fontSize: 20,
+                          ),
                         ),
                       ),
                     ),
@@ -110,7 +114,10 @@ class AdminView extends GetView<AdminController> {
                         scrollDirection: Axis.horizontal,
                         child: Text(
                           authC.user.email ?? "-",
-                          style: TextStyle(color: white, fontSize: 17),
+                          style: TextStyle(
+                            color: white,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
                     ),
@@ -191,31 +198,16 @@ class AdminView extends GetView<AdminController> {
           children: [
             Container(
               width: double.infinity,
-              height: 300,
+              height: Get.height,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
                   colors: <Color>[
                     Color(0xFF282A61),
                     Color(0xFF0208B0),
                   ],
                 ),
-              ),
-              child: Stack(
-                children: <Widget>[
-                  Opacity(
-                    opacity: 0.5,
-                    child: Container(
-                      child: Image.asset(
-                        img_perum,
-                        fit: BoxFit.cover,
-                      ),
-                      width: double.infinity,
-                      height: 300,
-                    ),
-                  ),
-                ],
               ),
             ),
             Column(
@@ -227,7 +219,7 @@ class AdminView extends GetView<AdminController> {
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: InkWell(
                               child: Icon(
                                 Icons.menu,
@@ -238,7 +230,7 @@ class AdminView extends GetView<AdminController> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20.0),
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
                             child: Container(
                                 height: 31,
                                 width: 50,
@@ -250,9 +242,9 @@ class AdminView extends GetView<AdminController> {
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          "${DateFormat.yMMMEd().format(DateTime.now())}",
+                          "${DateFormat.yMMMEd('id').format(DateTime.now())}",
                           style: TextStyle(
                             color: white,
                             fontSize: 16,
@@ -262,448 +254,529 @@ class AdminView extends GetView<AdminController> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Text(
-                        " Green Living\n Residence\n RT 02 RW 09",
-                        style: TextStyle(
-                          color: white,
-                          fontFamily: "RobotoSlab",
-                          fontSize: 20,
-                        ),
-                      ),
+                    Container(width: 30),
+                    Container(
+                      height: 100,
+                      width: 140,
+                      child: Image.asset(img_hallo),
                     ),
-                  ],
-                ),
-                SizedBox(height: 60),
-                Padding(
-                  padding: const EdgeInsets.only(right: 40, left: 40),
-                  child: Container(
-                    height: 90,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      image: DecorationImage(
-                        alignment: Alignment.centerLeft,
-                        image: AssetImage(img_perum),
-                        fit: BoxFit.fitHeight,
-                      ),
-                      color: white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: dark,
-                          spreadRadius: 0,
-                          blurRadius: 4,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                      // borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 125,
-                        top: 20,
-                      ),
-                      child: Text(
-                        " Green Living Residence\n RT 02 RW 09",
-                        style: TextStyle(
-                          color: black,
-                          fontFamily: "RobotoSlab",
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 50),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          height: 90,
-                          width: 90,
-                          decoration: BoxDecoration(
-                            color: white,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: dark,
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                offset: Offset(0, 4),
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 50,
-                                child: InkWell(
-                                  onTap: () => Get.toNamed(Routes.ADMIN_SURAT),
-                                  child: Image.asset(
-                                    img_admsurat,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        InkWell(
-                          onTap: () => Get.toNamed(Routes.ADMIN_SURAT),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Surat Warga",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Nunito",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Container(
-                          height: 90,
-                          width: 90,
-                          decoration: BoxDecoration(
-                            color: white,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: dark,
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                offset: Offset(0, 4),
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                  height: 50,
-                                  width: 50,
-                                  child: InkWell(
-                                    onTap: () => Get.toNamed(Routes.LAPOR),
-                                    child: Image.asset(
-                                      img_lapwarga,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        InkWell(
-                          onTap: () => Get.toNamed(Routes.LAPOR),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Laporan Warga",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Nunito",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Container(
-                          height: 90,
-                          width: 90,
-                          decoration: BoxDecoration(
-                            color: white,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: dark,
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                  height: 50,
-                                  width: 50,
-                                  child: InkWell(
-                                    onTap: () => Get.toNamed(Routes.BUKU_TAMU),
-                                    child: Image.asset(
-                                      img_bukutamu,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        InkWell(
-                          onTap: () => Get.toNamed(Routes.BUKU_TAMU),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Buku Tamu",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Nunito",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          height: 90,
-                          width: 90,
-                          decoration: BoxDecoration(
-                            color: white,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: dark,
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                offset: Offset(0, 4),
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 50,
-                                child: InkWell(
-                                  onTap: () => Get.toNamed(Routes.KAS),
-                                  child: Image.asset(
-                                    img_kas,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        InkWell(
-                          onTap: () => Get.toNamed(Routes.KAS),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Kas RT",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Nunito",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        Container(
-                          height: 90,
-                          width: 90,
-                          decoration: BoxDecoration(
-                            color: white,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: dark,
-                                spreadRadius: 0,
-                                blurRadius: 4,
-                                offset: Offset(0, 4),
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 50,
-                                width: 50,
-                                child: InkWell(
-                                  onTap: () => Get.toNamed(Routes.INFORMASI),
-                                  child: Image.asset(
-                                    img_informasi,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        InkWell(
-                          onTap: () => Get.toNamed(Routes.INFORMASI),
-                          child: Column(
-                            children: [
-                              Text(
-                                "Informasi RT",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Nunito",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Informasi RT",
-                        style: TextStyle(
-                            color: dark,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Get.toNamed(Routes.INFO_LENGKAP);
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              "Lihat Semua",
+                    Obx(
+                      (() => Expanded(
+                            child: Text(
+                              "Hai ! ${authC.user.nama ?? ""}\nSelamat Datang",
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.normal,
-                                  color: dark),
+                                color: white,
+                                fontSize: 18,
+                                fontFamily: "RobotoSlab",
+                              ),
                             ),
-                            Icon(
-                              Icons.keyboard_arrow_right,
+                          )),
+                    ),
+                  ],
+                ),
+                // SizedBox(height: 70),
+                Stack(
+                  children: [
+                    Column(
+                      children: [
+                        50.height,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: background,
+                            borderRadius: BorderRadius.only(
+                              topLeft: radiusCircular(32),
+                              topRight: radiusCircular(32),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(height: 70),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 65,
+                                        width: 65,
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: dark,
+                                              spreadRadius: 0,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 4),
+                                            )
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 36,
+                                              width: 36,
+                                              child: InkWell(
+                                                onTap: () => Get.toNamed(
+                                                    Routes.ADMIN_SURAT),
+                                                child: Image.asset(
+                                                  img_admsurat,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      InkWell(
+                                        onTap: () =>
+                                            Get.toNamed(Routes.ADMIN_SURAT),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Surat\nWarga",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: "Nunito",
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Container(
+                                        height: 65,
+                                        width: 65,
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: dark,
+                                              spreadRadius: 0,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 4),
+                                            )
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                                height: 36,
+                                                width: 36,
+                                                child: InkWell(
+                                                  onTap: () =>
+                                                      Get.toNamed(Routes.LAPOR),
+                                                  child: Image.asset(
+                                                    img_lapwarga,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      InkWell(
+                                        onTap: () => Get.toNamed(Routes.LAPOR),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Laporan\nWarga",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: "Nunito",
+                                                // fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 65,
+                                        width: 65,
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: dark,
+                                              spreadRadius: 0,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 4),
+                                            )
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 36,
+                                              width: 36,
+                                              child: InkWell(
+                                                onTap: () =>
+                                                    Get.toNamed(Routes.KAS),
+                                                child: Image.asset(
+                                                  img_kas,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      InkWell(
+                                        onTap: () => Get.toNamed(Routes.KAS),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Kas\nRT",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: "Nunito",
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Container(
+                                        height: 65,
+                                        width: 65,
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: dark,
+                                              spreadRadius: 0,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 4),
+                                            )
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 36,
+                                              width: 36,
+                                              child: InkWell(
+                                                onTap: () => Get.toNamed(
+                                                    Routes.INFORMASI),
+                                                child: Image.asset(
+                                                  img_informasi,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      InkWell(
+                                        onTap: () =>
+                                            Get.toNamed(Routes.INFORMASI),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Informasi\nRT",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: "Nunito",
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 65,
+                                        width: 65,
+                                        decoration: BoxDecoration(
+                                          color: white,
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: dark,
+                                              spreadRadius: 0,
+                                              blurRadius: 4,
+                                              offset: Offset(0, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                                height: 36,
+                                                width: 36,
+                                                child: InkWell(
+                                                  onTap: () => Get.toNamed(
+                                                      Routes.BUKU_TAMU),
+                                                  child: Image.asset(
+                                                    img_bukutamu,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                )),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      InkWell(
+                                        onTap: () =>
+                                            Get.toNamed(Routes.BUKU_TAMU),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              "Buku\nTamu",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: "Nunito",
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 28.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Kegiatan RT",
+                                          style: TextStyle(
+                                              color: dark,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Container(
+                                          width: 125,
+                                          child: Divider(
+                                            thickness: 3,
+                                            color: dark,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Get.toNamed(Routes.INFO_LENGKAP);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Text(
+                                                "Lihat Semua",
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: dark),
+                                              ),
+                                            ],
+                                          ),
+                                          Icon(
+                                            Icons.keyboard_arrow_right,
+                                            color: dark,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                // padding: EdgeInsets.symmetric(horizontal: 15),
+                                height: 200,
+                                child: Obx(
+                                  () => controller.infos.length < 1
+                                      ? Center(
+                                          child: Text(
+                                            "Kosong",
+                                            style: TextStyle(color: dark),
+                                          ),
+                                        )
+                                      : SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: controller.infos.length,
+                                            physics: ScrollPhysics(),
+                                            itemBuilder: (context, index) =>
+                                                InfoCard(
+                                              info: controller.infos[index],
+                                            ),
+                                          ),
+                                        ),
+                                ),
+                              ),
+                              SizedBox(height: 30),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 28),
+                                    child: Text(
+                                      "Kas RT",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: dark,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Obx(
+                                () => controller.kass.length < 1
+                                    ? Center(
+                                        child: Text(
+                                          "Kosong",
+                                          style: TextStyle(color: dark),
+                                        ),
+                                      )
+                                    : Column(
+                                        children: [
+                                          Container(
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              color: white,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                                topRight: Radius.circular(30),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 380,
+                                            decoration: BoxDecoration(
+                                              color: white,
+                                              // borderRadius: BorderRadius.only(
+                                              //   topLeft: Radius.circular(30),
+                                              //   topRight: Radius.circular(30),
+                                              // ),
+                                            ),
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              shrinkWrap: true,
+                                              physics: ScrollPhysics(),
+                                              itemCount: controller.kass.length,
+                                              itemBuilder: (context, index) =>
+                                                  KasAdmin(
+                                                kas: controller.kass[index],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 40, left: 40),
+                      child: Container(
+                        height: 90,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          image: DecorationImage(
+                            alignment: Alignment.centerLeft,
+                            image: AssetImage(img_perum),
+                            fit: BoxFit.fitHeight,
+                          ),
+                          color: white,
+                          boxShadow: [
+                            BoxShadow(
                               color: dark,
+                              spreadRadius: 0,
+                              blurRadius: 4,
+                              offset: Offset(0, 4),
                             ),
                           ],
+                          // borderRadius: BorderRadius.circular(15),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  // padding: EdgeInsets.symmetric(horizontal: 15),
-                  height: 200,
-                  child: Obx(
-                    () => controller.infos.length < 1
-                        ? Center(
-                            child: Text(
-                              "Kosong",
-                              style: TextStyle(color: dark),
-                            ),
-                          )
-                        : SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: controller.infos.length,
-                              physics: ScrollPhysics(),
-                              itemBuilder: (context, index) => InfoCard(
-                                info: controller.infos[index],
-                              ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 125,
+                            top: 15,
+                          ),
+                          child: Text(
+                            "Green Living Residence\nRT 02 RW 09",
+                            style: TextStyle(
+                              color: black,
+                              fontFamily: "RobotoSlab",
+                              fontSize: 14,
                             ),
                           ),
-                  ),
-                ),
-                SizedBox(height: 30),
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 28),
-                      child: Text(
-                        "Kas RT",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: dark,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                Obx(
-                  () => controller.kass.length < 1
-                      ? Center(
-                          child: Text(
-                            "Kosong",
-                            style: TextStyle(
-                                color: primary,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30),
-                          ),
-                        )
-                      : Container(
-                          height: 400,
-                          width: double.infinity,
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                physics: ScrollPhysics(),
-                                itemCount: controller.kass.length,
-                                itemBuilder: (context, index) =>
-                                    KasAdmin(kas: controller.kass[index])),
-                          ),
-                        ),
-                ),
-                SizedBox(height: 40),
               ],
             ),
           ],
@@ -766,32 +839,54 @@ class InfoCard extends GetView<AdminController> {
                   ? Container(
                       height: 110,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          ),
-                          image: DecorationImage(
-                              image: NetworkImage(info.image!),
-                              fit: BoxFit.cover)),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        image: DecorationImage(
+                            image: NetworkImage(info.image!),
+                            fit: BoxFit.cover),
+                      ),
                     )
                   : Container(
-                      height: 90,
-                      width: 240,
+                      height: 110,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                              image: AssetImage("assets/home.png"),
-                              fit: BoxFit.fitHeight)),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        image: DecorationImage(
+                          image: AssetImage("assets/home.png"),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
               SizedBox(
-                height: 15,
+                height: 10,
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(left: 15),
-                child: Text(
-                  info.judul!,
-                  style: TextStyle(fontSize: 18),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        info.judul!,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        info.deskripsi!,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
@@ -827,101 +922,137 @@ class KasAdmin extends GetView<AdminController> {
     return InkWell(
       onTap: () async {
         await showModalBottomSheet(
-            context: context,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
-            builder: (context) => Container(
-                height: 130,
-                child: Column(
-                  children: [
-                    ListTile(
-                        title: Text(
-                          "Edit",
-                          style: TextStyle(color: primary),
-                        ),
-                        leading: Icon(
-                          Icons.edit,
-                          color: primary,
-                        ),
-                        onTap: () => Get.toNamed(Routes.KAS, arguments: kas)),
-                    ListTile(
-                        title: Text(
-                          "Delete",
-                          style: TextStyle(color: primary),
-                        ),
-                        leading: Icon(
-                          Icons.delete,
-                          color: primary,
-                        ),
-                        onTap: () => controller.deletekas(kas)),
-                  ],
-                )));
+          context: context,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
+          builder: (context) => Container(
+            height: 130,
+            child: Column(
+              children: [
+                ListTile(
+                    title: Text(
+                      "Edit",
+                      style: TextStyle(color: primary),
+                    ),
+                    leading: Icon(
+                      Icons.edit,
+                      color: primary,
+                    ),
+                    onTap: () => Get.toNamed(Routes.KAS, arguments: kas)),
+                ListTile(
+                    title: Text(
+                      "Delete",
+                      style: TextStyle(color: primary),
+                    ),
+                    leading: Icon(
+                      Icons.delete,
+                      color: primary,
+                    ),
+                    onTap: () => controller.deletekas(kas)),
+              ],
+            ),
+          ),
+        );
       },
-      child: Container(
-        padding: EdgeInsets.all(10),
-        width: 250,
-        height: 110,
-        margin: EdgeInsets.all(10),
-        child: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Container(
+          padding: EdgeInsets.all(15),
+          // width: 250,
+          height: 110,
+          // margin: EdgeInsets.all(10),
           child: Row(
             mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                height: 80,
-                width: 100,
+                height: 70,
+                width: 70,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        image: AssetImage("images/kas.png"),
-                        fit: BoxFit.fitHeight)),
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    image: AssetImage(img_kas),
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
               ),
               SizedBox(
                 width: 15,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Text(
-                      "${kas.deskripsi} (${kas.kategori})",
-                      style: TextStyle(fontSize: 18),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        "${kas.nama} (${kas.kategori})",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Text(
-                      "${kas.uang}",
-                      style: TextStyle(fontSize: 18),
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "${DateFormat.yMMMEd().format(kas.waktu!)}",
-                    style: TextStyle(fontSize: 15),
-                  )
-                ],
+                    Row(
+                      children: [
+                        kas.kategori == "Pemasukan"
+                            ? Container(
+                                child: Image(
+                                  image: AssetImage("images/down.png"),
+                                  height: 15,
+                                  width: 15,
+                                ),
+                              )
+                            : Container(),
+                        kas.kategori == "Pengeluaran"
+                            ? Container(
+                                child: Image(
+                                  image: AssetImage("images/up.png"),
+                                  height: 15,
+                                  width: 15,
+                                ),
+                              )
+                            : Container(),
+                        SizedBox(width: 5),
+                        Text(
+                          "Rp. ${kas.uang}",
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "${DateFormat.yMd('id').format(kas.waktu!)}",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        decoration: BoxDecoration(
-          color: white,
-          boxShadow: [
-            BoxShadow(
-              color: dark,
-              spreadRadius: 0,
-              blurRadius: 4,
-              offset: Offset(0, 4),
-            )
-          ],
-          borderRadius: BorderRadius.circular(10),
+          decoration: BoxDecoration(
+            color: white,
+            boxShadow: [
+              BoxShadow(
+                color: dark,
+                spreadRadius: 0,
+                blurRadius: 4,
+                offset: Offset(0, 4),
+              )
+            ],
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       ),
     );

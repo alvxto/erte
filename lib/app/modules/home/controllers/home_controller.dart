@@ -1,6 +1,8 @@
+import 'package:erte/app/const/color.dart';
 import 'package:erte/app/data/models/informasi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class HomeController extends GetxController {
   RxList<Informasi> rxInfos = RxList<Informasi>();

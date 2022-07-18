@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus_windows
   nb_utils
+  printing
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

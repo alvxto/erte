@@ -26,6 +26,7 @@ import '../modules/lapor/bindings/lapor_binding.dart';
 import '../modules/lapor/views/lapor_view.dart';
 import '../modules/profil/bindings/profil_binding.dart';
 import '../modules/profil/views/profil_view.dart';
+
 import '../modules/reset/bindings/reset_binding.dart';
 import '../modules/reset/views/reset_view.dart';
 import '../modules/riwayat/bindings/riwayat_binding.dart';

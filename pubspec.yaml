@@ -28,6 +28,12 @@ dependencies:
   flutter_email_sender: 5.1.0
   flutter: 
     sdk: flutter
+  flutter_localizations: 
+    sdk: flutter
+    version: ^0.0.0
+  flutter_share: ^2.0.0
+  crop_image: ^1.0.2
+  printing: ^5.9.1
 
 dev_dependencies: 
   flutter_launcher_icons: 0.9.2

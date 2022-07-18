@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erte/app/data/database.dart';
+import 'package:get/get.dart';
 
 const String lid = "id";
 const String lnama = "nama";

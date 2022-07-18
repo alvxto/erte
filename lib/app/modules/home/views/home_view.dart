@@ -1,26 +1,30 @@
+import 'dart:io';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:erte/app/const/color.dart';
 import 'package:erte/app/const/image.dart';
+import 'package:erte/app/data/database.dart';
+import 'package:erte/app/data/models/informasi.dart';
 import 'package:erte/app/modules/auth/controllers/auth_controller.dart';
-import 'package:erte/app/modules/info_lengkap/views/info_lengkap_view.dart';
 import 'package:erte/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   final authC = Get.find<AuthController>();
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _globalKey,
       backgroundColor: background,
       drawer: Drawer(
-        backgroundColor: white,
+        backgroundColor: background,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,14 +33,14 @@ class HomeView extends GetView<HomeController> {
               height: 230,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  bottomRight: radiusCircular(15),
+                  bottomRight: radiusCircular(10),
                 ),
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: <Color>[
-                    Color(0xFF696EFF),
-                    Color(0xFF000DFF),
+                    primary,
+                    secondary,
                   ],
                 ),
               ),
@@ -102,7 +106,10 @@ class HomeView extends GetView<HomeController> {
                           scrollDirection: Axis.horizontal,
                           child: Text(
                             authC.user.nama ?? "Guest",
-                            style: TextStyle(color: white, fontSize: 20),
+                            style: TextStyle(
+                              color: white,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
                       ),
@@ -114,7 +121,10 @@ class HomeView extends GetView<HomeController> {
                           scrollDirection: Axis.horizontal,
                           child: Text(
                             authC.user.email ?? "-",
-                            style: TextStyle(color: white, fontSize: 17),
+                            style: TextStyle(
+                              color: white,
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                       ),
@@ -184,6 +194,19 @@ class HomeView extends GetView<HomeController> {
                               style: TextStyle(color: black),
                             ),
                           ),
+                          Obx(() => authC.user.id != null
+                              ? ListTile(
+                                  onTap: () => Get.toNamed(Routes.KAS),
+                                  leading: Icon(
+                                    Icons.money,
+                                    color: black,
+                                  ),
+                                  title: Text(
+                                    "Kas RT",
+                                    style: TextStyle(color: black),
+                                  ),
+                                )
+                              : Container()),
                           Obx(
                             () => authC.user.id == null
                                 ? ListTile(
@@ -201,11 +224,11 @@ class HomeView extends GetView<HomeController> {
                                     onTap: () => authC.logout(),
                                     leading: Icon(
                                       Icons.logout,
-                                      color: Colors.red,
+                                      color: black,
                                     ),
                                     title: Text(
                                       "Logout",
-                                      style: TextStyle(color: Colors.red),
+                                      style: TextStyle(color: black),
                                     ),
                                   ),
                           ),
@@ -271,9 +294,7 @@ class HomeView extends GetView<HomeController> {
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          "${DateFormat.yMMMMEEEEd('id').format(
-                            DateTime.now(),
-                          )}",
+                          "${DateFormat.yMMMEd('id').format(DateTime.now())}",
                           style: TextStyle(
                             color: white,
                             fontSize: 16,
@@ -283,18 +304,15 @@ class HomeView extends GetView<HomeController> {
                     ],
                   ),
                 ),
+                SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Container(width: 30),
                     Container(
-                      width: 30,
-                    ),
-                    Container(
-                      height: 120,
-                      width: 160,
-                      child: Image.asset(
-                        hello_dsb,
-                      ),
+                      height: 100,
+                      width: 140,
+                      child: Image.asset(img_hallo),
                     ),
                     Obx(
                       () => Expanded(
@@ -303,14 +321,11 @@ class HomeView extends GetView<HomeController> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: white,
-                            fontSize: 20,
+                            fontSize: 18,
                             fontFamily: "RobotoSlab",
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: 30,
                     ),
                   ],
                 ),
@@ -321,17 +336,15 @@ class HomeView extends GetView<HomeController> {
                         50.height,
                         Container(
                           decoration: BoxDecoration(
-                            color: white,
+                            color: background,
                             borderRadius: BorderRadius.only(
-                              topLeft: radiusCircular(50),
-                              topRight: radiusCircular(50),
+                              topLeft: radiusCircular(32),
+                              topRight: radiusCircular(32),
                             ),
                           ),
                           child: Column(
                             children: [
-                              SizedBox(
-                                height: 50,
-                              ),
+                              SizedBox(height: 70),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -355,25 +368,23 @@ class HomeView extends GetView<HomeController> {
                                             )
                                           ],
                                         ),
-                                        child: Container(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                height: 35,
-                                                width: 37.06,
-                                                child: InkWell(
-                                                  onTap: () => Get.toNamed(
-                                                      Routes.S_PENGANTAR),
-                                                  child: Image.asset(
-                                                    img_suratpeng,
-                                                    fit: BoxFit.cover,
-                                                  ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 36,
+                                              width: 36,
+                                              child: InkWell(
+                                                onTap: () => Get.toNamed(
+                                                    Routes.S_PENGANTAR),
+                                                child: Image.asset(
+                                                  img_suratpeng,
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       SizedBox(height: 10),
@@ -384,7 +395,7 @@ class HomeView extends GetView<HomeController> {
                                           "Surat\nPengantar",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             fontFamily: "Nunito",
                                           ),
                                         ),
@@ -436,7 +447,7 @@ class HomeView extends GetView<HomeController> {
                                           "Surat\nDomisili",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             fontFamily: "Nunito",
                                           ),
                                         ),
@@ -488,7 +499,7 @@ class HomeView extends GetView<HomeController> {
                                           "Form\nKK",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             fontFamily: "Nunito",
                                           ),
                                         ),
@@ -540,7 +551,7 @@ class HomeView extends GetView<HomeController> {
                                           "Form\nKTP",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             fontFamily: "Nunito",
                                           ),
                                         ),
@@ -557,12 +568,25 @@ class HomeView extends GetView<HomeController> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      "Kegiatan RT",
-                                      style: TextStyle(
-                                          color: black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Kegiatan RT",
+                                          style: TextStyle(
+                                              color: black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Container(
+                                          width: 125,
+                                          child: Divider(
+                                            thickness: 3,
+                                            color: primary,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     TextButton(
                                       onPressed: () {
@@ -624,12 +648,28 @@ class HomeView extends GetView<HomeController> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      "Informasi RT",
-                                      style: TextStyle(
-                                          color: black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Informasi RT",
+                                          style: TextStyle(
+                                              color: black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Container(
+                                          width: 125,
+                                          child: Divider(
+                                            thickness: 3,
+                                            color: primary,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 40,
                                     ),
                                     TextButton(
                                       onPressed: () {
@@ -715,10 +755,10 @@ class HomeView extends GetView<HomeController> {
                           child: Padding(
                             padding: const EdgeInsets.only(
                               left: 125,
-                              top: 20,
+                              top: 15,
                             ),
                             child: Text(
-                              " Green Living Residence\n RT 02 RW 09",
+                              "Green Living Residence\nRT 02 RW 09",
                               style: TextStyle(
                                 color: black,
                                 fontFamily: "RobotoSlab",
@@ -742,200 +782,199 @@ class HomeView extends GetView<HomeController> {
 }
 
 // ignore: must_be_immutable
-// class InfoCard extends GetView<HomeController> {
-//   InfoCard({required this.info});
-//   Informasi info;
-//   @override
-//   Widget build(BuildContext context) {
-//     controller.modelToController(info);
-//     return InkWell(
-//       onTap: () async {
-//         await showDialog(
-//             context: context,
-//             builder: (context) {
-//               return SimpleDialog(
-//                 backgroundColor: white,
-//                 children: [
-//                   Container(
-//                     height: 480,
-//                     width: 100,
-//                     decoration: BoxDecoration(color: white),
-//                     child: Padding(
-//                       padding: const EdgeInsets.symmetric(horizontal: 10),
-//                       child: Column(
-//                         children: [
-//                           Center(
-//                             child: Text(
-//                               "Informasi RT",
-//                               style: TextStyle(fontSize: 20),
-//                             ),
-//                           ),
-//                           SizedBox(
-//                             height: 15,
-//                           ),
-//                           Form(
-//                             child: SingleChildScrollView(
-//                               child: Column(children: [
-//                                 Text("Judul"),
-//                                 SizedBox(
-//                                   height: 10,
-//                                 ),
-//                                 AppTextField(
-//                                   controller: controller.judulC,
-//                                   enabled: false,
-//                                   textFieldType: TextFieldType.NAME,
-//                                   textInputAction: TextInputAction.next,
-//                                   decoration: InputDecoration(
-//                                       border: OutlineInputBorder()),
-//                                 ),
-//                                 SizedBox(
-//                                   height: 20,
-//                                 ),
-//                                 Text("Deskripsi"),
-//                                 SizedBox(
-//                                   height: 10,
-//                                 ),
-//                                 AppTextField(
-//                                   controller: controller.deskripsiC,
-//                                   enabled: false,
-//                                   textFieldType: TextFieldType.NAME,
-//                                   textInputAction: TextInputAction.done,
-//                                   decoration: InputDecoration(
-//                                       border: OutlineInputBorder()),
-//                                 ),
-//                                 SizedBox(
-//                                   height: 20,
-//                                 ),
-//                                 Obx(() => controller.imagePath.value != ''
-//                                     ? Padding(
-//                                         padding: const EdgeInsets.all(10),
-//                                         child: Container(
-//                                           height: 200,
-//                                           width: 400,
-//                                           decoration: BoxDecoration(
-//                                               borderRadius:
-//                                                   BorderRadius.circular(10),
-//                                               image: DecorationImage(
-//                                                   image: FileImage(File(
-//                                                       controller
-//                                                           .imagePath.value)),
-//                                                   fit: BoxFit.cover)),
-//                                         ))
-//                                     : info.image != null
-//                                         ? Padding(
-//                                             padding: const EdgeInsets.all(10),
-//                                             child: Container(
-//                                               height: 200,
-//                                               width: 400,
-//                                               decoration: BoxDecoration(
-//                                                   borderRadius:
-//                                                       BorderRadius.circular(10),
-//                                                   image: DecorationImage(
-//                                                       image: NetworkImage(
-//                                                           info.image!),
-//                                                       fit: BoxFit.cover)),
-//                                             ))
-//                                         : Padding(
-//                                             padding: const EdgeInsets.all(10),
-//                                             child: Container(
-//                                               width: 400,
-//                                               height: 200,
-//                                               child: Center(
-//                                                 child: Padding(
-//                                                   padding: const EdgeInsets.all(
-//                                                       10.0),
-//                                                   child: Image(
-//                                                       image: AssetImage(
-//                                                           "images/home.png")),
-//                                                 ),
-//                                               ),
-//                                               decoration: BoxDecoration(
-//                                                 color: white,
-//                                                 borderRadius:
-//                                                     BorderRadius.circular(20),
-//                                               ),
-//                                             ),
-//                                           )),
-//                                 SizedBox(
-//                                   height: 10,
-//                                 ),
-//                               ]),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                   )
-//                 ],
-//               );
-//             });
-//       },
-//       child: Container(
-//         // padding: EdgeInsets.all(10),
-//         width: 250,
-//         height: 200,
-//         margin: EdgeInsets.all(10),
-//         child: SingleChildScrollView(
-//           child: Column(
-//             mainAxisSize: MainAxisSize.max,
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               info.image != null
-//                   ? Container(
-//                       height: 110,
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.only(
-//                           topLeft: Radius.circular(10),
-//                           topRight: Radius.circular(10),
-//                         ),
-//                         image: DecorationImage(
-//                             image: NetworkImage(info.image!),
-//                             fit: BoxFit.cover),
-//                       ),
-//                     )
-//                   : Container(
-//                       height: 90,
-//                       width: 240,
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.circular(10),
-//                         image: DecorationImage(
-//                             image: AssetImage("assets/home.png"),
-//                             fit: BoxFit.fitHeight),
-//                       ),
-//                     ),
-//               SizedBox(
-//                 height: 15,
-//               ),
-//               SingleChildScrollView(
-//                 scrollDirection: Axis.horizontal,
-//                 padding: EdgeInsets.only(left: 15),
-//                 child: Text(
-//                   info.judul!,
-//                   style: TextStyle(fontSize: 18),
-//                 ),
-//               ),
-//               SizedBox(
-//                 height: 5,
-//               ),
-//             ],
-//           ),
-//         ),
-//         decoration: BoxDecoration(
-//           color: white,
-//           boxShadow: [
-//             BoxShadow(
-//               color: dark,
-//               spreadRadius: 0,
-//               blurRadius: 4,
-//               offset: Offset(0, 4),
-//             )
-//           ],
-//           borderRadius: BorderRadius.circular(10),
-//         ),
-//       ),
-//     );
-//   }
-// }
+class InfoCard extends GetView<HomeController> {
+  InfoCard({required this.info});
+  Informasi info;
+  @override
+  Widget build(BuildContext context) {
+    controller.modelToController(info);
+    return InkWell(
+      onTap: () async {
+        await showDialog(
+            context: context,
+            builder: (context) {
+              return SimpleDialog(
+                backgroundColor: white,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkWell(
+                            onTap: () => Get.back(),
+                            child: Icon(Icons.close, size: 25),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Center(
+                          child: Obx(
+                            () => controller.imagePath.value != ''
+                                ? Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Container(
+                                      height: 200,
+                                      width: 400,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        image: DecorationImage(
+                                            image: FileImage(
+                                              File(controller.imagePath.value),
+                                            ),
+                                            fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                  )
+                                : info.image != null
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Container(
+                                          height: 200,
+                                          width: 400,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              image: DecorationImage(
+                                                  image:
+                                                      NetworkImage(info.image!),
+                                                  fit: BoxFit.cover)),
+                                        ))
+                                    : Padding(
+                                        padding: const EdgeInsets.all(10),
+                                        child: Container(
+                                          width: 400,
+                                          height: 200,
+                                          child: Center(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Image(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                      "images/home.png")),
+                                            ),
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                      ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          "${info.judul}",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "${info.deskripsi}",
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              );
+            });
+      },
+      child: Container(
+        // padding: EdgeInsets.all(10),
+        width: 250,
+        height: 200,
+        margin: EdgeInsets.all(10),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              info.image != null
+                  ? Container(
+                      height: 110,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        image: DecorationImage(
+                            image: NetworkImage(info.image!),
+                            fit: BoxFit.cover),
+                      ),
+                    )
+                  : Container(
+                      height: 110,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        image: DecorationImage(
+                            image: AssetImage("assets/home.png"),
+                            fit: BoxFit.cover),
+                      ),
+                    ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        info.judul!,
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        info.deskripsi!,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+            ],
+          ),
+        ),
+        decoration: BoxDecoration(
+          color: white,
+          boxShadow: [
+            BoxShadow(
+              color: dark,
+              spreadRadius: 0,
+              blurRadius: 4,
+              offset: Offset(0, 4),
+            )
+          ],
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+}
 
 // appBar: AppBar(
 //   title: Text('Home'),

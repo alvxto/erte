@@ -38,11 +38,11 @@ class ProfilController extends GetxController {
 
   tanggalLahir(dynamic context) async {
     selectedTanggal = await showDatePicker(
+            locale: Locale('id', 'ID'),
             context: context,
             initialDate: selectedTanggal ?? DateTime.now(),
             // initialDatePickerMode: DatePickerMode.year,
-            firstDate:
-                DateTime(1900),
+            firstDate: DateTime(1900),
             lastDate: DateTime(2050)) ??
         selectedTanggal;
   }
@@ -145,18 +145,26 @@ class ProfilController extends GetxController {
       await user.save(
           file: imagePath.value == '' ? null : File(imagePath.value));
       Get.defaultDialog(
-          title: "Berhasil",
-          middleText: "Profil telah dipebarui",
-          textConfirm: "Oke",
-          onConfirm: () {
-            Get.back();
-          },
-          buttonColor: primary,
-          cancelTextColor: primary,
-          confirmTextColor: white,
-          titleStyle: TextStyle(color: primary),
-          middleTextStyle: TextStyle(color: primary)
-          );
+        title: "Berhasil",
+        middleText: "Profil telah dipebarui",
+        textConfirm: "Oke",
+        onConfirm: () {
+          Get.back();
+          Get.back();
+        },
+        buttonColor: primary,
+        cancelTextColor: primary,
+        confirmTextColor: white,
+        titleStyle: TextStyle(
+          color: primary,
+          fontWeight: FontWeight.bold,
+        ),
+        middleTextStyle: TextStyle(
+          color: Color(0XFF757575),
+          fontSize: 13,
+          fontWeight: FontWeight.bold,
+        ),
+      );
     } catch (e) {
       print(e);
     } finally {
