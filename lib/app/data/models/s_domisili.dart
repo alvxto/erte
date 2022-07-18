@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erte/app/data/database.dart';
-import 'package:get/get.dart';
 
 const String sid = "id";
 const String snama = "nama";
@@ -28,6 +26,7 @@ class Domisili {
   DateTime? waktu;
   String? email;
 
+<<<<<<< HEAD
   Domisili(
       {this.id,
       this.nama,
@@ -40,6 +39,20 @@ class Domisili {
       this.waktu,
       this.email,
       this.nomer});
+=======
+  Domisili({
+    this.id,
+    this.nama,
+    this.kelamin,
+    this.tempatlahir,
+    this.tanggallahir,
+    this.nktp,
+    this.alamat,
+    this.keperluan1,
+    this.waktu,
+    this.email,
+  });
+>>>>>>> 47dbe1760feadf085df38442cb68ba97494a7dcd
 
   Domisili fromJson(DocumentSnapshot doc) {
     Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
