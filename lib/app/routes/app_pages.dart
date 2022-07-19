@@ -36,6 +36,8 @@ import '../modules/reset/bindings/reset_binding.dart';
 import '../modules/reset/views/reset_view.dart';
 import '../modules/riwayat/bindings/riwayat_binding.dart';
 import '../modules/riwayat/views/riwayat_view.dart';
+import '../modules/riwayat_lapor/bindings/riwayat_lapor_binding.dart';
+import '../modules/riwayat_lapor/views/riwayat_lapor_view.dart';
 import '../modules/s_domisili/bindings/s_domisili_binding.dart';
 import '../modules/s_domisili/views/s_domisili_view.dart';
 import '../modules/s_pengantar/bindings/s_pengantar_binding.dart';
@@ -198,6 +200,11 @@ class AppPages {
       name: _Paths.HUBUNGI_ADMIN,
       page: () => const HubungiAdminView(),
       binding: HubungiAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIWAYAT_LAPOR,
+      page: () => RiwayatLaporView(),
+      binding: RiwayatLaporBinding(),
     ),
   ];
 }

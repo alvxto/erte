@@ -207,6 +207,22 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                 )
                               : Container()),
+                          Obx(
+                            () => authC.user.role == "User"
+                                ? ListTile(
+                                    onTap: () =>
+                                        Get.toNamed(Routes.RIWAYAT_LAPOR),
+                                    leading: Icon(
+                                      Icons.history_outlined,
+                                      color: black,
+                                    ),
+                                    title: Text(
+                                      "Riwayat Lapor RT",
+                                      style: TextStyle(color: black),
+                                    ),
+                                  )
+                                : Container(),
+                          ),
                           ListTile(
                             onTap: () => Get.toNamed(Routes.PENGATURAN),
                             leading: Icon(

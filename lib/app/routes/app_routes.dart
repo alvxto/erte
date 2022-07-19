@@ -31,6 +31,7 @@ abstract class Routes {
   static const PENGATURAN = _Paths.PENGATURAN;
   static const INFO_APK = _Paths.INFO_APK;
   static const HUBUNGI_ADMIN = _Paths.HUBUNGI_ADMIN;
+  static const RIWAYAT_LAPOR = _Paths.RIWAYAT_LAPOR;
 }
 
 abstract class _Paths {
@@ -63,4 +64,5 @@ abstract class _Paths {
   static const PENGATURAN = '/pengaturan';
   static const INFO_APK = '/info-apk';
   static const HUBUNGI_ADMIN = '/hubungi-admin';
+  static const RIWAYAT_LAPOR = '/riwayat-lapor';
 }
