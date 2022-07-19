@@ -29,6 +29,8 @@ abstract class Routes {
   static const TES_PDF = _Paths.TES_PDF;
   static const REGISTRASI = _Paths.REGISTRASI;
   static const PENGATURAN = _Paths.PENGATURAN;
+  static const INFO_APK = _Paths.INFO_APK;
+  static const HUBUNGI_ADMIN = _Paths.HUBUNGI_ADMIN;
 }
 
 abstract class _Paths {
@@ -59,4 +61,6 @@ abstract class _Paths {
   static const TES_PDF = '/tes-pdf';
   static const REGISTRASI = '/registrasi';
   static const PENGATURAN = '/pengaturan';
+  static const INFO_APK = '/info-apk';
+  static const HUBUNGI_ADMIN = '/hubungi-admin';
 }

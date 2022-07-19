@@ -14,6 +14,10 @@ import '../modules/form_ktp/bindings/form_ktp_binding.dart';
 import '../modules/form_ktp/views/form_ktp_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/hubungi_admin/bindings/hubungi_admin_binding.dart';
+import '../modules/hubungi_admin/views/hubungi_admin_view.dart';
+import '../modules/info_apk/bindings/info_apk_binding.dart';
+import '../modules/info_apk/views/info_apk_view.dart';
 import '../modules/info_lengkap/bindings/info_lengkap_binding.dart';
 import '../modules/info_lengkap/views/info_lengkap_view.dart';
 import '../modules/informasi/bindings/informasi_binding.dart';
@@ -184,6 +188,16 @@ class AppPages {
       name: _Paths.PENGATURAN,
       page: () => PengaturanView(),
       binding: PengaturanBinding(),
+    ),
+    GetPage(
+      name: _Paths.INFO_APK,
+      page: () => InfoApkView(),
+      binding: InfoApkBinding(),
+    ),
+    GetPage(
+      name: _Paths.HUBUNGI_ADMIN,
+      page: () => const HubungiAdminView(),
+      binding: HubungiAdminBinding(),
     ),
   ];
 }
