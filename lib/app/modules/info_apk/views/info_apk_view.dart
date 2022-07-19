@@ -13,7 +13,7 @@ class InfoApkView extends GetView<InfoApkController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarRT(
-          title: "Surat Pengantar",
+          title: "Informasi Aplikasi",
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -22,7 +22,8 @@ class InfoApkView extends GetView<InfoApkController> {
                 padding: EdgeInsets.only(),
                 child: Container(
                   child: Text(
-                      "Lörem ipsum nygisk sumyheliga jobbtorg är ogåning, hemire. Våsade nebuval, och biohäde renispertad är vången. Vit lanyre i abelt remuktig i tigt. Retrest tuhott. Våck eserar för att sul mikroren. Lörem ipsum nygisk sumyheliga jobbtorg är ogåning, hemire. Våsade nebuval, och biohäde renispertad är vången. Vit lanyre i abelt remuktig i tigt. Retrest tuhott. Våck eserar för att sul mikroren. "),
+                    "ERTE adalah supperapp dengan layanan pengurusan berkas seperti pengajuan KTP, KK & banyak lagi.",
+                  ),
                 ),
               ),
             ],

@@ -15,24 +15,21 @@ class PengaturanView extends GetView<PengaturanController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarRT(
-          title: "Surat Pengantar",
+          title: "Pengaturan",
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 2, right: 2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Text("Email"),
-                    ),
-                    Container(
-                      child: Text(authC.user.email!),
-                    )
-                  ],
+              ListTile(
+                leading: Icon(
+                  Icons.email_outlined,
+                  color: black,
                 ),
+                title: Text(
+                  "Email",
+                  style: TextStyle(color: black),
+                ),
+                subtitle: Text(authC.user.email!),
               ),
               ListTile(
                 onTap: () => Get.toNamed(Routes.INFO_APK),
