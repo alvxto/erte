@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:erte/app/const/widget.dart';
 import 'package:get/get.dart';
-
 import '../controllers/hubungi_admin_controller.dart';
 
 class HubungiAdminView extends GetView<HubungiAdminController> {
@@ -9,10 +8,7 @@ class HubungiAdminView extends GetView<HubungiAdminController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('HubungiAdminView'),
-        centerTitle: true,
-      ),
+      appBar: AppBarRT(title: "HubungiAdminView"),
       body: Center(
         child: Text(
           'HubungiAdminView is working',
