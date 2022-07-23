@@ -14,6 +14,10 @@ import '../modules/form_ktp/bindings/form_ktp_binding.dart';
 import '../modules/form_ktp/views/form_ktp_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/hubungi_admin/bindings/hubungi_admin_binding.dart';
+import '../modules/hubungi_admin/views/hubungi_admin_view.dart';
+import '../modules/info_apk/bindings/info_apk_binding.dart';
+import '../modules/info_apk/views/info_apk_view.dart';
 import '../modules/info_lengkap/bindings/info_lengkap_binding.dart';
 import '../modules/info_lengkap/views/info_lengkap_view.dart';
 import '../modules/informasi/bindings/informasi_binding.dart';
@@ -24,13 +28,16 @@ import '../modules/kas/bindings/kas_binding.dart';
 import '../modules/kas/views/kas_view.dart';
 import '../modules/lapor/bindings/lapor_binding.dart';
 import '../modules/lapor/views/lapor_view.dart';
+import '../modules/pengaturan/bindings/pengaturan_binding.dart';
+import '../modules/pengaturan/views/pengaturan_view.dart';
 import '../modules/profil/bindings/profil_binding.dart';
 import '../modules/profil/views/profil_view.dart';
-
 import '../modules/reset/bindings/reset_binding.dart';
 import '../modules/reset/views/reset_view.dart';
 import '../modules/riwayat/bindings/riwayat_binding.dart';
 import '../modules/riwayat/views/riwayat_view.dart';
+import '../modules/riwayat_lapor/bindings/riwayat_lapor_binding.dart';
+import '../modules/riwayat_lapor/views/riwayat_lapor_view.dart';
 import '../modules/s_domisili/bindings/s_domisili_binding.dart';
 import '../modules/s_domisili/views/s_domisili_view.dart';
 import '../modules/s_pengantar/bindings/s_pengantar_binding.dart';
@@ -178,6 +185,26 @@ class AppPages {
       name: _Paths.TES_PDF,
       page: () => TesPdfView(),
       binding: TesPdfBinding(),
+    ),
+    GetPage(
+      name: _Paths.PENGATURAN,
+      page: () => PengaturanView(),
+      binding: PengaturanBinding(),
+    ),
+    GetPage(
+      name: _Paths.INFO_APK,
+      page: () => InfoApkView(),
+      binding: InfoApkBinding(),
+    ),
+    GetPage(
+      name: _Paths.HUBUNGI_ADMIN,
+      page: () => HubungiAdminView(),
+      binding: HubungiAdminBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIWAYAT_LAPOR,
+      page: () => RiwayatLaporView(),
+      binding: RiwayatLaporBinding(),
     ),
   ];
 }

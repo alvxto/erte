@@ -58,6 +58,22 @@ class Domisili {
     );
   }
 
+  Domisili.fromJson(DocumentSnapshot doc) {
+    Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
+
+    id = doc.id;
+    nama = json[snama];
+    kelamin = json[skelamin];
+    tempatlahir = json[stempatlahir];
+    tanggallahir = (json[stanggallahir] as Timestamp?)?.toDate();
+    nktp = json[snktp];
+    alamat = json[salamat];
+    keperluan = json[skeperluan];
+    waktu = (json[swaktu] as Timestamp?)?.toDate();
+    email = json[semail];
+    nomer = json[snomer];
+  }
+
   Map<String, dynamic> get toJson => {
         sid: id,
         snama: nama,
@@ -92,7 +108,28 @@ class Domisili {
         .orderBy("waktu", descending: true)
         .get()
         .then((event) {
-      return fromJson(event.docs.first);
+      if (event.docs.length > 0) {
+        return fromJson(event.docs.first);
+      } else {
+        return Domisili();
+      }
+    });
+  }
+
+  Stream<List<Domisili>> listDomisili() async* {
+    yield* db.collectionReference
+        .orderBy("waktu", descending: true)
+        .snapshots()
+        .map((query) {
+      List<Domisili> list = [];
+      for (var doc in query.docs) {
+        list.add(
+          Domisili.fromJson(
+            doc,
+          ),
+        );
+      }
+      return list;
     });
   }
 }

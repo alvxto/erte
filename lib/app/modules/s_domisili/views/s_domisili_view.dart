@@ -374,7 +374,7 @@ class _SDomisiliViewState extends State<SDomisiliView> {
                     contentPadding: EdgeInsets.zero,
                     visualDensity: VisualDensity.compact,
                     title: Text(
-                      "Email / No Telepon",
+                      "Email",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -411,8 +411,7 @@ class _SDomisiliViewState extends State<SDomisiliView> {
                                   form1.currentState!.validate()) {
                                 controller.store(domisili);
                                 controller.storeabsen(absen);
-                                controller.storepengantar(pengantar);
-                                controller.getPDF(domisili);
+
                                 // controller.storepengantar(pengantar);
                               }
                             },

@@ -208,6 +208,33 @@ class HomeView extends GetView<HomeController> {
                                 )
                               : Container()),
                           Obx(
+                            () => authC.user.role == "User"
+                                ? ListTile(
+                                    onTap: () =>
+                                        Get.toNamed(Routes.RIWAYAT_LAPOR),
+                                    leading: Icon(
+                                      Icons.history_outlined,
+                                      color: black,
+                                    ),
+                                    title: Text(
+                                      "Riwayat Lapor RT",
+                                      style: TextStyle(color: black),
+                                    ),
+                                  )
+                                : Container(),
+                          ),
+                          ListTile(
+                            onTap: () => Get.toNamed(Routes.PENGATURAN),
+                            leading: Icon(
+                              Icons.settings,
+                              color: black,
+                            ),
+                            title: Text(
+                              "Pengaturan",
+                              style: TextStyle(color: black),
+                            ),
+                          ),
+                          Obx(
                             () => authC.user.id == null
                                 ? ListTile(
                                     onTap: () => Get.toNamed(Routes.AUTH),
@@ -224,11 +251,11 @@ class HomeView extends GetView<HomeController> {
                                     onTap: () => authC.logout(),
                                     leading: Icon(
                                       Icons.logout,
-                                      color: black,
+                                      color: Colors.red,
                                     ),
                                     title: Text(
-                                      "Logout",
-                                      style: TextStyle(color: black),
+                                      "Keluar",
+                                      style: TextStyle(color: Colors.red),
                                     ),
                                   ),
                           ),

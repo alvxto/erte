@@ -33,16 +33,11 @@ class Informasi {
 
   Informasi.fromJson(DocumentSnapshot doc) {
     Map<String, dynamic>? json = doc.data() as Map<String, dynamic>?;
-    id =
-    doc.id;
-    judul = 
-    json?[ljudul];
-    deskripsi = 
-    json?[ldeskripsi];
-    image = 
-    json?[limage];
-    waktu =
-    (json?[lwaktu] as Timestamp?)?.toDate();
+    id = doc.id;
+    judul = json?[ljudul];
+    deskripsi = json?[ldeskripsi];
+    image = json?[limage];
+    waktu = (json?[lwaktu] as Timestamp?)?.toDate();
   }
 
   Map<String, dynamic> get toJson => {

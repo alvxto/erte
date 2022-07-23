@@ -279,6 +279,60 @@ class _FormKkViewState extends State<FormKkView> {
                       contentPadding: EdgeInsets.zero,
                       visualDensity: VisualDensity.compact,
                       title: Text(
+                        "NIK",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                  AppTextField(
+                    textStyle: TextStyle(
+                      fontSize: 14,
+                    ),
+                    textFieldType: TextFieldType.PHONE,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      fillColor: Color(0xFFD6D7FD),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      contentPadding: EdgeInsets.all(10),
+                    ),
+                    controller: controller.nikC,
+                  ),
+                  SizedBox(height: 15),
+                  ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
+                      title: Text(
+                        "KK",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                  AppTextField(
+                    textStyle: TextStyle(
+                      fontSize: 14,
+                    ),
+                    textFieldType: TextFieldType.PHONE,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      fillColor: Color(0xFFD6D7FD),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      contentPadding: EdgeInsets.all(10),
+                    ),
+                    controller: controller.kkC,
+                  ),
+                  SizedBox(height: 15),
+                  ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
+                      title: Text(
                         "Alamat",
                         style: TextStyle(
                           fontSize: 15,
@@ -472,6 +526,29 @@ class _FormKkViewState extends State<FormKkView> {
                       controller: controller.namalengkapC),
                   SizedBox(height: 15),
                   ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
+                      title: Text(
+                        "Pendidikan",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                  DropdownSearch<String>(
+                      items: controller.ListPendidikan_pngntr,
+                      onChanged: (value) =>
+                          controller.selectedPendidikan_pngntr = value,
+                      mode: Mode.MENU,
+                      dropdownSearchDecoration: InputDecoration(
+                          fillColor: Color(0xFFD6D7FD),
+                          filled: true,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          contentPadding: EdgeInsets.only(left: 10)),
+                      selectedItem: controller.selectedPendidikan_pngntr),
+                  SizedBox(height: 15),
+                  ListTile(
                     contentPadding: EdgeInsets.zero,
                     visualDensity: VisualDensity.compact,
                     title: Text(
@@ -559,10 +636,11 @@ class _FormKkViewState extends State<FormKkView> {
                             fontWeight: FontWeight.bold,
                           )),
                       subtitle: Obx(() => Text(
-                            controller.selectedTanggalpaspor is DateTime
-                                ? DateFormat("EEE, dd MMM y", 'id')
-                                    .format(controller.selectedTanggalpaspor!)
-                                : '--',
+                            controller.selectedTanggalpaspor ==
+                                    DateTime(2050, 1, 1)
+                                ? 'tanggal belum dipilih'
+                                : DateFormat("EEE, dd MMM y", 'id')
+                                    .format(controller.selectedTanggalpaspor!),
                             style: TextStyle(fontSize: 14),
                           ))),
                   SizedBox(height: 15),
@@ -745,10 +823,11 @@ class _FormKkViewState extends State<FormKkView> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggallahir is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggallahir!)
-                              : '--',
+                          controller.selectedTanggallahir ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggallahir!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -1078,10 +1157,11 @@ class _FormKkViewState extends State<FormKkView> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalkawin is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalkawin!)
-                              : '--',
+                          controller.selectedTanggalkawin ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalkawin!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -1183,10 +1263,11 @@ class _FormKkViewState extends State<FormKkView> {
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold)),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalcerai is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalcerai!)
-                              : '--',
+                          controller.selectedTanggalcerai ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalcerai!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -1329,7 +1410,7 @@ class _FormKkViewState extends State<FormKkView> {
                     contentPadding: EdgeInsets.zero,
                     visualDensity: VisualDensity.compact,
                     title: Text(
-                      "Jenis Pekerjaan Orang ke -1",
+                      "Jenis Pekerjaan",
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -1346,138 +1427,7 @@ class _FormKkViewState extends State<FormKkView> {
                             borderRadius: BorderRadius.circular(10)),
                         contentPadding: EdgeInsets.only(left: 10)),
                     selectedItem: controller.selectedPekerjaan),
-                SizedBox(height: 15),
-                ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    title: Text(
-                      "Jenis Pekerjaan Orang ke -2",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-                DropdownSearch<String>(
-                    items: controller.listPekerjaan2,
-                    onChanged: (value) => controller.selectedPekerjaan2 = value,
-                    mode: Mode.MENU,
-                    dropdownSearchDecoration: InputDecoration(
-                        fillColor: Color(0xFFD6D7FD),
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        contentPadding: EdgeInsets.only(left: 10)),
-                    selectedItem: controller.selectedPekerjaan2),
-                SizedBox(height: 15),
-                ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    title: Text(
-                      "Jenis Pekerjaan Orang ke -3",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-                DropdownSearch<String>(
-                    items: controller.listPekerjaan3,
-                    onChanged: (value) => controller.selectedPekerjaan3 = value,
-                    mode: Mode.MENU,
-                    dropdownSearchDecoration: InputDecoration(
-                        fillColor: Color(0xFFD6D7FD),
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        contentPadding: EdgeInsets.only(left: 10)),
-                    selectedItem: controller.selectedPekerjaan3),
-                SizedBox(height: 15),
-                ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    title: Text(
-                      "Jenis Pekerjaan Orang ke -4",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-                DropdownSearch<String>(
-                    items: controller.listPekerjaan4,
-                    onChanged: (value) => controller.selectedPekerjaan4 = value,
-                    mode: Mode.MENU,
-                    dropdownSearchDecoration: InputDecoration(
-                        fillColor: Color(0xFFD6D7FD),
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        contentPadding: EdgeInsets.only(left: 10)),
-                    selectedItem: controller.selectedPekerjaan4),
-                SizedBox(height: 15),
-                ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    title: Text(
-                      "Jenis Pekerjaan Orang ke -5",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-                DropdownSearch<String>(
-                    items: controller.listPekerjaan5,
-                    onChanged: (value) => controller.selectedPekerjaan5 = value,
-                    mode: Mode.MENU,
-                    dropdownSearchDecoration: InputDecoration(
-                        fillColor: Color(0xFFD6D7FD),
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        contentPadding: EdgeInsets.only(left: 10)),
-                    selectedItem: controller.selectedPekerjaan5),
-                SizedBox(height: 15),
-                ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    title: Text(
-                      "Jenis Pekerjaan Orang ke -6",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-                DropdownSearch<String>(
-                    items: controller.listPekerjaan6,
-                    onChanged: (value) => controller.selectedPekerjaan6 = value,
-                    mode: Mode.MENU,
-                    dropdownSearchDecoration: InputDecoration(
-                        fillColor: Color(0xFFD6D7FD),
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        contentPadding: EdgeInsets.only(left: 10)),
-                    selectedItem: controller.selectedPekerjaan6),
-                SizedBox(height: 15),
-                ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    visualDensity: VisualDensity.compact,
-                    title: Text(
-                      "Jenis Pekerjaan Orang ke -7",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-                DropdownSearch<String>(
-                    items: controller.listPekerjaan7,
-                    onChanged: (value) => controller.selectedPekerjaan7 = value,
-                    mode: Mode.MENU,
-                    dropdownSearchDecoration: InputDecoration(
-                        fillColor: Color(0xFFD6D7FD),
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        contentPadding: EdgeInsets.only(left: 10)),
-                    selectedItem: controller.selectedPekerjaan7),
+
                 SizedBox(height: 15),
                 ListTile(
                     contentPadding: EdgeInsets.zero,
@@ -1541,10 +1491,11 @@ class _FormKkViewState extends State<FormKkView> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalTerbitItas is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalTerbitItas!)
-                            : '--',
+                        controller.selectedTanggalTerbitItas ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalTerbitItas!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -1566,10 +1517,10 @@ class _FormKkViewState extends State<FormKkView> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalItas is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalItas!)
-                            : '--',
+                        controller.selectedTanggalItas == DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalItas!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -1615,10 +1566,11 @@ class _FormKkViewState extends State<FormKkView> {
                       ),
                     ),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalpertama is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalpertama!)
-                            : '--',
+                        controller.selectedTanggalpertama ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalpertama!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -1802,8 +1754,6 @@ class _FormKkViewState extends State<FormKkView> {
                                 form2.currentState!.validate()) {
                               controller.store(kk);
                               controller.storeabsen(absen);
-                              controller.storepengantar(pengantar);
-                              controller.getPDF(kk);
                             }
                           },
                     child: Container(
@@ -2142,10 +2092,11 @@ class _FormKkView2State extends State<FormKkView2> {
                             fontWeight: FontWeight.bold,
                           )),
                       subtitle: Obx(() => Text(
-                            controller.selectedTanggalpaspor2 is DateTime
-                                ? DateFormat("EEE, dd MMM y", 'id')
-                                    .format(controller.selectedTanggalpaspor2!)
-                                : '--',
+                            controller.selectedTanggalpaspor2 ==
+                                    DateTime(2050, 1, 1)
+                                ? 'tanggal belum dipilih'
+                                : DateFormat("EEE, dd MMM y", 'id')
+                                    .format(controller.selectedTanggalpaspor2!),
                             style: TextStyle(fontSize: 14),
                           ))),
                   SizedBox(height: 15),
@@ -2325,10 +2276,11 @@ class _FormKkView2State extends State<FormKkView2> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggallahir2 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggallahir2!)
-                              : '--',
+                          controller.selectedTanggallahir2 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggallahir2!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -2658,10 +2610,11 @@ class _FormKkView2State extends State<FormKkView2> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalkawin2 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalkawin2!)
-                              : '--',
+                          controller.selectedTanggalkawin2 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalkawin2!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -2763,10 +2716,11 @@ class _FormKkView2State extends State<FormKkView2> {
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold)),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalcerai2 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalcerai2!)
-                              : '--',
+                          controller.selectedTanggalcerai2 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalcerai2!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -2991,10 +2945,11 @@ class _FormKkView2State extends State<FormKkView2> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalTerbitItas2 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalTerbitItas2!)
-                            : '--',
+                        controller.selectedTanggalTerbitItas2 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalTerbitItas2!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -3016,10 +2971,10 @@ class _FormKkView2State extends State<FormKkView2> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalItas2 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalItas2!)
-                            : '--',
+                        controller.selectedTanggalItas2 == DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalItas2!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -3066,10 +3021,11 @@ class _FormKkView2State extends State<FormKkView2> {
                       ),
                     ),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalpertama2 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalpertama2!)
-                            : '--',
+                        controller.selectedTanggalpertama2 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalpertama2!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -3174,8 +3130,6 @@ class _FormKkView2State extends State<FormKkView2> {
                                 form2.currentState!.validate()) {
                               controller.store(kk);
                               controller.storeabsen(absen);
-                              controller.storepengantar(pengantar);
-                              controller.getPDF(kk);
                             }
                           },
                     child: Container(
@@ -3507,10 +3461,11 @@ class _FormKkView3State extends State<FormKkView3> {
                             fontWeight: FontWeight.bold,
                           )),
                       subtitle: Obx(() => Text(
-                            controller.selectedTanggalpaspor3 is DateTime
-                                ? DateFormat("EEE, dd MMM y", 'id')
-                                    .format(controller.selectedTanggalpaspor3!)
-                                : '--',
+                            controller.selectedTanggalpaspor3 ==
+                                    DateTime(2050, 1, 1)
+                                ? 'tanggal belum dipilih'
+                                : DateFormat("EEE, dd MMM y", 'id')
+                                    .format(controller.selectedTanggalpaspor3!),
                             style: TextStyle(fontSize: 14),
                           ))),
                   SizedBox(height: 15),
@@ -3690,10 +3645,11 @@ class _FormKkView3State extends State<FormKkView3> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggallahir3 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggallahir3!)
-                              : '--',
+                          controller.selectedTanggallahir3 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggallahir3!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -4023,10 +3979,11 @@ class _FormKkView3State extends State<FormKkView3> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalkawin3 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalkawin3!)
-                              : '--',
+                          controller.selectedTanggalkawin3 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalkawin3!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -4128,10 +4085,11 @@ class _FormKkView3State extends State<FormKkView3> {
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold)),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalcerai3 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalcerai3!)
-                              : '--',
+                          controller.selectedTanggalcerai3 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalcerai3!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -4356,10 +4314,11 @@ class _FormKkView3State extends State<FormKkView3> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalTerbitItas3 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalTerbitItas3!)
-                            : '--',
+                        controller.selectedTanggalTerbitItas3 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalTerbitItas3!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -4381,10 +4340,10 @@ class _FormKkView3State extends State<FormKkView3> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalItas3 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalItas3!)
-                            : '--',
+                        controller.selectedTanggalItas3 == DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalItas3!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -4431,10 +4390,11 @@ class _FormKkView3State extends State<FormKkView3> {
                       ),
                     ),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalpertama3 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalpertama3!)
-                            : '--',
+                        controller.selectedTanggalpertama3 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalpertama3!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -4539,8 +4499,6 @@ class _FormKkView3State extends State<FormKkView3> {
                                 form2.currentState!.validate()) {
                               controller.store(kk);
                               controller.storeabsen(absen);
-                              controller.storepengantar(pengantar);
-                              controller.getPDF(kk);
                             }
                           },
                     child: Container(
@@ -4872,10 +4830,11 @@ class _FormKkView4State extends State<FormKkView4> {
                             fontWeight: FontWeight.bold,
                           )),
                       subtitle: Obx(() => Text(
-                            controller.selectedTanggalpaspor4 is DateTime
-                                ? DateFormat("EEE, dd MMM y", 'id')
-                                    .format(controller.selectedTanggalpaspor4!)
-                                : '--',
+                            controller.selectedTanggalpaspor4 ==
+                                    DateTime(2050, 1, 1)
+                                ? 'tanggal belum dipilih'
+                                : DateFormat("EEE, dd MMM y", 'id')
+                                    .format(controller.selectedTanggalpaspor4!),
                             style: TextStyle(fontSize: 14),
                           ))),
                   SizedBox(height: 15),
@@ -4949,7 +4908,7 @@ class _FormKkView4State extends State<FormKkView4> {
                           contentPadding: EdgeInsets.only(left: 10)),
                       controller: controller.alamatsponsor4C)
                 ])))),
-        Step( 
+        Step(
             state: currentStep > 1 ? StepState.complete : StepState.editing,
             isActive: currentStep >= 1,
             title: Text("Identitas"),
@@ -5055,10 +5014,11 @@ class _FormKkView4State extends State<FormKkView4> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggallahir4 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggallahir4!)
-                              : '--',
+                          controller.selectedTanggallahir4 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggallahir4!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -5388,10 +5348,11 @@ class _FormKkView4State extends State<FormKkView4> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalkawin4 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalkawin4!)
-                              : '--',
+                          controller.selectedTanggalkawin4 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalkawin4!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -5493,10 +5454,11 @@ class _FormKkView4State extends State<FormKkView4> {
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold)),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalcerai4 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalcerai4!)
-                              : '--',
+                          controller.selectedTanggalcerai4 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalcerai4!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -5721,10 +5683,11 @@ class _FormKkView4State extends State<FormKkView4> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalTerbitItas4 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalTerbitItas4!)
-                            : '--',
+                        controller.selectedTanggalTerbitItas4 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalTerbitItas4!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -5746,10 +5709,10 @@ class _FormKkView4State extends State<FormKkView4> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalItas4 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalItas4!)
-                            : '--',
+                        controller.selectedTanggalItas4 == DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalItas4!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -5796,10 +5759,11 @@ class _FormKkView4State extends State<FormKkView4> {
                       ),
                     ),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalpertama4 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalpertama4!)
-                            : '--',
+                        controller.selectedTanggalpertama4 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalpertama4!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -5904,8 +5868,6 @@ class _FormKkView4State extends State<FormKkView4> {
                                 form2.currentState!.validate()) {
                               controller.store(kk);
                               controller.storeabsen(absen);
-                              controller.storepengantar(pengantar);
-                              controller.getPDF(kk);
                             }
                           },
                     child: Container(
@@ -6237,10 +6199,11 @@ class _FormKkView5State extends State<FormKkView5> {
                             fontWeight: FontWeight.bold,
                           )),
                       subtitle: Obx(() => Text(
-                            controller.selectedTanggalpaspor5 is DateTime
-                                ? DateFormat("EEE, dd MMM y", 'id')
-                                    .format(controller.selectedTanggalpaspor5!)
-                                : '--',
+                            controller.selectedTanggalpaspor5 ==
+                                    DateTime(2050, 1, 1)
+                                ? 'tanggal belum dipilih'
+                                : DateFormat("EEE, dd MMM y", 'id')
+                                    .format(controller.selectedTanggalpaspor5!),
                             style: TextStyle(fontSize: 14),
                           ))),
                   SizedBox(height: 15),
@@ -6420,10 +6383,11 @@ class _FormKkView5State extends State<FormKkView5> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggallahir5 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggallahir5!)
-                              : '--',
+                          controller.selectedTanggallahir5 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggallahir5!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -6753,10 +6717,11 @@ class _FormKkView5State extends State<FormKkView5> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalkawin5 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalkawin5!)
-                              : '--',
+                          controller.selectedTanggalkawin5 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalkawin5!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -6858,10 +6823,11 @@ class _FormKkView5State extends State<FormKkView5> {
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold)),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalcerai5 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalcerai5!)
-                              : '--',
+                          controller.selectedTanggalcerai5 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalcerai5!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -7086,10 +7052,11 @@ class _FormKkView5State extends State<FormKkView5> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalTerbitItas5 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalTerbitItas5!)
-                            : '--',
+                        controller.selectedTanggalTerbitItas5 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalTerbitItas5!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -7111,10 +7078,10 @@ class _FormKkView5State extends State<FormKkView5> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalItas5 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalItas5!)
-                            : '--',
+                        controller.selectedTanggalItas5 == DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalItas5!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -7161,10 +7128,11 @@ class _FormKkView5State extends State<FormKkView5> {
                       ),
                     ),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalpertama5 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalpertama5!)
-                            : '--',
+                        controller.selectedTanggalpertama5 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalpertama5!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -7269,8 +7237,6 @@ class _FormKkView5State extends State<FormKkView5> {
                                 form2.currentState!.validate()) {
                               controller.store(kk);
                               controller.storeabsen(absen);
-                              controller.storepengantar(pengantar);
-                              controller.getPDF(kk);
                             }
                           },
                     child: Container(
@@ -7602,10 +7568,11 @@ class _FormKkView6State extends State<FormKkView6> {
                             fontWeight: FontWeight.bold,
                           )),
                       subtitle: Obx(() => Text(
-                            controller.selectedTanggalpaspor6 is DateTime
-                                ? DateFormat("EEE, dd MMM y", 'id')
-                                    .format(controller.selectedTanggalpaspor6!)
-                                : '--',
+                            controller.selectedTanggalpaspor6 ==
+                                    DateTime(2050, 1, 1)
+                                ? 'tanggal belum dipilih'
+                                : DateFormat("EEE, dd MMM y", 'id')
+                                    .format(controller.selectedTanggalpaspor6!),
                             style: TextStyle(fontSize: 14),
                           ))),
                   SizedBox(height: 15),
@@ -7785,10 +7752,11 @@ class _FormKkView6State extends State<FormKkView6> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggallahir6 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggallahir6!)
-                              : '--',
+                          controller.selectedTanggallahir6 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggallahir6!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -8118,10 +8086,11 @@ class _FormKkView6State extends State<FormKkView6> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalkawin6 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalkawin6!)
-                              : '--',
+                          controller.selectedTanggalkawin6 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalkawin6!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -8223,10 +8192,11 @@ class _FormKkView6State extends State<FormKkView6> {
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold)),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalcerai6 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalcerai6!)
-                              : '--',
+                          controller.selectedTanggalcerai6 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalcerai6!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -8451,10 +8421,11 @@ class _FormKkView6State extends State<FormKkView6> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalTerbitItas6 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalTerbitItas6!)
-                            : '--',
+                        controller.selectedTanggalTerbitItas6 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalTerbitItas6!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -8476,10 +8447,10 @@ class _FormKkView6State extends State<FormKkView6> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalItas6 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalItas6!)
-                            : '--',
+                        controller.selectedTanggalItas6 == DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalItas6!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -8526,10 +8497,11 @@ class _FormKkView6State extends State<FormKkView6> {
                       ),
                     ),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalpertama6 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalpertama6!)
-                            : '--',
+                        controller.selectedTanggalpertama6 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalpertama6!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -8634,8 +8606,6 @@ class _FormKkView6State extends State<FormKkView6> {
                                 form2.currentState!.validate()) {
                               controller.store(kk);
                               controller.storeabsen(absen);
-                              controller.storepengantar(pengantar);
-                              controller.getPDF(kk);
                             }
                           },
                     child: Container(
@@ -8967,10 +8937,11 @@ class _FormKkView7State extends State<FormKkView7> {
                             fontWeight: FontWeight.bold,
                           )),
                       subtitle: Obx(() => Text(
-                            controller.selectedTanggalpaspor7 is DateTime
-                                ? DateFormat("EEE, dd MMM y", 'id')
-                                    .format(controller.selectedTanggalpaspor7!)
-                                : '--',
+                            controller.selectedTanggalpaspor7 ==
+                                    DateTime(2050, 1, 1)
+                                ? 'tanggal belum dipilih'
+                                : DateFormat("EEE, dd MMM y", 'id')
+                                    .format(controller.selectedTanggalpaspor7!),
                             style: TextStyle(fontSize: 14),
                           ))),
                   SizedBox(height: 15),
@@ -9150,10 +9121,11 @@ class _FormKkView7State extends State<FormKkView7> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggallahir7 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggallahir7!)
-                              : '--',
+                          controller.selectedTanggallahir7 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggallahir7!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -9483,10 +9455,11 @@ class _FormKkView7State extends State<FormKkView7> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalkawin7 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalkawin7!)
-                              : '--',
+                          controller.selectedTanggalkawin7 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalkawin7!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -9588,10 +9561,11 @@ class _FormKkView7State extends State<FormKkView7> {
                         style: TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold)),
                     subtitle: Obx(() => Text(
-                          controller.selectedTanggalcerai7 is DateTime
-                              ? DateFormat("EEE, dd MMM y", 'id')
-                                  .format(controller.selectedTanggalcerai7!)
-                              : '--',
+                          controller.selectedTanggalcerai7 ==
+                                  DateTime(2050, 1, 1)
+                              ? 'tanggal belum dipilih'
+                              : DateFormat("EEE, dd MMM y", 'id')
+                                  .format(controller.selectedTanggalcerai7!),
                           style: TextStyle(
                             fontSize: 14,
                           ),
@@ -9816,10 +9790,11 @@ class _FormKkView7State extends State<FormKkView7> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalTerbitItas7 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalTerbitItas7!)
-                            : '--',
+                        controller.selectedTanggalTerbitItas7 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalTerbitItas7!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -9841,10 +9816,10 @@ class _FormKkView7State extends State<FormKkView7> {
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalItas7 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalItas7!)
-                            : '--',
+                        controller.selectedTanggalItas7 == DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalItas7!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -9891,10 +9866,11 @@ class _FormKkView7State extends State<FormKkView7> {
                       ),
                     ),
                     subtitle: Obx(() => Text(
-                        controller.selectedTanggalpertama7 is DateTime
-                            ? DateFormat("EEE, dd MMM y", 'id')
-                                .format(controller.selectedTanggalpertama7!)
-                            : '--',
+                        controller.selectedTanggalpertama7 ==
+                                DateTime(2050, 1, 1)
+                            ? 'tanggal belum dipilih'
+                            : DateFormat("EEE, dd MMM y", 'id')
+                                .format(controller.selectedTanggalpertama7!),
                         style: TextStyle(
                           fontSize: 14,
                         )))),
@@ -9999,8 +9975,6 @@ class _FormKkView7State extends State<FormKkView7> {
                                 form2.currentState!.validate()) {
                               controller.store(kk);
                               controller.storeabsen(absen);
-                              controller.storepengantar(pengantar);
-                              controller.getPDF(kk);
                             }
                           },
                     child: Container(

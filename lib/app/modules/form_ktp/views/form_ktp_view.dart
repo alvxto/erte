@@ -719,7 +719,7 @@ class _FormKtpViewState extends State<FormKtpView> {
                     contentPadding: EdgeInsets.zero,
                     visualDensity: VisualDensity.compact,
                     title: Text(
-                      "Email / No Telepon",
+                      "Email",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -863,9 +863,6 @@ class _FormKtpViewState extends State<FormKtpView> {
                                   form2.currentState!.validate()) {
                                 controller.store(ktp);
                                 controller.storeabsen(absen);
-                                controller.storepengantar(pengantar);
-                                controller.getPDF(
-                                    ktp: ktp, pengantar: pengantar);
                               }
                             },
                       child: Container(
