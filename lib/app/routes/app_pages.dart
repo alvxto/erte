@@ -198,7 +198,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.HUBUNGI_ADMIN,
-      page: () => const HubungiAdminView(),
+      page: () => HubungiAdminView(),
       binding: HubungiAdminBinding(),
     ),
     GetPage(

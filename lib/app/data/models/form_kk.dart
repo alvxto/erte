@@ -294,6 +294,12 @@ const String skewarganegaraan6 = "kewarganegaraan6";
 const String skewarganegaraan7 = "kewarganegaraan7";
 const String swaktu = "waktu";
 const String semail = "email";
+const String snomer = "nomer";
+const String skeperluan1 = "keperluan1";
+const String skk = "kk";
+const String snik = "nik";
+const String swni = "wni";
+const String spendidikan_pngntr = "pendidikan_pngntr";
 
 class KK {
   String? id;
@@ -588,6 +594,12 @@ class KK {
   String? kelamin7;
   DateTime? waktu;
   String? email;
+  String? keperluan1;
+  int? nomer;
+  int? nik;
+  int? kk;
+  String? wni;
+  String? pendidikan_pngntr;
 
   KK({
     this.agama,
@@ -882,6 +894,12 @@ class KK {
     this.kewarganegaraan6,
     this.kewarganegaraan7,
     this.email,
+    this.keperluan1,
+    this.kk,
+    this.nik,
+    this.nomer,
+    this.wni,
+    this.pendidikan_pngntr,
   });
 
   KK fromJson(DocumentSnapshot doc) {
@@ -1179,7 +1197,316 @@ class KK {
       tanggalterbititas6: (json[stanggalterbititas6] as Timestamp?)?.toDate(),
       tanggalterbititas7: (json[stanggalterbititas7] as Timestamp?)?.toDate(),
       email: json[semail],
+      nomer: json[snomer],
+      keperluan1: json[skeperluan1],
+      nik: json[snik],
+      kk: json[skk],
+      wni: json[swni],
+      pendidikan_pngntr: json[spendidikan_pngntr],
     );
+  }
+
+  KK.fromJson(DocumentSnapshot doc) {
+    Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
+
+    id = doc.id;
+    namakepala = json[snamakepala];
+    namalengkap = json[snamalengkap];
+    namalengkap2 = json[snamalengkap2];
+    namalengkap3 = json[snamalengkap3];
+    namalengkap4 = json[snamalengkap4];
+    namalengkap5 = json[snamalengkap5];
+    namalengkap6 = json[snamalengkap6];
+    namalengkap7 = json[snamalengkap7];
+    namaayah = json[snamaayah];
+    namaayah2 = json[snamaayah2];
+    namaayah3 = json[snamaayah3];
+    namaayah4 = json[snamaayah4];
+    namaayah5 = json[snamaayah5];
+    namaayah6 = json[snamaayah6];
+    namaayah7 = json[snamaayah7];
+    namaibu = json[snamaibu];
+    namaibu2 = json[snamaibu2];
+    namaibu3 = json[snamaibu3];
+    namaibu4 = json[snamaibu4];
+    namaibu5 = json[snamaibu5];
+    namaibu6 = json[snamaibu6];
+    namaibu7 = json[snamaibu7];
+    namasponsor = json[snamasponsor];
+    namasponsor2 = json[snamasponsor2];
+    namasponsor3 = json[snamasponsor3];
+    namasponsor4 = json[snamasponsor4];
+    namasponsor5 = json[snamasponsor5];
+    namasponsor6 = json[snamasponsor6];
+    namasponsor7 = json[snamasponsor7];
+    kelamin = json[skelamin];
+    kelamin2 = json[skelamin2];
+    kelamin3 = json[skelamin3];
+    kelamin4 = json[skelamin4];
+    kelamin5 = json[skelamin5];
+    kelamin6 = json[skelamin6];
+    kelamin7 = json[skelamin7];
+    tempatlahir = json[stempatlahir];
+    tempatlahir2 = json[stempatlahir2];
+    tempatlahir3 = json[stempatlahir3];
+    tempatlahir4 = json[stempatlahir4];
+    tempatlahir5 = json[stempatlahir5];
+    tempatlahir6 = json[stempatlahir6];
+    tempatlahir7 = json[stempatlahir7];
+    tanggallahir = (json[stanggallahir] as Timestamp?)?.toDate();
+    tanggallahir2 = (json[stanggallahir2] as Timestamp?)?.toDate();
+    tanggallahir3 = (json[stanggallahir3] as Timestamp?)?.toDate();
+    tanggallahir4 = (json[stanggallahir4] as Timestamp?)?.toDate();
+    tanggallahir5 = (json[stanggallahir5] as Timestamp?)?.toDate();
+    tanggallahir6 = (json[stanggallahir6] as Timestamp?)?.toDate();
+    tanggallahir7 = (json[stanggallahir7] as Timestamp?)?.toDate();
+    agama = json[sagama];
+    agama2 = json[sagama2];
+    agama3 = json[sagama3];
+    agama4 = json[sagama4];
+    agama5 = json[sagama5];
+    agama6 = json[sagama6];
+    agama7 = json[sagama7];
+    statuskawin = json[sstatuskawin];
+    statuskawin2 = json[sstatuskawin2];
+    statuskawin3 = json[sstatuskawin3];
+    statuskawin4 = json[sstatuskawin4];
+    statuskawin5 = json[sstatuskawin5];
+    statuskawin6 = json[sstatuskawin6];
+    statuskawin7 = json[sstatuskawin7];
+    statuskeluarga = json[sstatuskeluarga];
+    statuskeluarga2 = json[sstatuskeluarga2];
+    statuskeluarga3 = json[sstatuskeluarga3];
+    statuskeluarga4 = json[sstatuskeluarga4];
+    statuskeluarga5 = json[sstatuskeluarga5];
+    statuskeluarga6 = json[sstatuskeluarga6];
+    statuskeluarga7 = json[sstatuskeluarga7];
+    // wni= json[swni];
+    pekerjaan = json[spekerjaan];
+    pekerjaan2 = json[spekerjaan2];
+    pekerjaan3 = json[spekerjaan3];
+    pekerjaan4 = json[spekerjaan4];
+    pekerjaan5 = json[spekerjaan5];
+    pekerjaan6 = json[spekerjaan6];
+    pekerjaan7 = json[spekerjaan7];
+    nikibu = json[snikibu];
+    nikibu2 = json[snikibu];
+    nikibu3 = json[snikibu];
+    nikibu4 = json[snikibu];
+    nikibu5 = json[snikibu];
+    nikibu6 = json[snikibu];
+    nikibu7 = json[snikibu];
+    nikayah = json[nikayah];
+    nikayah2 = json[nikayah2];
+    nikayah3 = json[nikayah3];
+    nikayah4 = json[nikayah4];
+    nikayah5 = json[nikayah5];
+    nikayah6 = json[nikayah6];
+    nikayah7 = json[nikayah7];
+    goldarah = json[sgoldarah];
+    goldarah2 = json[sgoldarah2];
+    goldarah3 = json[sgoldarah3];
+    goldarah4 = json[sgoldarah4];
+    goldarah5 = json[sgoldarah5];
+    goldarah6 = json[sgoldarah6];
+    goldarah7 = json[sgoldarah7];
+    rt = json[srt];
+    rw = json[srw];
+    alamat = json[salamat];
+    waktu = (json[swaktu] as Timestamp?)?.toDate();
+    aktacerai = json[saktacerai];
+    aktacerai2 = json[saktacerai2];
+    aktacerai3 = json[saktacerai3];
+    aktacerai4 = json[saktacerai4];
+    aktacerai5 = json[saktacerai5];
+    aktacerai6 = json[saktacerai6];
+    aktacerai7 = json[saktacerai7];
+    aktakawin = json[saktakawin];
+    aktakawin2 = json[saktakawin2];
+    aktakawin3 = json[saktakawin3];
+    aktakawin4 = json[saktakawin4];
+    aktakawin5 = json[saktakawin5];
+    aktakawin6 = json[saktakawin6];
+    aktakawin7 = json[saktakawin7];
+    aktalahir = json[saktalahir];
+    aktalahir2 = json[saktalahir2];
+    aktalahir3 = json[saktalahir3];
+    aktalahir4 = json[saktalahir4];
+    aktalahir5 = json[saktalahir5];
+    aktalahir6 = json[saktalahir6];
+    aktalahir7 = json[saktalahir7];
+    alamatsponsor = json[salamatsponsor];
+    alamatsponsor2 = json[salamatsponsor2];
+    alamatsponsor3 = json[salamatsponsor3];
+    alamatsponsor4 = json[salamatsponsor4];
+    alamatsponsor5 = json[salamatsponsor5];
+    alamatsponsor6 = json[salamatsponsor6];
+    alamatsponsor7 = json[salamatsponsor7];
+    cacat = json[scacat];
+    cacat2 = json[scacat2];
+    cacat3 = json[scacat3];
+    cacat4 = json[scacat4];
+    cacat5 = json[scacat5];
+    cacat6 = json[scacat6];
+    cacat7 = json[scacat7];
+    datakeluarga = json[sdatakeluarga];
+    gelarbelakang = json[sgelarbelakang];
+    gelarbelakang2 = json[sgelarbelakang2];
+    gelarbelakang3 = json[sgelarbelakang3];
+    gelarbelakang4 = json[sgelarbelakang4];
+    gelarbelakang5 = json[sgelarbelakang5];
+    gelarbelakang6 = json[sgelarbelakang6];
+    gelarbelakang7 = json[sgelarbelakang7];
+    gelardepan = json[sgelardepan];
+    gelardepan2 = json[sgelardepan];
+    gelardepan3 = json[sgelardepan];
+    gelardepan4 = json[sgelardepan];
+    gelardepan5 = json[sgelardepan];
+    gelardepan6 = json[sgelardepan];
+    gelardepan7 = json[sgelardepan];
+    jeniscacat = json[sjeniscacat];
+    jeniscacat2 = json[sjeniscacat2];
+    jeniscacat3 = json[sjeniscacat3];
+    jeniscacat4 = json[sjeniscacat4];
+    jeniscacat5 = json[sjeniscacat5];
+    jeniscacat6 = json[sjeniscacat6];
+    jeniscacat7 = json[sjeniscacat7];
+    jumkeluarga = json[sjumkeluarga];
+    kodeppos = json[skodeppos];
+    noakta = json[snoakta];
+    noakta2 = json[snoakta2];
+    noakta3 = json[snoakta3];
+    noakta4 = json[snoakta4];
+    noakta5 = json[snoakta5];
+    noakta6 = json[snoakta6];
+    noakta7 = json[snoakta7];
+    noaktacerai = json[saktacerai];
+    noaktacerai2 = json[saktacerai2];
+    noaktacerai3 = json[saktacerai3];
+    noaktacerai4 = json[saktacerai4];
+    noaktacerai5 = json[saktacerai5];
+    noaktacerai6 = json[saktacerai6];
+    noaktacerai7 = json[saktacerai7];
+    noaktakawin = json[saktakawin];
+    noaktakawin2 = json[saktakawin2];
+    noaktakawin3 = json[saktakawin3];
+    noaktakawin4 = json[saktakawin4];
+    noaktakawin5 = json[saktakawin5];
+    noaktakawin6 = json[saktakawin6];
+    noaktakawin7 = json[saktakawin7];
+    noitas = json[snoitas];
+    noitas2 = json[snoitas2];
+    noitas3 = json[snoitas3];
+    noitas4 = json[snoitas4];
+    noitas5 = json[snoitas5];
+    noitas6 = json[snoitas6];
+    noitas7 = json[snoitas7];
+    nopaspor = json[snopaspor];
+    nopaspor2 = json[snopaspor2];
+    nopaspor3 = json[snopaspor3];
+    nopaspor4 = json[snopaspor4];
+    nopaspor5 = json[snopaspor5];
+    nopaspor6 = json[snopaspor6];
+    nopaspor7 = json[snopaspor7];
+    nowali = json[snowali];
+    nowali2 = json[snowali2];
+    nowali3 = json[snowali3];
+    nowali4 = json[snowali4];
+    nowali5 = json[snowali5];
+    nowali6 = json[snowali6];
+    nowali7 = json[snowali7];
+    orgagama = json[sorgagama];
+    orgagama2 = json[sorgagama2];
+    orgagama3 = json[sorgagama3];
+    orgagama4 = json[sorgagama4];
+    orgagama5 = json[sorgagama5];
+    orgagama6 = json[sorgagama6];
+    orgagama7 = json[sorgagama7];
+    pendidikan = json[spendidikan];
+    pendidikan2 = json[spendidikan2];
+    pendidikan3 = json[spendidikan3];
+    pendidikan4 = json[spendidikan4];
+    pendidikan5 = json[spendidikan5];
+    pendidikan6 = json[spendidikan6];
+    pendidikan7 = json[spendidikan7];
+    telepon = json[stelepon];
+    tempatitas = json[stempatitas];
+    tempatitas2 = json[stempatitas2];
+    tempatitas3 = json[stempatitas3];
+    tempatitas4 = json[stempatitas4];
+    tempatitas5 = json[stempatitas5];
+    tempatitas6 = json[stempatitas6];
+    tempatitas7 = json[stempatitas7];
+    tempatpertama = json[stempatpertama];
+    tempatpertama2 = json[stempatpertama2];
+    tempatpertama3 = json[stempatpertama3];
+    tempatpertama4 = json[stempatpertama4];
+    tempatpertama5 = json[stempatpertama5];
+    tempatpertama6 = json[stempatpertama6];
+    tempatpertama7 = json[stempatpertama7];
+    tipesponsor = json[stipesponsor];
+    tipesponsor2 = json[stipesponsor2];
+    tipesponsor3 = json[stipesponsor3];
+    tipesponsor4 = json[stipesponsor4];
+    tipesponsor5 = json[stipesponsor5];
+    tipesponsor6 = json[stipesponsor6];
+    tipesponsor7 = json[stipesponsor7];
+    kewarganegaraan = json[skewarganegaraan];
+    kewarganegaraan2 = json[skewarganegaraan2];
+    kewarganegaraan3 = json[skewarganegaraan3];
+    kewarganegaraan4 = json[skewarganegaraan4];
+    kewarganegaraan5 = json[skewarganegaraan5];
+    kewarganegaraan6 = json[skewarganegaraan6];
+    kewarganegaraan7 = json[skewarganegaraan7];
+    tanggalcerai = (json[stanggalcerai] as Timestamp?)?.toDate();
+    tanggalcerai2 = (json[stanggalcerai] as Timestamp?)?.toDate();
+    tanggalcerai3 = (json[stanggalcerai] as Timestamp?)?.toDate();
+    tanggalcerai4 = (json[stanggalcerai] as Timestamp?)?.toDate();
+    tanggalcerai5 = (json[stanggalcerai] as Timestamp?)?.toDate();
+    tanggalcerai6 = (json[stanggalcerai] as Timestamp?)?.toDate();
+    tanggalcerai7 = (json[stanggalcerai] as Timestamp?)?.toDate();
+    tanggalitas = (json[stanggalitas] as Timestamp?)?.toDate();
+    tanggalitas2 = (json[stanggalitas2] as Timestamp?)?.toDate();
+    tanggalitas3 = (json[stanggalitas3] as Timestamp?)?.toDate();
+    tanggalitas4 = (json[stanggalitas4] as Timestamp?)?.toDate();
+    tanggalitas5 = (json[stanggalitas5] as Timestamp?)?.toDate();
+    tanggalitas6 = (json[stanggalitas6] as Timestamp?)?.toDate();
+    tanggalitas7 = (json[stanggalitas7] as Timestamp?)?.toDate();
+    tanggalkawin = (json[stanggalkawin] as Timestamp?)?.toDate();
+    tanggalkawin2 = (json[stanggalkawin2] as Timestamp?)?.toDate();
+    tanggalkawin3 = (json[stanggalkawin3] as Timestamp?)?.toDate();
+    tanggalkawin4 = (json[stanggalkawin4] as Timestamp?)?.toDate();
+    tanggalkawin5 = (json[stanggalkawin5] as Timestamp?)?.toDate();
+    tanggalkawin6 = (json[stanggalkawin6] as Timestamp?)?.toDate();
+    tanggalkawin7 = (json[stanggalkawin7] as Timestamp?)?.toDate();
+    tanggalpaspor = (json[stanggalpaspor] as Timestamp?)?.toDate();
+    tanggalpaspor2 = (json[stanggalpaspor2] as Timestamp?)?.toDate();
+    tanggalpaspor3 = (json[stanggalpaspor3] as Timestamp?)?.toDate();
+    tanggalpaspor4 = (json[stanggalpaspor4] as Timestamp?)?.toDate();
+    tanggalpaspor5 = (json[stanggalpaspor5] as Timestamp?)?.toDate();
+    tanggalpaspor6 = (json[stanggalpaspor6] as Timestamp?)?.toDate();
+    tanggalpaspor7 = (json[stanggalpaspor7] as Timestamp?)?.toDate();
+    tanggalpertama = (json[stanggalpertama] as Timestamp?)?.toDate();
+    tanggalpertama2 = (json[stanggalpertama2] as Timestamp?)?.toDate();
+    tanggalpertama3 = (json[stanggalpertama3] as Timestamp?)?.toDate();
+    tanggalpertama4 = (json[stanggalpertama4] as Timestamp?)?.toDate();
+    tanggalpertama5 = (json[stanggalpertama5] as Timestamp?)?.toDate();
+    tanggalpertama6 = (json[stanggalpertama6] as Timestamp?)?.toDate();
+    tanggalpertama7 = (json[stanggalpertama7] as Timestamp?)?.toDate();
+    tanggalterbititas = (json[stanggalterbititas] as Timestamp?)?.toDate();
+    tanggalterbititas2 = (json[stanggalterbititas2] as Timestamp?)?.toDate();
+    tanggalterbititas3 = (json[stanggalterbititas3] as Timestamp?)?.toDate();
+    tanggalterbititas4 = (json[stanggalterbititas4] as Timestamp?)?.toDate();
+    tanggalterbititas5 = (json[stanggalterbititas5] as Timestamp?)?.toDate();
+    tanggalterbititas6 = (json[stanggalterbititas6] as Timestamp?)?.toDate();
+    tanggalterbititas7 = (json[stanggalterbititas7] as Timestamp?)?.toDate();
+    email = json[semail];
+    nomer = json[snomer];
+    keperluan1 = json[skeperluan1];
+    nik = json[snik];
+    kk = json[skk];
+    wni = json[swni];
+    pendidikan_pngntr = json[spendidikan_pngntr];
   }
 
   Map<String, dynamic> get toJson => {
@@ -1471,9 +1798,12 @@ class KK {
         spekerjaan7: pekerjaan7,
         salamat: alamat,
         swaktu: waktu,
+        skeperluan1: keperluan1,
         srt: rt,
         srw: rw,
         semail: email,
+        swni: wni,
+        spendidikan_pngntr: pendidikan_pngntr,
       };
 
   Database db = Database(
@@ -1488,5 +1818,36 @@ class KK {
       db.edit(toJson);
     }
     return this;
+  }
+
+  Future<KK> streamList() async {
+    print("getStream");
+    return await db.collectionReference
+        .orderBy("waktu", descending: true)
+        .get()
+        .then((event) {
+      if (event.docs.length > 0) {
+        return fromJson(event.docs.first);
+      } else {
+        return KK();
+      }
+    });
+  }
+
+  Stream<List<KK>> listKK() async* {
+    yield* db.collectionReference
+        .orderBy("waktu", descending: true)
+        .snapshots()
+        .map((query) {
+      List<KK> list = [];
+      for (var doc in query.docs) {
+        list.add(
+          KK.fromJson(
+            doc,
+          ),
+        );
+      }
+      return list;
+    });
   }
 }

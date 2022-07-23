@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../controllers/hubungi_admin_controller.dart';
 
 class HubungiAdminView extends GetView<HubungiAdminController> {
-  const HubungiAdminView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

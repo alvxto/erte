@@ -714,7 +714,7 @@ class _SPengantarViewState extends State<SPengantarView> {
                     contentPadding: EdgeInsets.zero,
                     visualDensity: VisualDensity.compact,
                     title: Text(
-                      "Email/No Telepon",
+                      "Email",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
@@ -750,7 +750,6 @@ class _SPengantarViewState extends State<SPengantarView> {
                                   form2.currentState!.validate()) {
                                 controller.store(pengantar);
                                 controller.storeabsen(absen);
-                                controller.getPDF(pengantar);
                               }
                             },
                       child: Container(

@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erte/app/data/database.dart';
+import 'package:get/get.dart';
 
 const String sid = "id";
 const String snama = "nama";
@@ -61,7 +63,6 @@ class Pengantar {
       this.nomer});
 
   Pengantar fromJson(DocumentSnapshot doc) {
-    print("doc data = ${doc.data()}");
     Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
     return Pengantar(
       id: doc.id,
@@ -86,7 +87,6 @@ class Pengantar {
   }
 
   Pengantar.fromJson(DocumentSnapshot doc) {
-    print("doc data = ${doc.data()}");
     Map<String, dynamic> json = doc.data() as Map<String, dynamic>;
     id = doc.id;
     nama = json[snama];
@@ -149,11 +149,15 @@ class Pengantar {
         .orderBy("waktu", descending: true)
         .get()
         .then((event) {
-      return fromJson(event.docs.first);
+      if (event.docs.length > 0) {
+        return fromJson(event.docs.first);
+      } else {
+        return Pengantar();
+      }
     });
   }
 
-  Stream<List<Pengantar>> stlist() async* {
+  Stream<List<Pengantar>> listPengantar() async* {
     yield* db.collectionReference
         .orderBy("waktu", descending: true)
         .snapshots()
