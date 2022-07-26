@@ -14,7 +14,7 @@ class InfoApkView extends GetView<InfoApkController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBarRT(
-          title: "Informasi Aplikasi",
+          title: "Hubungi Admin",
         ),
         body: SingleChildScrollView(
           child: Column(

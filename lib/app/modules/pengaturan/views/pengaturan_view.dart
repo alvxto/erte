@@ -38,7 +38,7 @@ class PengaturanView extends GetView<PengaturanController> {
                   color: black,
                 ),
                 title: Text(
-                  "Informasi Aplikasi",
+                  "Hubungi Admin",
                   style: TextStyle(color: black),
                 ),
               ),
