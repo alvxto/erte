@@ -127,6 +127,7 @@ class Anggota {
     this.aktakawin,
     this.tanggalkawin,
     this.noaktakawin,
+    this.namaibu,
     this.aktacerai,
     this.tanggalcerai,
     this.noaktacerai,

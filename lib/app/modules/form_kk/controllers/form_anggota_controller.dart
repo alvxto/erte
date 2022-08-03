@@ -1,34 +1,19 @@
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:erte/app/const/color.dart';
-import 'package:erte/app/data/models/absen.dart';
-import 'package:erte/app/data/models/form_kk.dart';
-import 'package:erte/app/data/models/s_pengantar.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:erte/app/modules/form_kk/controllers/form_kk_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:pdf/pdf.dart';
-import 'package:printing/printing.dart';
 
-class FormKkController extends GetxController {
-  KK editedKK = KK();
-  // KK editedKK = KK();
+import '../../../data/models/form_kk.dart';
+
+class FormAnggotaController extends GetxController {
+  FormKkController formKkController = Get.find<FormKkController>();
   late TextEditingController namalengkapC;
-  late TextEditingController namakepalaC;
   late TextEditingController namasponsorC;
   late TextEditingController namaayahC;
   late TextEditingController namaibuC;
-  late TextEditingController kodeposC;
-  late TextEditingController jumkeluargaC;
-  late TextEditingController teleponC;
   late TextEditingController gelardepanC;
   late TextEditingController gelarbelakangC;
   late TextEditingController nopasporC;
@@ -39,68 +24,17 @@ class FormKkController extends GetxController {
   late TextEditingController noitasC;
   late TextEditingController tempatItasC;
   late TextEditingController tempatPertamaC;
-  late TextEditingController alamatC;
   late TextEditingController alamatsponsorC;
-  late TextEditingController rtC;
-  late TextEditingController rwC;
   late TextEditingController nowaliC;
   late TextEditingController noaktalahirC;
   late TextEditingController noaktakawinC;
   late TextEditingController noaktaceraiC;
   late TextEditingController orgagamaC;
   late TextEditingController kewarganegaraanC;
-  late TextEditingController emailC;
-  late TextEditingController nikC;
-  late TextEditingController kkC;
 
-  RxList<Anggota> rxAnggota = RxList<Anggota>();
-  List<Anggota> get anggota => rxAnggota.value;
-  set anggota(List<Anggota> value) => rxAnggota.value = value;
-
-  modelcontroller(Anggota anggota) async {
-    namalengkapC.text = anggota.namalengkap ?? '';
-    gelarbelakangC.text = anggota.gelarbelakang ?? '';
-    gelardepanC.text = anggota.gelardepan ?? '';
-    nopasporC.text = anggota.nopaspor ?? '';
-    selectedTanggalpaspor = anggota.tanggalpaspor;
-    namasponsorC.text = anggota.namasponsor ?? '';
-    selectedSponsor = anggota.tipesponsor!;
-    alamatsponsorC.text = anggota.alamatsponsor ?? '';
-    selectedPekerjaan = anggota.pekerjaan;
-    selectedAgama = anggota.agama;
-    selectedstatuskwinpngntr = anggota.statuskwinpngntr;
-    //    selectedStatus,statuskawin:
-    //    selectedKelamin,kelamin:
-    //  int.tryParse(nikibuC.text),  nikibu:
-    //   tanggallahir: selectedTanggallahir,
-    //   tempatlahir: tempatC.text,
-    //   kewarganegaraan: kewarganegaraanC.text,
-    //   nowali: int.tryParse(nowaliC.text),
-    //   goldarah: selectGoldarah,
-    //   aktalahir: selectedAktalahir,
-    //   noakta: noaktalahirC.text,
-    //   orgagama: orgagamaC.text,
-    //   noaktakawin: noaktakawinC.text,
-    //   aktakawin: selectedAktakawin,
-    //   tanggalkawin: selectedTanggalkawin,
-    //   aktacerai: selectedAktacerai,
-    //   noaktacerai: noaktaceraiC.text,
-    //   tanggalcerai: selectedTanggalcerai,
-    //   statuskeluarga: selectedHubungan,
-    //   cacat: selectedCacat,
-    //   jeniscacat: selectedJenisCacat,
-    //   pendidikan: selectedPendidikan,
-    //   noitas: noitasC.text,
-    //   tempatitas: tempatItasC.text,
-    //   tanggalterbititas: selectedTanggalTerbitItas,
-    //   tanggalitas: selectedTanggalItas,
-    //   tempatpertama: tempatPertamaC.text,
-    //   tanggalpertama: selectedTanggalpertama,
-    //   nikayah: int.tryParse(nikayahC.text),
-    //   namaayah: namaayahC.text,
-    namaibu:
-    namaibuC.text;
-  }
+  // modelcontroller(Anggota anggota) async {
+  //   namalengkapC.text = anggota.namalengkap ?? '';
+  // }
 
   //Tanggal Lahir
   Rx<DateTime?> _selectedTanggallahir = DateTime(2050, 1, 1).obs;
@@ -245,11 +179,6 @@ class FormKkController extends GetxController {
   var _selectedCacat = ''.obs;
   String get selectedCacat => _selectedCacat.value;
   set selectedCacat(String value) => _selectedCacat.value = value;
-
-  //Data Keluarga
-  var _selectedDataKeluarga = ''.obs;
-  String get selectedDataKeluarga => _selectedDataKeluarga.value;
-  set selectedDataKeluarga(String value) => _selectedDataKeluarga.value = value;
 
   //Pendidikan Pengantar
   List<String> ListPendidikan_pngntr = [
@@ -517,150 +446,61 @@ class FormKkController extends GetxController {
   ];
   String? selectedKeperluan2;
 
-  var _selectedWNI = ''.obs;
-  String get selectedWNI => _selectedWNI.value;
-  set selectedWNI(String value) => _selectedWNI.value = value;
-
   var _isSaving = false.obs;
   bool get isSaving => _isSaving.value;
   set isSaving(bool value) => _isSaving.value = value;
 
-  Future pickImage() async {
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.image);
-    if (result != null) {
-      File file = File(result.files.single.path!);
-      imagePath.value = file.path;
-    }
-  }
-
-  // modelToController(kk kk) {
-  //   namaC.text = kk.nama ?? '';
-  //   tempatC.text = kk.tempatlahir ?? '';
-  //   pekerjaanC.text = kk.pekerjaan ?? '';
-  //   alamatC.text = kk.alamat ?? '';
-  //   nikC.text = kk.nik?.toString() ?? '';
-  //   selectedAgama = kk.agama;
-  //   selectedKelamin = kk.kelamin ?? '';
-  //   selectedTanggal = kk.tanggallahir ?? DateTime.now();
-  //   selectedPendidikan = kk.pekerjaan;
-  //   selectedStatus = kk.status;
-  //   selectedWNI = kk.wni ?? '';
-  //   rtC.text = kk.rt ?? '';
-  //   rwC.text = kk.rw ?? '';
-  //   kelurahanC.text = kk.kelurahan ?? '';
-  //   kecamatanC.text = kk.kecamatan ?? '';
-  //   selectGoldarah = kk.goldarah ?? '';
-  // }
-
-  Future store(KK kk) async {
+  save(Anggota anggota) async {
     isSaving = true;
-
-    kk.datakeluarga = selectedDataKeluarga;
-    kk.jumkeluarga = int.tryParse(jumkeluargaC.text);
-    kk.namakepala = namakepalaC.text;
-    // anggota.namalengkap = namalengkapC.text;
-    // anggota.gelarbelakang = gelarbelakangC.text;
-    // anggota.gelardepan = gelardepanC.text;
-    // anggota.nopaspor = nopasporC.text;
-    // anggota.tanggalpaspor = selectedTanggalpaspor;
-    // anggota.namasponsor = namasponsorC.text;
-    // anggota.tipesponsor = selectedSponsor;
-    // anggota.alamatsponsor = alamatsponsorC.text;
-    kk.kodepos = int.tryParse(kodeposC.text);
-    kk.telepon = int.tryParse(teleponC.text);
-    // anggota.pekerjaan = selectedPekerjaan;
-    // anggota.agama = selectedAgama;
-    // anggota.statuskwinpngntr = selectedstatuskwinpngntr;
-    // anggota.statuskawin = selectedStatus;
-    kk.alamat = alamatC.text;
-    // anggota.kelamin = selectedKelamin;
-    // anggota.nikibu = int.tryParse(nikibuC.text);
-    // anggota.tanggallahir = selectedTanggallahir;
-    // anggota.tempatlahir = tempatC.text;
-    // anggota.kewarganegaraan = kewarganegaraanC.text;
-    // anggota.nowali = int.tryParse(nowaliC.text);
-    kk.rt = int.tryParse(rtC.text);
-    kk.rw = int.tryParse(rwC.text);
-    // anggota.goldarah = selectGoldarah;
-    // anggota.aktalahir = selectedAktalahir;
-    // anggota.noakta = noaktalahirC.text;
-    // anggota.orgagama = orgagamaC.text;
-    // anggota.noaktakawin = noaktakawinC.text;
-    // anggota.aktakawin = selectedAktakawin;
-    // anggota.tanggalkawin = selectedTanggalkawin;
-    // anggota.aktacerai = selectedAktacerai;
-    // anggota.noaktacerai = noaktaceraiC.text;
-    // anggota.tanggalcerai = selectedTanggalcerai;
-    // anggota.statuskeluarga = selectedHubungan;
-    // anggota.cacat = selectedCacat;
-    // anggota.jeniscacat = selectedJenisCacat;
-    // anggota.pendidikan = selectedPendidikan;
-    // anggota.noitas = noitasC.text;
-    // anggota.tempatitas = tempatItasC.text;
-    // anggota.tanggalterbititas = selectedTanggalTerbitItas;
-    // anggota.tanggalitas = selectedTanggalItas;
-    // anggota.tempatpertama = tempatPertamaC.text;
-    // anggota.tanggalpertama = selectedTanggalpertama;
-    // anggota.nikayah = int.tryParse(nikayahC.text);
-    // anggota.namaibu = namaibuC.text;
-    // anggota.namaayah = namaayahC.text;
-    kk.email = emailC.text;
-    kk.keperluan1 = keperluan;
-    kk.wni = selectedWNI;
-    kk.nik = int.tryParse(nikC.text);
-    kk.kk = int.tryParse(kkC.text);
-    kk.pendidikan_pngntr = selectedPendidikan_pngntr;
-    kk.listAnggota = [
-      Anggota(
-        namalengkap: namalengkapC.text,
-        gelarbelakang: gelarbelakangC.text,
-        gelardepan: gelardepanC.text,
-        nopaspor: nopasporC.text,
-        tanggalpaspor: selectedTanggalpaspor,
-        namasponsor: namasponsorC.text,
-        tipesponsor: selectedSponsor,
-        alamatsponsor: alamatsponsorC.text,
-        pekerjaan: selectedPekerjaan,
-        agama: selectedAgama,
-        statuskwinpngntr: selectedstatuskwinpngntr,
-        statuskawin: selectedStatus,
-        kelamin: selectedKelamin,
-        nikibu: int.tryParse(nikibuC.text),
-        tanggallahir: selectedTanggallahir,
-        tempatlahir: tempatC.text,
-        kewarganegaraan: kewarganegaraanC.text,
-        nowali: int.tryParse(nowaliC.text),
-        goldarah: selectGoldarah,
-        aktalahir: selectedAktalahir,
-        noakta: noaktalahirC.text,
-        orgagama: orgagamaC.text,
-        noaktakawin: noaktakawinC.text,
-        aktakawin: selectedAktakawin,
-        tanggalkawin: selectedTanggalkawin,
-        aktacerai: selectedAktacerai,
-        noaktacerai: noaktaceraiC.text,
-        tanggalcerai: selectedTanggalcerai,
-        statuskeluarga: selectedHubungan,
-        cacat: selectedCacat,
-        jeniscacat: selectedJenisCacat,
-        pendidikan: selectedPendidikan,
-        noitas: noitasC.text,
-        tempatitas: tempatItasC.text,
-        tanggalterbititas: selectedTanggalTerbitItas,
-        tanggalitas: selectedTanggalItas,
-        tempatpertama: tempatPertamaC.text,
-        tanggalpertama: selectedTanggalpertama,
-        nikayah: int.tryParse(nikayahC.text),
-        namaayah: namaayahC.text,
-        namaibu: namaibuC.text,
-      ),
-    ];
-    if (kk.id == null) {
-      kk.waktu = DateTime.now();
-    }
+    anggota.namalengkap = namalengkapC.text;
+    anggota.gelarbelakang = gelarbelakangC.text;
+    anggota.gelardepan = gelardepanC.text;
+    anggota.nopaspor = nopasporC.text;
+    anggota.tanggalpaspor = selectedTanggalpaspor;
+    anggota.namasponsor = namasponsorC.text;
+    anggota.tipesponsor = selectedSponsor;
+    anggota.alamatsponsor = alamatsponsorC.text;
+    anggota.pekerjaan = selectedPekerjaan;
+    anggota.agama = selectedAgama;
+    anggota.statuskwinpngntr = selectedstatuskwinpngntr;
+    anggota.statuskawin = selectedStatus;
+    anggota.kelamin = selectedKelamin;
+    anggota.nikibu = int.tryParse(nikibuC.text);
+    anggota.tanggallahir = selectedTanggallahir;
+    anggota.tempatlahir = tempatC.text;
+    anggota.kewarganegaraan = kewarganegaraanC.text;
+    anggota.nowali = int.tryParse(nowaliC.text);
+    anggota.goldarah = selectGoldarah;
+    anggota.aktalahir = selectedAktalahir;
+    anggota.noakta = noaktalahirC.text;
+    anggota.orgagama = orgagamaC.text;
+    anggota.noaktakawin = noaktakawinC.text;
+    anggota.aktakawin = selectedAktakawin;
+    anggota.tanggalkawin = selectedTanggalkawin;
+    anggota.aktacerai = selectedAktacerai;
+    anggota.noaktacerai = noaktaceraiC.text;
+    anggota.tanggalcerai = selectedTanggalcerai;
+    anggota.statuskeluarga = selectedHubungan;
+    anggota.cacat = selectedCacat;
+    anggota.jeniscacat = selectedJenisCacat;
+    anggota.pendidikan = selectedPendidikan;
+    anggota.noitas = noitasC.text;
+    anggota.tempatitas = tempatItasC.text;
+    anggota.tanggalterbititas = selectedTanggalTerbitItas;
+    anggota.tanggalitas = selectedTanggalItas;
+    anggota.tempatpertama = tempatPertamaC.text;
+    anggota.tanggalpertama = selectedTanggalpertama;
+    anggota.nikayah = int.tryParse(nikayahC.text);
+    anggota.namaibu = namaibuC.text;
+    anggota.namaayah = namaayahC.text;
+    // if (anggota.id == null) {
+    //   // anggota.waktu = DateTime.now();
+    // }
+    formKkController.editedKK.listAnggota == null
+        ? formKkController.editedKK.listAnggota!.add(anggota)
+        : formKkController.editedKK.listAnggota = [anggota];
     try {
-      await kk.save();
+      print(anggota);
       Get.defaultDialog(
         title: "Berhasil",
         middleText:
@@ -690,36 +530,13 @@ class FormKkController extends GetxController {
     }
   }
 
-  var keperluan = "Pengurusan KK baru";
-
-  Future storeabsen(Absen absen) async {
-    isSaving = true;
-    absen.nama = namalengkapC.text;
-    absen.alamat = alamatC.text;
-    absen.email = emailC.text;
-    if (absen.id == null) {
-      absen.waktu = DateTime.now();
-    }
-    try {
-      await absen.save();
-    } catch (e) {
-      print(e);
-    } finally {
-      isSaving = false;
-    }
-  }
-
   @override
   void onInit() {
     super.onInit();
     namalengkapC = TextEditingController();
-    namakepalaC = TextEditingController();
     namasponsorC = TextEditingController();
     namaayahC = TextEditingController();
     namaibuC = TextEditingController();
-    kodeposC = TextEditingController();
-    jumkeluargaC = TextEditingController();
-    teleponC = TextEditingController();
     gelardepanC = TextEditingController();
     gelarbelakangC = TextEditingController();
     nopasporC = TextEditingController();
@@ -730,20 +547,13 @@ class FormKkController extends GetxController {
     noitasC = TextEditingController();
     tempatItasC = TextEditingController();
     tempatPertamaC = TextEditingController();
-    alamatC = TextEditingController();
     alamatsponsorC = TextEditingController();
-    rtC = TextEditingController();
-    rwC = TextEditingController();
     nowaliC = TextEditingController();
     noaktalahirC = TextEditingController();
     noaktakawinC = TextEditingController();
     noaktaceraiC = TextEditingController();
     orgagamaC = TextEditingController();
     kewarganegaraanC = TextEditingController();
-    nikC = TextEditingController();
-    kkC = TextEditingController();
-    emailC = TextEditingController();
-    rxAnggota.bindStream(Anggota().listAnggota());
   }
 
   @override
@@ -754,13 +564,9 @@ class FormKkController extends GetxController {
   @override
   void onClose() {
     namalengkapC.clear();
-    namakepalaC.clear();
     namasponsorC.clear();
     namaayahC.clear();
     namaibuC.clear();
-    kodeposC.clear();
-    jumkeluargaC.clear();
-    teleponC.clear();
     gelardepanC.clear();
     gelarbelakangC.clear();
     nopasporC.clear();
@@ -771,18 +577,12 @@ class FormKkController extends GetxController {
     noitasC.clear();
     tempatItasC.clear();
     tempatPertamaC.clear();
-    alamatC.clear();
     alamatsponsorC.clear();
-    rtC.clear();
-    rwC.clear();
     nowaliC.clear();
     noaktalahirC.clear();
     noaktakawinC.clear();
     noaktaceraiC.clear();
     orgagamaC.clear();
     kewarganegaraanC.clear();
-    nikC.clear();
-    kkC.clear();
-    emailC.clear();
   }
 }
